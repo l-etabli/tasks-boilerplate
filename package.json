@@ -2,17 +2,16 @@
   "name": "shadcn-ui-monorepo",
   "version": "0.0.1",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "biome check .",
     "format": "biome format --write .",
+    "lint": "biome check .",
     "check": "biome check .",
-    "check:apply": "biome check --write ."
+    "check:fix": "biome check --write .",
+    "typecheck": "turbo typecheck",
+    "fullcheck": "turbo check:fix typecheck test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
