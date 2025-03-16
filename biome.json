@@ -23,6 +23,13 @@
     }
   },
   "files": {
-    "ignore": ["**/node_modules", "**/.next", "**/dist", "**/public", "**/.turbo"]
+    "ignore": [
+      "**/node_modules",
+      "**/.next",
+      "**/dist",
+      "**/public",
+      "**/.turbo",
+      "**/routeTree.gen.ts"
+    ]
   }
 }
