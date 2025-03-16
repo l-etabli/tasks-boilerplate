@@ -1,0 +1,3 @@
+{
+  "extends": "@tasks/typescript-config/base.json"
+}
