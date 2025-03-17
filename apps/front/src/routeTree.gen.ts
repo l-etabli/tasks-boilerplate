@@ -11,16 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SameAsNextImport } from './routes/same-as-next'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const SameAsNextRoute = SameAsNextImport.update({
-  id: '/same-as-next',
-  path: '/same-as-next',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -39,13 +32,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/same-as-next': {
-      id: '/same-as-next'
-      path: '/same-as-next'
-      fullPath: '/same-as-next'
-      preLoaderRoute: typeof SameAsNextImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -53,37 +39,32 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/same-as-next': typeof SameAsNextRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/same-as-next': typeof SameAsNextRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/same-as-next': typeof SameAsNextRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/same-as-next'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/same-as-next'
-  id: '__root__' | '/' | '/same-as-next'
+  to: '/'
+  id: '__root__' | '/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SameAsNextRoute: typeof SameAsNextRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SameAsNextRoute: SameAsNextRoute,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +77,11 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/same-as-next"
+        "/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/same-as-next": {
-      "filePath": "same-as-next.tsx"
     }
   }
 }
