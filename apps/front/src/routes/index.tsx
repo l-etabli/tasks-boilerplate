@@ -3,7 +3,7 @@ import { Badge } from "@tasks/ui/components/badge";
 import { Button } from "@tasks/ui/components/button";
 import { hc } from "hono/client";
 import { useEffect, useState } from "react";
-import type { AppType } from "../../../back/src/index";
+import type { AppType } from "../../../back/src/server";
 
 const client = hc<AppType>("/api");
 
