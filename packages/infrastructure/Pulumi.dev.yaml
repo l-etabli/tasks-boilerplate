@@ -1,0 +1,5 @@
+config:
+  vercel:apiToken: ${VERCEL_API_TOKEN}
+  vercel:team: ${VERCEL_TEAM} # Optional, if you're using a team
+  aws:region: eu-west-3 # Europe (Paris)
+  tasks:environment: development 

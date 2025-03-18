@@ -1,0 +1,23 @@
+{
+  "name": "@tasks/infrastructure",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "pulumi up --stack dev",
+    "prod": "pulumi up --stack prod",
+    "destroy:dev": "pulumi destroy --stack dev",
+    "destroy:prod": "pulumi destroy --stack prod",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.157.0",
+    "@pulumiverse/vercel": "^1.14.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
