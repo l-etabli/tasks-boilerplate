@@ -5,7 +5,7 @@ import { hc } from "hono/client";
 import { useEffect, useState } from "react";
 import type { AppType } from "../../../back/src/index";
 
-const client = hc<AppType>("http://localhost:4000/");
+const client = hc<AppType>("/api");
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
