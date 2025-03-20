@@ -1,0 +1,12 @@
+---
+description: Error handling rules
+globs: 
+alwaysApply: false
+---
+# Error handling
+
+- Use descriptive error messages
+- Handle all error cases explicitly
+- Never swallow errors silently
+
+<!-- - Prefer Result type over try/catch -->

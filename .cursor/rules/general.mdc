@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Coding style
+- Use functional programming style over classes
+- Prefer pure functions
+- Use immutable data structures
+- Keep functions small and focused
+- Use arrow functions
+- Return early to avoid nesting
+- Maximum 3 parameters, use object for more
+- Avoid side effects
+- Use biome for formatting (and rules are in `biome.json`)
+- Prefer good naming over good comments.Write comments for "why", but only if there is no other way to express the intent (always prefer good naming).
+
+
+# Architecture
+- Use dependency injection
+- Prefer composition over inheritance
+- Keep dependencies explicit
+- Use functional programming principles 
+- Use SOLID principles
+- Keep persistence logic in repositories
+- Keep business logic entities first, then usecases
+- use-cases hold the use cases, they should not depend on infrastructure (database, http, etc.)
+- most business logic should be in entities, usecase should orchestrate them
+- Separate business logic from infrastructure
+- usual folder organisation looks like this :
+
+
+
+# Error handling
+- Use descriptive error messages
+- Prefer Result type over try/catch
+- Handle all error cases explicitly
+- Never swallow errors silently
+
+# Security
+- Validate all inputs
+- Sanitize user data
+- Use secure defaults
+- Handle sensitive data carefully
+- Never store secrets in code, or comments : use environment variables
+

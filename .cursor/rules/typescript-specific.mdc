@@ -1,0 +1,22 @@
+---
+description: 
+globs: *.ts,*.tsx
+alwaysApply: false
+---
+# Typescript coding specifics
+
+- Use TypeScript strict mode
+- Avoid `any` as much as possible
+- Prefer type over interface
+- Use union types over enums
+- Use strict null checks
+
+# Naming
+
+- Use camelCase for functions and variables
+- Use PascalCase for types
+- Use descriptive names that reveal intent
+- Prefix boolean variables with 'is', 'has', 'should'
+
+# exports
+- Use named exports over default exports

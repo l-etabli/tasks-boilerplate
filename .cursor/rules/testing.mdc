@@ -1,0 +1,13 @@
+---
+description: 
+globs: *.test.ts,*.spec.ts,*.test.tsx,*.spec.tsx
+alwaysApply: false
+---
+# Testing
+
+- Use descriptive test names
+- Write unit tests for usecases, tested against in memory repositories
+- We call test for adapters implementions, integration tests (for example, tests that would test a Postgres adapter of a repository). They should focus on the adapter in isolation.
+- Follow Arrange-Act-Assert pattern (but do not comment those steps)
+- Do not use mocks, use explicit dependency injection
+- Test edge cases
