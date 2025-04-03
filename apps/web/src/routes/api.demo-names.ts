@@ -1,11 +1,11 @@
-import { createAPIFileRoute } from '@tanstack/react-start/api'
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 
-export const APIRoute = createAPIFileRoute('/api/demo-names')({
+export const APIRoute = createAPIFileRoute("/api/demo-names")({
   GET: async ({ request: _ }) => {
-    return new Response(JSON.stringify(['Alice', 'Bob', 'Charlie']), {
+    return new Response(JSON.stringify(["Alice", "Bob", "Charlie"]), {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    })
+    });
   },
-})
+});

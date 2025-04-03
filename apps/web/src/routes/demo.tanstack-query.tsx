@@ -1,21 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { useTRPC } from '@/integrations/trpc/react'
+import { useTRPC } from "@/integrations/trpc/react";
 
-export const Route = createFileRoute('/demo/tanstack-query')({
+export const Route = createFileRoute("/demo/tanstack-query")({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(
-      context.trpc.people.list.queryOptions(),
-    )
+    await context.queryClient.prefetchQuery(context.trpc.people.list.queryOptions());
   },
 
   component: TanStackQueryDemo,
-})
+});
 
 function TanStackQueryDemo() {
-  const trpc = useTRPC()
-  const { data } = useQuery(trpc.people.list.queryOptions())
+  const trpc = useTRPC();
+  const { data } = useQuery(trpc.people.list.queryOptions());
 
   return (
     <div className="p-4">
@@ -26,5 +24,5 @@ function TanStackQueryDemo() {
         ))}
       </ul>
     </div>
-  )
+  );
 }

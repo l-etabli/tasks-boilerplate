@@ -9,11 +9,5 @@
   "variableValues": {},
   "git": false,
   "version": 1,
-  "existingAddOns": [
-    "form",
-    "sentry",
-    "start",
-    "tRPC",
-    "tanstack-query"
-  ]
+  "existingAddOns": ["form", "sentry", "start", "tRPC", "tanstack-query"]
 }
