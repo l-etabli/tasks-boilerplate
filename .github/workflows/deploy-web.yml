@@ -1,0 +1,54 @@
+name: Deploy apps/web to Netlify
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy Web App
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      BUILD_OUTPUT_DIR: apps/web/dist
+
+      NODE_VERSION: 20
+
+    steps:
+      - name: Check for Netlify Secrets
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
+            echo "Error: NETLIFY_AUTH_TOKEN or NETLIFY_SITE_ID secret is not set in repository settings." >&2
+            exit 1
+          fi
+          echo "Required Netlify secrets found."
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Web App
+        run: pnpm build --filter=@tasks/web -- --preset netlify
+
+      - name: Install Netlify CLI
+        run: pnpm add -g netlify-cli
+
+      - name: Deploy to Netlify
+        run: netlify deploy --filter=@tasks/web --dir=${{ env.BUILD_OUTPUT_DIR }} --prod
