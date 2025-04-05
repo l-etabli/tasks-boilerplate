@@ -11,7 +11,7 @@
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "typecheck": "turbo typecheck",
-    "fullcheck": "turbo check:fix typecheck test"
+    "fullcheck": "turbo typecheck test"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
