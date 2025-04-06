@@ -18,27 +18,11 @@ importers:
         specifier: ^1.11.3
         version: 1.11.6
       turbo:
-        specifier: ^2.4.2
+        specifier: ^2.5.0
         version: 2.5.0
       typescript:
         specifier: 5.7.3
         version: 5.7.3
-
-  apps/back:
-    dependencies:
-      '@hono/node-server':
-        specifier: ^1.13.8
-        version: 1.14.0(hono@4.7.5)
-      hono:
-        specifier: ^4.7.4
-        version: 4.7.5
-    devDependencies:
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.17.30
-      tsx:
-        specifier: ^4.7.1
-        version: 4.19.3
 
   apps/web:
     dependencies:
@@ -890,12 +874,6 @@ packages:
     resolution: {integrity: sha512-AiXO/bfe9bmxBjxxtYxFAXGZvMaN5s8kO+jBHAJCON8rJoB5YS/D6X7ZNc6XQkuHNmyl4CYaMI1fJ/Gn27RGGw==}
     engines: {node: '>=6'}
     hasBin: true
-
-  '@hono/node-server@1.14.0':
-    resolution: {integrity: sha512-YUCxJwgHRKSqjrdTk9e4VMGKN27MK5r4+MGPyZTgKH+IYbK+KtYbHeOcPGJ91KGGD6RIQiz2dAHxvjauNhOS8g==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: ^4
 
   '@ioredis/commands@1.2.0':
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
@@ -3501,10 +3479,6 @@ packages:
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
-
-  hono@4.7.5:
-    resolution: {integrity: sha512-fDOK5W2C1vZACsgLONigdZTRZxuBqFtcKh7bUQ5cVSbwI2RWjloJDcgFOVzbQrlI6pCmhlTsVYZ7zpLj4m4qMQ==}
-    engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -6221,10 +6195,6 @@ snapshots:
       long: 5.3.1
       protobufjs: 7.4.0
       yargs: 17.7.2
-
-  '@hono/node-server@1.14.0(hono@4.7.5)':
-    dependencies:
-      hono: 4.7.5
 
   '@ioredis/commands@1.2.0': {}
 
@@ -9496,8 +9466,6 @@ snapshots:
   hoist-non-react-statics@3.3.2:
     dependencies:
       react-is: 16.13.1
-
-  hono@4.7.5: {}
 
   hookable@5.5.3: {}
 
