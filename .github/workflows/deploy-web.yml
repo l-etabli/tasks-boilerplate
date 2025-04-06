@@ -1,9 +1,12 @@
 name: Deploy apps/web to Netlify
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    secrets:
+      NETLIFY_SITE_ID:
+        required: true
+      NETLIFY_AUTH_TOKEN:
+        required: true
 
 jobs:
   deploy:
@@ -20,13 +23,6 @@ jobs:
       NODE_VERSION: 20
 
     steps:
-      - name: Check for Netlify Secrets
-        run: |
-          if [ -z "$NETLIFY_AUTH_TOKEN" ] || [ -z "$NETLIFY_SITE_ID" ]; then
-            echo "Error: NETLIFY_AUTH_TOKEN or NETLIFY_SITE_ID secret is not set in repository settings." >&2
-            exit 1
-          fi
-          echo "Required Netlify secrets found."
       - name: Check out repository
         uses: actions/checkout@v4
         with:
