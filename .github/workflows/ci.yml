@@ -2,11 +2,11 @@ name: Continuous Integration
 
 on:
   push:
-    branches: # Run on pushes to any branch
-      - "**"
-  pull_request: # Also run on pull requests targeting any branch
     branches:
       - "**"
+  pull_request:
+    branches:
+      - "main"
 
 jobs:
   validations:
@@ -15,6 +15,9 @@ jobs:
 
     env:
       NODE_VERSION: 20
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
+      TURBO_REMOTE_CACHE_SIGNATURE: true
 
     steps:
       - name: Check out repository
@@ -38,7 +41,7 @@ jobs:
         run: pnpm turbo check typecheck test
 
   trigger_deploy:
-    name: Trigger Deployment
+    name: Deploy production
     needs: [validations]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     uses: ./.github/workflows/deploy-web.yml
