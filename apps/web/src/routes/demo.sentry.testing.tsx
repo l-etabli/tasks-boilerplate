@@ -186,6 +186,7 @@ function RouteComponent() {
   return (
     <>
       <style
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
         dangerouslySetInnerHTML={{
           __html: `
           @keyframes fadeOut {
@@ -257,6 +258,7 @@ function RouteComponent() {
                 <div className="space-y-6">
                   <div>
                     <button
+                      type="submit"
                       onClick={() => {
                         setDemoStep((prev) => prev + 1);
                         handleClientError();
@@ -280,6 +282,7 @@ function RouteComponent() {
                       <div className="mt-4 space-y-2">
                         <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-2">
                           <div className="flex items-center text-red-400 text-sm">
+                            {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
                             <svg
                               className="w-4 h-4 mr-2"
                               fill="none"
@@ -297,6 +300,7 @@ function RouteComponent() {
                         <div className="bg-purple-900/20 border border-purple-500/50 rounded-lg p-3">
                           <div className="flex items-center justify-between">
                             <div className="relative">
+                              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                               <div
                                 className={`inline-flex items-center bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/50 cursor-pointer hover:bg-purple-900/60 transition-all ${copiedSpan === spanOps.clientError ? "scale-95" : ""}`}
                                 onClick={() => handleCopy(spanOps.clientError)}
@@ -323,6 +327,7 @@ function RouteComponent() {
 
                   <div>
                     <button
+                      type="submit"
                       onClick={() => {
                         setDemoStep((prev) => prev + 1);
                         handleClientTrace();
@@ -361,6 +366,7 @@ function RouteComponent() {
                           <div className="bg-purple-900/20 border border-purple-500/50 rounded-lg p-3">
                             <div className="flex items-center justify-between">
                               <div className="relative">
+                                {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                                 <div
                                   className={`inline-flex items-center bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/50 cursor-pointer hover:bg-purple-900/60 transition-all ${copiedSpan === spanOps.client ? "scale-95" : ""}`}
                                   onClick={() => handleCopy(spanOps.client)}
@@ -394,6 +400,7 @@ function RouteComponent() {
                 <div className="space-y-6">
                   <div>
                     <button
+                      type="submit"
                       onClick={() => {
                         setDemoStep((prev) => prev + 1);
                         handleServerError();
@@ -417,6 +424,7 @@ function RouteComponent() {
                       <div className="mt-4 space-y-2">
                         <div className="bg-red-900/20 border border-red-500/50 rounded-lg p-3">
                           <div className="flex items-center text-red-400 text-sm">
+                            {/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
                             <svg
                               className="w-4 h-4 mr-2"
                               fill="none"
@@ -434,6 +442,7 @@ function RouteComponent() {
                         <div className="bg-purple-900/20 border border-purple-500/50 rounded-lg p-3">
                           <div className="flex items-center justify-between">
                             <div className="relative">
+                              {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                               <div
                                 className={`inline-flex items-center bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/50 cursor-pointer hover:bg-purple-900/60 transition-all ${copiedSpan === spanOps.serverError ? "scale-95" : ""}`}
                                 onClick={() => handleCopy(spanOps.serverError)}
@@ -460,6 +469,7 @@ function RouteComponent() {
 
                   <div>
                     <button
+                      type="submit"
                       onClick={() => {
                         setDemoStep((prev) => prev + 1);
                         handleServerTrace();
@@ -498,6 +508,7 @@ function RouteComponent() {
                           <div className="bg-purple-900/20 border border-purple-500/50 rounded-lg p-3">
                             <div className="flex items-center justify-between">
                               <div className="relative">
+                                {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
                                 <div
                                   className={`inline-flex items-center bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/50 cursor-pointer hover:bg-purple-900/60 transition-all ${copiedSpan === spanOps.server ? "scale-95" : ""}`}
                                   onClick={() => handleCopy(spanOps.server)}

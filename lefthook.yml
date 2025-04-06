@@ -1,9 +1,9 @@
-# pre-commit:
-#   commands:
-#     check-fix:
-#       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-#       run: pnpm check:fix {staged_files}
-#       stage_fixed: true
+pre-commit:
+  commands:
+    check-fix:
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: pnpm check:fix {staged_files}
+      stage_fixed: true
 
 pre-push:
   commands:
