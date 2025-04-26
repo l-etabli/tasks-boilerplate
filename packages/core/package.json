@@ -1,0 +1,14 @@
+{
+    "name": "@tasks/core",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "typecheck": "tsc --no-emit"
+    },
+    "dependencies": {
+        "@tasks/trousse": "workspace:*"
+    },
+    "devDependencies": {
+        "typescript": "^5.7.3"
+    }
+}

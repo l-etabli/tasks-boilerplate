@@ -1,0 +1,13 @@
+{
+    "name": "@tasks/trousse",
+    "type": "module",
+    "types": "./src/index.ts",
+    "main": "./src/index.ts",
+    "private": true,
+    "scripts": {
+        "typecheck": "tsc --no-emit"
+    },
+    "devDependencies": {
+        "typescript": "^5.7.3"
+    }
+}
