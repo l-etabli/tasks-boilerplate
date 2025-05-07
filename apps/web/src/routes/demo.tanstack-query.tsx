@@ -1,28 +1,63 @@
-import { useQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { useTRPC } from "@/integrations/trpc/react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/demo/tanstack-query")({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(context.trpc.people.list.queryOptions());
+    await context.queryClient.prefetchQuery(context.trpc.tasks.list.queryOptions());
   },
 
   component: TanStackQueryDemo,
 });
 
 function TanStackQueryDemo() {
+  const router = useRouter();
   const trpc = useTRPC();
-  const { data } = useQuery(trpc.people.list.queryOptions());
+  const { data } = useQuery(trpc.tasks.list.queryOptions());
+  const [description, setDescription] = useState("");
+
+  const addTaskMutation = useMutation(trpc.tasks.add.mutationOptions());
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl mb-4">People list from Swapi</h1>
+      <h1 className="text-2xl mb-4">My Tasks</h1>
       <ul>
-        {data?.map((person) => (
-          <li key={person.name}>{person.name}</li>
+        {data?.map((task) => (
+          <li key={task.id}>- {task.description}</li>
         ))}
       </ul>
+
+      <h2 className="text-2xl mb-4">Add a task</h2>
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          await addTaskMutation.mutate({ id: new Date().toISOString(), description });
+          setDescription("");
+          await router.invalidate();
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Task description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button type="submit">Add</button>
+      </form>
+
+      {addTaskMutation.isError && (
+        <div className="bg-red-500 text-white p-4">{addTaskMutation.error.message}</div>
+      )}
+
+      {addTaskMutation.isSuccess && (
+        <div className="bg-green-500 text-white p-4">Task added successfully</div>
+      )}
+
+      {addTaskMutation.isPending && (
+        <div className="bg-yellow-500 text-white p-4">Adding task...</div>
+      )}
     </div>
   );
 }

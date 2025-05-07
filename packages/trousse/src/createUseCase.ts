@@ -3,7 +3,7 @@ type WhenNotVoid<K extends string, V, NewType = void> = V extends void
   : { [k in K]: NewType extends void ? V : NewType };
 
 export type CreateUseCase<U = void, CU = void> = <
-  InputParams,
+  Input,
   Output,
   Uow = U,
   CurrentUser = CU,
@@ -11,7 +11,7 @@ export type CreateUseCase<U = void, CU = void> = <
 >(
   cb: (
     args: {
-      inputParams: InputParams;
+      input: Input;
       currentUser: CurrentUser;
     } & WhenNotVoid<"deps", Deps> &
       WhenNotVoid<"uow", Uow>,
@@ -19,10 +19,10 @@ export type CreateUseCase<U = void, CU = void> = <
 ) => (
   setupParams: WhenNotVoid<"deps", Deps> &
     WhenNotVoid<"withUow", Uow, <T>(uowCb: (uow: Uow) => T) => T>,
-) => (params: { inputParams: InputParams; currentUser: CurrentUser }) => Output;
+) => (params: { input: Input; currentUser: CurrentUser }) => Output;
 
 export const createUseCase: CreateUseCase =
   (cb) =>
   ({ deps, withUow = (uowCb: any) => uowCb() }: any) =>
-  ({ inputParams, currentUser }) =>
-    withUow((uow: any) => cb({ deps, inputParams, uow, currentUser } as any));
+  ({ input, currentUser }) =>
+    withUow((uow: any) => cb({ deps, input, uow, currentUser } as any));

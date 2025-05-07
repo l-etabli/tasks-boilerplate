@@ -1,6 +1,0 @@
-name: tasks
-runtime:
-  name: nodejs
-  options:
-    typescript: true
-description: Infrastructure for @tasks application 

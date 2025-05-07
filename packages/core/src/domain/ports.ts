@@ -1,18 +1,4 @@
-export type User = {
-  id: string;
-  email: string;
-};
-
-export type Task = {
-  id: string;
-  description: string;
-  owner: User;
-};
-
-export type AddTaskInput = {
-  id: string;
-  description: string;
-};
+import type { Task } from "./entities.js";
 
 export type TaskRepository = {
   save: (task: Task) => Promise<void>;

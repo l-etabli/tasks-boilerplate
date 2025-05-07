@@ -1,8 +1,15 @@
-import type { Task, TaskRepository, WithUow } from "../domain/entities-and-ports.js";
+import type { Task } from "../domain/entities.js";
+import type { TaskRepository, WithUow } from "../domain/ports.js";
 
-type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
+// type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
 export const createInMemoryTaskRepositiory = () => {
-  const taskById: Record<string, Task> = {};
+  const taskById: Record<string, Task> = {
+    "task-1": {
+      id: "task-1",
+      owner: { id: "user-bob", email: "bob@example.com" },
+      description: "Buy a guitar",
+    },
+  };
 
   return {
     getAllForUser: async (userId) =>
@@ -13,9 +20,11 @@ export const createInMemoryTaskRepositiory = () => {
   } satisfies TaskRepository;
 };
 
-type InMemoryUow = {
-  taskRepositiory: InMemoryTaskRepository;
-};
+// type InMemoryUow = {
+//   taskRepositiory: InMemoryTaskRepository;
+// };
 
-export const withInMemoryUnitOfWork: WithUow = (cb) =>
-  cb({ taskRepository: createInMemoryTaskRepositiory() });
+export const createWithInMemoryUnitOfWork = (): WithUow => {
+  const uow = { taskRepository: createInMemoryTaskRepositiory() };
+  return (cb) => cb(uow);
+};

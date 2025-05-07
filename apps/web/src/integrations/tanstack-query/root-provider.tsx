@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { createTRPCClient, httpBatchStreamLink } from "@trpc/client";
+import { createTRPCClient, httpLink } from "@trpc/client";
 import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import superjson from "superjson";
 
@@ -17,10 +17,14 @@ function getUrl() {
 
 export const trpcClient = createTRPCClient<TRPCRouter>({
   links: [
-    httpBatchStreamLink({
+    httpLink({
       transformer: superjson,
       url: getUrl(),
     }),
+    // httpBatchStreamLink({
+    //   transformer: superjson,
+    //   url: getUrl(),
+    // }),
   ],
 });
 

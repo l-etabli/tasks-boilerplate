@@ -34,7 +34,7 @@ function AddressForm() {
       },
     },
     onSubmit: ({ value }) => {
-      console.log(value);
+      console.info(value);
       // Show success message
       alert("Form submitted successfully!");
     },

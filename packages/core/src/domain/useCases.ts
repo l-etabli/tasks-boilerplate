@@ -1,12 +1,13 @@
 import { type CreateUseCase, createUseCase } from "@tasks/trousse";
-import type { AddTaskInput, Task, Uow, User } from "./entities-and-ports.js";
+import type { AddTaskInput, Task, User } from "./entities.js";
+import type { Uow } from "./ports.js";
 
 const createAuthTransacUseCase: CreateUseCase<Uow, User> = createUseCase;
 
 export const addTask = createAuthTransacUseCase<AddTaskInput, Promise<void>>(
-  ({ inputParams, currentUser, uow }) =>
+  ({ input, currentUser, uow }) =>
     uow.taskRepository.save({
-      ...inputParams,
+      ...input,
       owner: currentUser,
     }),
 );
