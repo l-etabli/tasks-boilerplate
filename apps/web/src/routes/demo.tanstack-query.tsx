@@ -1,8 +1,8 @@
+import { useAppForm } from "@/hooks/demo.form.ts";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { useTRPC } from "@/integrations/trpc/react";
-import { useState } from "react";
 
 export const Route = createFileRoute("/demo/tanstack-query")({
   loader: async ({ context }) => {
@@ -13,12 +13,8 @@ export const Route = createFileRoute("/demo/tanstack-query")({
 });
 
 function TanStackQueryDemo() {
-  const router = useRouter();
   const trpc = useTRPC();
   const { data } = useQuery(trpc.tasks.list.queryOptions());
-  const [description, setDescription] = useState("");
-
-  const addTaskMutation = useMutation(trpc.tasks.add.mutationOptions());
 
   return (
     <div className="p-4">
@@ -28,23 +24,44 @@ function TanStackQueryDemo() {
           <li key={task.id}>- {task.description}</li>
         ))}
       </ul>
+      <AddTaskForm />
+    </div>
+  );
+}
 
+const AddTaskForm = () => {
+  const router = useRouter();
+  const trpc = useTRPC();
+  const addTaskMutation = useMutation(trpc.tasks.add.mutationOptions());
+
+  const form = useAppForm({
+    defaultValues: { description: "" },
+    onSubmit: async ({ value, formApi }) => {
+      await addTaskMutation.mutate({
+        id: new Date().toISOString(),
+        description: value.description,
+      });
+      formApi.reset();
+      await router.invalidate();
+    },
+  });
+
+  return (
+    <>
       <h2 className="text-2xl mb-4">Add a task</h2>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          await addTaskMutation.mutate({ id: new Date().toISOString(), description });
-          setDescription("");
-          await router.invalidate();
+          e.stopPropagation();
+          await form.handleSubmit();
         }}
       >
-        <input
-          type="text"
-          placeholder="Task description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <button type="submit">Add</button>
+        <form.AppField name="description">
+          {(field) => <field.TextField label="Task description" />}
+        </form.AppField>
+        <form.AppForm>
+          <form.SubscribeButton label="Add" />
+        </form.AppForm>
       </form>
 
       {addTaskMutation.isError && (
@@ -58,6 +75,6 @@ function TanStackQueryDemo() {
       {addTaskMutation.isPending && (
         <div className="bg-yellow-500 text-white p-4">Adding task...</div>
       )}
-    </div>
+    </>
   );
-}
+};
