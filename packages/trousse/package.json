@@ -5,7 +5,7 @@
     "main": "./src/index.ts",
     "private": true,
     "scripts": {
-        "typecheck": "tsc --no-emit"
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "typescript": "^5.7.3"

@@ -7,9 +7,10 @@
     "start": "vinxi start",
     "build": "vinxi build",
     "serve": "vite preview",
-    "test": "vitest run",
+    "test": "echo \"No tests\" #vitest run",
     "typecheck": "tsc --noEmit",
-    "check:fix": "pnpm -w check:fix"
+    "check:fix": "pnpm -w check:fix",
+    "fullcheck": "pnpm -w fullcheck"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",

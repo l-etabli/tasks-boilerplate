@@ -5,7 +5,7 @@
     "types": "src/index.ts",
     "private": true,
     "scripts": {
-        "typecheck": "tsc --no-emit"
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@tasks/trousse": "workspace:*",
