@@ -1,3 +1,4 @@
+import { authClient } from "@/auth-client";
 import { Link } from "@tanstack/react-router";
 
 export default function Header() {
@@ -14,6 +15,41 @@ export default function Header() {
 
         <div className="px-2 font-bold">
           <Link to="/demo/start/server-funcs">Start - Server Functions</Link>
+        </div>
+
+        <div className="px-2 font-bold">
+          <button
+            type={"button"}
+            onClick={async () => {
+              const { data, error } = await authClient.signUp.email(
+                {
+                  email: "yolo@mail.com", // user email address
+                  password: "yo123heyho", // user password -> min 8 characters by default
+                  name: "Bob", // user display name
+                  callbackURL: "/some-redirected-url", // A URL to redirect to after the user verifies their email (optional)
+                },
+                {
+                  onRequest: (ctx) => {
+                    //show loading
+                  },
+                  onSuccess: (ctx) => {
+                    //redirect to the dashboard or sign in page
+                  },
+                  onError: (ctx) => {
+                    // display the error message
+                    alert(ctx.error.message);
+                  },
+                },
+              );
+
+              console.log({
+                data,
+                error,
+              });
+            }}
+          >
+            Sign up
+          </button>
         </div>
       </nav>
     </header>

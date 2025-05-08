@@ -33,6 +33,7 @@
     "@trpc/server": "^11.0.0",
     "@trpc/tanstack-react-query": "^11.0.0",
     "ai": "^4.1.65",
+    "better-auth": "^1.2.7",
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
