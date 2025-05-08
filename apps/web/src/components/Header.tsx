@@ -26,13 +26,13 @@ export default function Header() {
                   email: "yolo@mail.com", // user email address
                   password: "yo123heyho", // user password -> min 8 characters by default
                   name: "Bob", // user display name
-                  callbackURL: "/some-redirected-url", // A URL to redirect to after the user verifies their email (optional)
+                  callbackURL: "/", // A URL to redirect to after the user verifies their email (optional)
                 },
                 {
-                  onRequest: (ctx) => {
+                  onRequest: (_ctx) => {
                     //show loading
                   },
-                  onSuccess: (ctx) => {
+                  onSuccess: (_ctx) => {
                     //redirect to the dashboard or sign in page
                   },
                   onError: (ctx) => {

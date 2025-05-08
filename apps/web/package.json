@@ -10,7 +10,8 @@
     "test": "echo \"No tests\" #vitest run",
     "typecheck": "tsc --noEmit",
     "check:fix": "pnpm -w check:fix",
-    "fullcheck": "pnpm -w fullcheck"
+    "fullcheck": "pnpm -w fullcheck",
+    "migrate:latest": "dotenv -e .env.local -- kysely migrate:latest"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -35,7 +36,9 @@
     "ai": "^4.1.65",
     "better-auth": "^1.2.7",
     "highlight.js": "^11.11.1",
+    "kysely": "^0.28.2",
     "lucide-react": "^0.475.0",
+    "pg": "^8.15.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",
@@ -52,10 +55,13 @@
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
+    "@types/pg": "^8.15.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "dotenv-cli": "^8.0.0",
     "jsdom": "^26.0.0",
+    "kysely-ctl": "^0.12.2",
     "typescript": "^5.7.2",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
