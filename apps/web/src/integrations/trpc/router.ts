@@ -7,7 +7,7 @@ const useCases = bootstrapUseCases({ uowKind: "in-memory" });
 
 const tasksRouter = {
   list: privateProcedure.query(async ({ ctx: { currentUser } }) =>
-    useCases.listMyTasks({ currentUser, input: undefined }),
+    useCases.listMyTasks({ currentUser }),
   ),
   add: privateProcedure
     .input(addTaskSchema)

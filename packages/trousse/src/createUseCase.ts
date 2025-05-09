@@ -19,10 +19,12 @@ export type CreateUseCase<U = void, CU = void> = <
 ) => (
   setupParams: WhenNotVoid<"deps", Deps> &
     WhenNotVoid<"withUow", Uow, <T>(uowCb: (uow: Uow) => T) => T>,
-) => (params: { input: Input; currentUser: CurrentUser }) => Output;
+) => (params: WhenNotVoid<"input", Input> & { currentUser: CurrentUser }) => Output;
 
 export const createUseCase: CreateUseCase =
   (cb) =>
   ({ deps, withUow = (uowCb: any) => uowCb() }: any) =>
-  ({ input, currentUser }) =>
-    withUow((uow: any) => cb({ deps, input, uow, currentUser } as any));
+  (params: any) =>
+    withUow((uow: any) =>
+      cb({ deps, input: params.input, uow, currentUser: params.currentUser } as any),
+    );
