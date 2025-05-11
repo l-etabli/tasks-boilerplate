@@ -3,13 +3,7 @@ import type { TaskRepository, WithUow } from "../domain/ports.js";
 
 // type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
 export const createInMemoryTaskRepositiory = () => {
-  const taskById: Record<string, Task> = {
-    "task-1": {
-      id: "task-1",
-      owner: { id: "user-bob", email: "bob@example.com" },
-      description: "Buy a guitar",
-    },
-  };
+  const taskById: Record<string, Task> = {};
 
   return {
     getAllForUser: async (userId) =>

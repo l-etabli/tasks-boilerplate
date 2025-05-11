@@ -1,3 +1,4 @@
+import { env } from "@/env";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 
