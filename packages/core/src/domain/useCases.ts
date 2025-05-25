@@ -18,6 +18,6 @@ export const addTask = createAuthTransacUseCase(
     }),
 );
 
-export const listMyTasks = createAuthTransacUseCase(({ currentUser, uow }) =>
-  uow.taskRepository.getAllForUser(currentUser.id),
-);
+export const listMyTasks = createAuthTransacUseCase(({ currentUser, uow }) => {
+  return uow.taskRepository.getAllForUser(currentUser.id);
+});
