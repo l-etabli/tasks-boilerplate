@@ -17,7 +17,7 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 export const privateProcedure = t.procedure.use(({ ctx, next }) => {
-  const currentUser = ctx?.currentUser ?? { id: "user-bob", email: "bob@example.com" };
+  const currentUser = ctx?.currentUser;
   if (!currentUser)
     throw new TRPCError({ code: "UNAUTHORIZED", message: "You need to authenticate first" });
   return next({ ctx: { currentUser } });
