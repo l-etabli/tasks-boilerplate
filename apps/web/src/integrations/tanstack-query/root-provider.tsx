@@ -30,6 +30,9 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
 
 const queryClient = new QueryClient({
   defaultOptions: {
+    queries: {
+      retry: 1,
+    },
     dehydrate: { serializeData: superjson.serialize },
     hydrate: { deserializeData: superjson.deserialize },
   },

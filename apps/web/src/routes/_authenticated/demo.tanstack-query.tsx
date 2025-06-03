@@ -4,7 +4,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { useTRPC } from "@/integrations/trpc/react";
 
-export const Route = createFileRoute("/demo/tanstack-query")({
+export const Route = createFileRoute("/_authenticated/demo/tanstack-query")({
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(context.trpc.tasks.list.queryOptions());
   },
@@ -14,8 +14,9 @@ export const Route = createFileRoute("/demo/tanstack-query")({
 
 function TanStackQueryDemo() {
   const trpc = useTRPC();
-  const { data } = useQuery(trpc.tasks.list.queryOptions());
+  const { data, error } = useQuery(trpc.tasks.list.queryOptions());
 
+  if (error) return <div className="p-4 bg-red-500 text-white">Error: {error.message}</div>;
   if (!data) return <div className="p-4">Loading...</div>;
 
   return (
