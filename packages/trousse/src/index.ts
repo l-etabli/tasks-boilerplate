@@ -1,1 +1,1 @@
-export * from "./createUseCase.js";
+export * from "./useCaseBuilder.js";

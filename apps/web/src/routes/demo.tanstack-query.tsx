@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { useTRPC } from "@/integrations/trpc/react";
-import { addTaskSchema } from "@tasks/core";
 
 export const Route = createFileRoute("/demo/tanstack-query")({
   loader: async ({ context }) => {
