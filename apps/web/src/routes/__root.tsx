@@ -1,4 +1,10 @@
-import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import {
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import Header from "../components/Header";
@@ -49,6 +55,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
       <TanstackQueryLayout />
     </RootDocument>
+  ),
+
+  notFoundComponent: () => (
+    <div className="p-8 text-center">
+      <h1 className="text-2xl font-bold mb-4">Page Not Found</h1>
+      <p className="text-gray-600 mb-4">The page you're looking for doesn't exist.</p>
+      <Link to="/" className="text-blue-500 hover:underline">
+        Go back to Home
+      </Link>
+    </div>
   ),
 });
 
