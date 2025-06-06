@@ -11,11 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthenticatedDemoTanstackQueryImport } from './routes/_authenticated/demo.tanstack-query'
 import { Route as AuthenticatedDemoStartServerFuncsImport } from './routes/_authenticated/demo.start.server-funcs'
 
 // Create/Update Routes
+
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -23,18 +30,24 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/_auth/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthenticatedDemoTanstackQueryRoute =
   AuthenticatedDemoTanstackQueryImport.update({
-    id: '/_authenticated/demo/tanstack-query',
+    id: '/demo/tanstack-query',
     path: '/demo/tanstack-query',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedDemoStartServerFuncsRoute =
   AuthenticatedDemoStartServerFuncsImport.update({
-    id: '/_authenticated/demo/start/server-funcs',
+    id: '/demo/start/server-funcs',
     path: '/demo/start/server-funcs',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -48,33 +61,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated/demo/tanstack-query': {
       id: '/_authenticated/demo/tanstack-query'
       path: '/demo/tanstack-query'
       fullPath: '/demo/tanstack-query'
       preLoaderRoute: typeof AuthenticatedDemoTanstackQueryImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/demo/start/server-funcs': {
       id: '/_authenticated/demo/start/server-funcs'
       path: '/demo/start/server-funcs'
       fullPath: '/demo/start/server-funcs'
       preLoaderRoute: typeof AuthenticatedDemoStartServerFuncsImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthenticatedImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDemoTanstackQueryRoute: typeof AuthenticatedDemoTanstackQueryRoute
+  AuthenticatedDemoStartServerFuncsRoute: typeof AuthenticatedDemoStartServerFuncsRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDemoTanstackQueryRoute: AuthenticatedDemoTanstackQueryRoute,
+  AuthenticatedDemoStartServerFuncsRoute:
+    AuthenticatedDemoStartServerFuncsRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
+  '/login': typeof AuthLoginRoute
   '/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
+  '/login': typeof AuthLoginRoute
   '/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
@@ -82,18 +128,27 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
   '/_authenticated/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/_authenticated/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/tanstack-query' | '/demo/start/server-funcs'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/demo/tanstack-query'
+    | '/demo/start/server-funcs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/tanstack-query' | '/demo/start/server-funcs'
+  to: '/' | '' | '/login' | '/demo/tanstack-query' | '/demo/start/server-funcs'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/_auth/login'
     | '/_authenticated/demo/tanstack-query'
     | '/_authenticated/demo/start/server-funcs'
   fileRoutesById: FileRoutesById
@@ -101,15 +156,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedDemoTanstackQueryRoute: typeof AuthenticatedDemoTanstackQueryRoute
-  AuthenticatedDemoStartServerFuncsRoute: typeof AuthenticatedDemoStartServerFuncsRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AuthLoginRoute: typeof AuthLoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedDemoTanstackQueryRoute: AuthenticatedDemoTanstackQueryRoute,
-  AuthenticatedDemoStartServerFuncsRoute:
-    AuthenticatedDemoStartServerFuncsRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AuthLoginRoute: AuthLoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -123,18 +177,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_authenticated/demo/tanstack-query",
-        "/_authenticated/demo/start/server-funcs"
+        "/_authenticated",
+        "/_auth/login"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/demo/tanstack-query",
+        "/_authenticated/demo/start/server-funcs"
+      ]
+    },
+    "/_auth/login": {
+      "filePath": "_auth/login.tsx"
+    },
     "/_authenticated/demo/tanstack-query": {
-      "filePath": "_authenticated/demo.tanstack-query.tsx"
+      "filePath": "_authenticated/demo.tanstack-query.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/demo/start/server-funcs": {
-      "filePath": "_authenticated/demo.start.server-funcs.tsx"
+      "filePath": "_authenticated/demo.start.server-funcs.tsx",
+      "parent": "/_authenticated"
     }
   }
 }

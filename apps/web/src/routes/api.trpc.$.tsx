@@ -1,5 +1,7 @@
+import { authClient } from "@/auth-client";
 import { trpcRouter } from "@/integrations/trpc/router";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { getHeaders } from "@tanstack/react-start/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 function handler({ request }: { request: Request }) {
@@ -7,6 +9,17 @@ function handler({ request }: { request: Request }) {
     req: request,
     router: trpcRouter,
     endpoint: "/api/trpc",
+    createContext: async () => {
+      const { data: session } = await authClient.getSession({
+        fetchOptions: {
+          headers: getHeaders() as HeadersInit,
+        },
+      });
+
+      return {
+        currentUser: session?.user,
+      };
+    },
   });
 }
 

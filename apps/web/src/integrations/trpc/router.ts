@@ -1,19 +1,26 @@
 import { addTaskSchema, bootstrapUseCases } from "@tasks/core";
 import type { TRPCRouterRecord } from "@trpc/server";
+import { TRPCError } from "@trpc/server"; // Import TRPCError
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "./init";
 
 const useCases = bootstrapUseCases({ uowKind: "in-memory" });
 
 const tasksRouter = {
-  list: privateProcedure.query(async ({ ctx: { currentUser } }) =>
-    useCases.listMyTasks({ currentUser }),
-  ),
-  add: privateProcedure
-    .input(addTaskSchema)
-    .mutation(
-      async ({ ctx: { currentUser }, input }) => await useCases.addTask({ currentUser, input }),
-    ),
+  list: privateProcedure.query(async ({ ctx }) => {
+    if (!ctx.currentUser) {
+      console.error("currentUser is not available in tasksRouter.list procedure.");
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return useCases.listMyTasks({ currentUser: ctx.currentUser });
+  }),
+  add: privateProcedure.input(addTaskSchema).mutation(async ({ ctx, input }) => {
+    if (!ctx.currentUser) {
+      console.error("currentUser is not available in tasksRouter.add procedure.");
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return useCases.addTask({ currentUser: ctx.currentUser, input });
+  }),
 } satisfies TRPCRouterRecord;
 
 const peopleRouter = {

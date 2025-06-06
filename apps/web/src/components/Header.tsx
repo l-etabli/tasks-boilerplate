@@ -1,5 +1,7 @@
 import { authClient } from "@/auth-client";
 import { Link } from "@tanstack/react-router";
+import { LoggedInAs } from "./LoggedInAs";
+import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
   const { data: session } = authClient.useSession();
@@ -19,23 +21,9 @@ export default function Header() {
         </div>
 
         <div className="px-2">
-          {session && (
-            <>
-              <button className="font-bold" type="button" onClick={() => authClient.signOut()}>
-                Logout
-              </button>{" "}
-              <span className="text-sm">(Logged in as {session.user.name})</span>
-            </>
-          )}
-          {!session && (
-            <button
-              className="font-bold"
-              type={"button"}
-              onClick={() => authClient.signIn.social({ provider: "google" })}
-            >
-              Login with Google
-            </button>
-          )}
+          {session && <LoggedInAs user={session.user} />}
+          {session && <LogoutButton />}
+          {!session && <Link to="/login">Login</Link>}
         </div>
       </nav>
     </header>
