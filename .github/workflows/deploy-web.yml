@@ -7,6 +7,8 @@ on:
         required: true
       NETLIFY_AUTH_TOKEN:
         required: true
+      DATABASE_URL:
+        required: true
 
 jobs:
   deploy:
@@ -20,7 +22,7 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       BUILD_OUTPUT_DIR: apps/web/dist
 
-      NODE_VERSION: 20
+      NODE_VERSION: 22
 
     steps:
       - name: Check out repository
@@ -37,14 +39,22 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
 
+      - name: Install Netlify CLI
+        run: pnpm add -g netlify-cli@20.1.0
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build Web App
         run: pnpm build --filter=@tasks/web -- --preset netlify
 
-      - name: Install Netlify CLI
-        run: pnpm add -g netlify-cli
+      - name: Run DB migrations
+        run: DATABASE_URL=${{ secrets.DATABASE_URL }} pnpm --dir apps/web migrate:latest
 
       - name: Deploy to Netlify
         run: netlify deploy --filter=@tasks/web --dir=${{ env.BUILD_OUTPUT_DIR }} --prod
+
+        env:
+          NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ env.NETLIFY_AUTH_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
