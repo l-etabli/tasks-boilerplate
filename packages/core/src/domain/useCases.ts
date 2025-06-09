@@ -6,12 +6,12 @@ const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser
 
 export const addTask = createAuthTransacUseCase
   .withInput<AddTaskInput>()
-  .build(({ input, currentUser, uow }) =>
-    uow.taskRepository.save({
+  .build(({ input, currentUser, uow }) => {
+    return uow.taskRepository.save({
       ...input,
       owner: currentUser,
-    }),
-  );
+    });
+  });
 
 export const listMyTasks = createAuthTransacUseCase.build(({ currentUser, uow }) =>
   uow.taskRepository.getAllForUser(currentUser.id),

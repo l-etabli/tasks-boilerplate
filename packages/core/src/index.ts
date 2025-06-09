@@ -1,13 +1,27 @@
+import type { Kysely } from "kysely";
+import type { Db } from "./adapters/pg/database.js";
+import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
 import { createWithInMemoryUnitOfWork } from "./adapters/withInMemoryUow.js";
 import { addTask, listMyTasks } from "./domain/useCases.js";
 
 export * from "./domain/entities.js";
 
-export const bootstrapUseCases = (config: { uowKind: "in-memory" }) => {
-  if (config.uowKind !== "in-memory") throw new Error(`Unsupported Uow kind : ${config.uowKind}`);
+type UowConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 
+export const bootstrapUseCases = (config: UowConfig) => {
   const uowSetup = {
-    withUow: createWithInMemoryUnitOfWork(),
+    withUow: (() => {
+      switch (config.kind) {
+        case "inMemory":
+          return createWithInMemoryUnitOfWork();
+        case "pg":
+          return createWithPgUnitOfWork(config.db);
+        default: {
+          config satisfies never;
+          throw new Error(`Unsupported uow config : ${JSON.stringify(config)}`);
+        }
+      }
+    })(),
   };
 
   return {

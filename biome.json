@@ -38,6 +38,6 @@
       "**/.turbo",
       "**/routeTree.gen.ts"
     ],
-    "include": ["apps/*/src/**/*", "packages/*/src/**/*"]
+    "include": ["apps/*/src/**/*", "packages/*/src/**/*", "apps/web/.config"]
   }
 }
