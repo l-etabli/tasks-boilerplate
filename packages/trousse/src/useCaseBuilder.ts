@@ -25,7 +25,7 @@ type UseCaseBuilder<Output, Input, Deps, Uow, CurrentUser> = {
     cb: Cb,
   ) => (
     setupParams: WhenNotVoid<"deps", Deps> &
-      WhenNotVoid<"withUow", Uow, <T>(uowCb: (uow: Uow) => T) => T>,
+      WhenNotVoid<"withUow", Uow, <T>(uowCb: (uow: Uow) => Promise<T>) => Promise<T>>,
   ) => (
     runtimeParams: WhenNotVoid<"input", Input> & WhenNotVoid<"currentUser", CurrentUser>,
   ) => ReturnType<Cb>;

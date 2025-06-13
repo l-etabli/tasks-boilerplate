@@ -1,6 +1,5 @@
 import type { Kysely } from "kysely";
 import { jsonBuildObject } from "kysely/helpers/postgres";
-import type { Task } from "../../domain/entities.js";
 import type { TaskRepository, WithUow } from "../../domain/ports.js";
 import type { Db } from "./database.js";
 
@@ -31,10 +30,6 @@ export const createPgTaskRepositiory = (trx: Kysely<Db>) =>
         .execute();
     },
   }) satisfies TaskRepository;
-
-// type InMemoryUow = {
-//   taskRepositiory: InMemoryTaskRepository;
-// };
 
 export const createWithPgUnitOfWork = (db: Kysely<Db>): WithUow => {
   return (cb) => {
