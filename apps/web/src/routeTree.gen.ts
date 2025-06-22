@@ -13,8 +13,11 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthenticatedSubscriptionRequiredImport } from './routes/_authenticated/subscription-required'
+import { Route as AuthenticatedSubscribedImport } from './routes/_authenticated/_subscribed'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AuthenticatedDemoTanstackQueryImport } from './routes/_authenticated/demo.tanstack-query'
+import { Route as AuthenticatedSubscribedPremiumFeatureImport } from './routes/_authenticated/_subscribed/premium-feature'
 import { Route as AuthenticatedDemoStartServerFuncsImport } from './routes/_authenticated/demo.start.server-funcs'
 
 // Create/Update Routes
@@ -30,6 +33,18 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthenticatedSubscriptionRequiredRoute =
+  AuthenticatedSubscriptionRequiredImport.update({
+    id: '/subscription-required',
+    path: '/subscription-required',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedSubscribedRoute = AuthenticatedSubscribedImport.update({
+  id: '/_subscribed',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/_auth/login',
   path: '/login',
@@ -41,6 +56,13 @@ const AuthenticatedDemoTanstackQueryRoute =
     id: '/demo/tanstack-query',
     path: '/demo/tanstack-query',
     getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedSubscribedPremiumFeatureRoute =
+  AuthenticatedSubscribedPremiumFeatureImport.update({
+    id: '/premium-feature',
+    path: '/premium-feature',
+    getParentRoute: () => AuthenticatedSubscribedRoute,
   } as any)
 
 const AuthenticatedDemoStartServerFuncsRoute =
@@ -75,6 +97,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/_subscribed': {
+      id: '/_authenticated/_subscribed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedSubscribedImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/subscription-required': {
+      id: '/_authenticated/subscription-required'
+      path: '/subscription-required'
+      fullPath: '/subscription-required'
+      preLoaderRoute: typeof AuthenticatedSubscriptionRequiredImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/_subscribed/premium-feature': {
+      id: '/_authenticated/_subscribed/premium-feature'
+      path: '/premium-feature'
+      fullPath: '/premium-feature'
+      preLoaderRoute: typeof AuthenticatedSubscribedPremiumFeatureImport
+      parentRoute: typeof AuthenticatedSubscribedImport
+    }
     '/_authenticated/demo/tanstack-query': {
       id: '/_authenticated/demo/tanstack-query'
       path: '/demo/tanstack-query'
@@ -94,12 +137,32 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface AuthenticatedSubscribedRouteChildren {
+  AuthenticatedSubscribedPremiumFeatureRoute: typeof AuthenticatedSubscribedPremiumFeatureRoute
+}
+
+const AuthenticatedSubscribedRouteChildren: AuthenticatedSubscribedRouteChildren =
+  {
+    AuthenticatedSubscribedPremiumFeatureRoute:
+      AuthenticatedSubscribedPremiumFeatureRoute,
+  }
+
+const AuthenticatedSubscribedRouteWithChildren =
+  AuthenticatedSubscribedRoute._addFileChildren(
+    AuthenticatedSubscribedRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
+  AuthenticatedSubscribedRoute: typeof AuthenticatedSubscribedRouteWithChildren
+  AuthenticatedSubscriptionRequiredRoute: typeof AuthenticatedSubscriptionRequiredRoute
   AuthenticatedDemoTanstackQueryRoute: typeof AuthenticatedDemoTanstackQueryRoute
   AuthenticatedDemoStartServerFuncsRoute: typeof AuthenticatedDemoStartServerFuncsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedSubscribedRoute: AuthenticatedSubscribedRouteWithChildren,
+  AuthenticatedSubscriptionRequiredRoute:
+    AuthenticatedSubscriptionRequiredRoute,
   AuthenticatedDemoTanstackQueryRoute: AuthenticatedDemoTanstackQueryRoute,
   AuthenticatedDemoStartServerFuncsRoute:
     AuthenticatedDemoStartServerFuncsRoute,
@@ -111,16 +174,20 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
+  '': typeof AuthenticatedSubscribedRouteWithChildren
   '/login': typeof AuthLoginRoute
+  '/subscription-required': typeof AuthenticatedSubscriptionRequiredRoute
+  '/premium-feature': typeof AuthenticatedSubscribedPremiumFeatureRoute
   '/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
+  '': typeof AuthenticatedSubscribedRouteWithChildren
   '/login': typeof AuthLoginRoute
+  '/subscription-required': typeof AuthenticatedSubscriptionRequiredRoute
+  '/premium-feature': typeof AuthenticatedSubscribedPremiumFeatureRoute
   '/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
@@ -130,6 +197,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
+  '/_authenticated/_subscribed': typeof AuthenticatedSubscribedRouteWithChildren
+  '/_authenticated/subscription-required': typeof AuthenticatedSubscriptionRequiredRoute
+  '/_authenticated/_subscribed/premium-feature': typeof AuthenticatedSubscribedPremiumFeatureRoute
   '/_authenticated/demo/tanstack-query': typeof AuthenticatedDemoTanstackQueryRoute
   '/_authenticated/demo/start/server-funcs': typeof AuthenticatedDemoStartServerFuncsRoute
 }
@@ -140,15 +210,27 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/login'
+    | '/subscription-required'
+    | '/premium-feature'
     | '/demo/tanstack-query'
     | '/demo/start/server-funcs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/demo/tanstack-query' | '/demo/start/server-funcs'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/subscription-required'
+    | '/premium-feature'
+    | '/demo/tanstack-query'
+    | '/demo/start/server-funcs'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_auth/login'
+    | '/_authenticated/_subscribed'
+    | '/_authenticated/subscription-required'
+    | '/_authenticated/_subscribed/premium-feature'
     | '/_authenticated/demo/tanstack-query'
     | '/_authenticated/demo/start/server-funcs'
   fileRoutesById: FileRoutesById
@@ -187,12 +269,29 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/_subscribed",
+        "/_authenticated/subscription-required",
         "/_authenticated/demo/tanstack-query",
         "/_authenticated/demo/start/server-funcs"
       ]
     },
     "/_auth/login": {
       "filePath": "_auth/login.tsx"
+    },
+    "/_authenticated/_subscribed": {
+      "filePath": "_authenticated/_subscribed.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/_subscribed/premium-feature"
+      ]
+    },
+    "/_authenticated/subscription-required": {
+      "filePath": "_authenticated/subscription-required.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/_subscribed/premium-feature": {
+      "filePath": "_authenticated/_subscribed/premium-feature.tsx",
+      "parent": "/_authenticated/_subscribed"
     },
     "/_authenticated/demo/tanstack-query": {
       "filePath": "_authenticated/demo.tanstack-query.tsx",

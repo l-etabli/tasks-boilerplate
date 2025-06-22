@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "check:fix": "pnpm -w check:fix",
     "fullcheck": "pnpm -w fullcheck",
-    "migrate:latest": "dotenv -e .env.local -- kysely migrate:latest"
+    "db:up": "dotenv -e .env.local -- kysely migrate:latest",
+    "db:create": "kysely migrate:make"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
