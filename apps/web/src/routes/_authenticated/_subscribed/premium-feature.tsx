@@ -5,7 +5,7 @@ export const Route = createFileRoute("/_authenticated/_subscribed/premium-featur
 });
 
 function PremiumFeature() {
-  const { session } = Route.useRouteContext();
+  const { user } = Route.useRouteContext();
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -32,7 +32,7 @@ function PremiumFeature() {
                 <div className="ml-3">
                   <p className="text-sm font-medium text-green-800">Subscription Active</p>
                   <p className="text-sm text-green-700">
-                    Welcome, {session.user.name || session.user.email}! Your subscription is active.
+                    Welcome, {user.name || user.email}! Your subscription is active.
                   </p>
                 </div>
               </div>

@@ -2,9 +2,9 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/_subscribed")({
   beforeLoad: async ({ location, context }) => {
-    const { session } = context;
+    const { user } = context;
 
-    if (!session.user.activePlan) {
+    if (!user.activePlan) {
       throw redirect({
         to: "/subscription-required",
         search: {
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/_subscribed")({
       });
     }
 
-    return { session };
+    return { user };
   },
   component: SubscriptionLayout,
 });

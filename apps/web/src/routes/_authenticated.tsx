@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated")({
     }
 
     // Optionally, you can return data to be used in the component
-    return { session };
+    return { user: session.user };
   },
   component: AuthenticatedLayout,
 });
