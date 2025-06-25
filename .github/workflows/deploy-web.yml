@@ -49,7 +49,7 @@ jobs:
         run: pnpm build --filter=@tasks/web -- --preset netlify
 
       - name: Run DB migrations
-        run: DATABASE_URL=${{ secrets.DATABASE_URL }} pnpm --dir apps/web migrate:latest
+        run: DATABASE_URL=${{ secrets.DATABASE_URL }} pnpm db:up
 
       - name: Deploy to Netlify
         run: netlify deploy --filter=@tasks/web --dir=${{ env.BUILD_OUTPUT_DIR }} --prod

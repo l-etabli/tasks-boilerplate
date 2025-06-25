@@ -13,6 +13,7 @@
     "typecheck": "turbo typecheck",
     "fullcheck": "turbo check:fix typecheck test",
     "web": "pnpm --dir apps/web",
+    "core": "pnpm --dir packages/core",
     "db:up": "pnpm --dir packages/db db:up",
     "db:create": "pnpm --dir packages/db db:create"
   },

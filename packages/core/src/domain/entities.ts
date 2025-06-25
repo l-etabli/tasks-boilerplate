@@ -3,6 +3,8 @@ import { z } from "zod";
 export type User = {
   id: string;
   email: string;
+  activePlan: "pro" | null;
+  activeSubscriptionId: string | null;
 };
 
 export type Task = {

@@ -16,6 +16,8 @@ export const createPgTaskRepositiory = (trx: Kysely<Db>) =>
           jsonBuildObject({
             id: ref("user.id"),
             email: ref("user.email"),
+            activePlan: ref("user.activePlan"),
+            activeSubscriptionId: ref("user.activeSubscriptionId"),
           }).as("owner"),
         ])
         .execute(),

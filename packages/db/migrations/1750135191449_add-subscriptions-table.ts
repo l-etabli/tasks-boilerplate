@@ -8,10 +8,9 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("id", "uuid", (col) => col.primaryKey())
     .addColumn("userId", "text", (col) => col.notNull().references("user.id"))
     .addColumn("plan", sql`user_plan`, (col) => col.notNull())
-    .addColumn("isTrial", "boolean", (col) => col.notNull())
-    .addColumn("subscribedAt", "timestamptz", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
     .addColumn("expiresAt", "timestamptz", (col) => col.notNull())
-    .addColumn("canceledAt", "timestamptz")
+    .addColumn("isTrial", "boolean", (col) => col.notNull())
     .execute();
 
   await db.schema

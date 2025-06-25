@@ -1,11 +1,9 @@
+import type { User } from "@tasks/core";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 
 type Context = {
-  currentUser?: {
-    id: string;
-    email: string;
-  };
+  currentUser?: User;
 };
 
 const t = initTRPC.context<Context>().create({
