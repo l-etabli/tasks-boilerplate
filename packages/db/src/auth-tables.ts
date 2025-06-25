@@ -1,6 +1,6 @@
 import type { ColumnType } from "kysely";
 
-export type AuthTables = {
+export type AuthDatabase = {
   account: Account;
   session: Session;
   user: User;

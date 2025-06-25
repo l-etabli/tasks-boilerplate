@@ -1,6 +1,6 @@
 import { env } from "@/env";
+import { pgPool } from "@tasks/db";
 import { betterAuth } from "better-auth";
-import { pgPool } from "./init-db";
 
 export const auth = betterAuth({
   user: {

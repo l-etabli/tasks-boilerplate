@@ -8,6 +8,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
+        "@tasks/db": "workspace:*",
         "@tasks/trousse": "workspace:*",
         "kysely": "^0.28.2",
         "pg": "^8.16.0",

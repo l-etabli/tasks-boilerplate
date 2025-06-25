@@ -57,4 +57,4 @@ export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable("account").ifExists().execute();
   await db.schema.dropTable("session").ifExists().execute();
   await db.schema.dropTable("user").ifExists().execute();
-}
+} 

@@ -1,11 +1,3 @@
-import type { AuthTables } from "./auth-tables.js";
+import type { Db } from "@tasks/db";
 
-export type Db = AuthTables & {
-  tasks: TasksTable;
-};
-
-type TasksTable = {
-  id: string;
-  description: string;
-  ownerId: string;
-};
+export type { Db };
