@@ -12,7 +12,9 @@
     "check:fix": "biome check --write .",
     "typecheck": "turbo typecheck",
     "fullcheck": "turbo check:fix typecheck test",
-    "web": "pnpm --dir apps/web"
+    "web": "pnpm --dir apps/web",
+    "db:up": "pnpm --dir packages/db db:up",
+    "db:create": "pnpm --dir packages/db db:create"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

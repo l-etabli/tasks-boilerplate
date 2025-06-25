@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "db:up": "kysely migrate:latest",
-    "db:create": "kysely migrate:make"
+    "db:up": "dotenv -e .env -- kysely migrate:latest",
+    "db:create": "dotenv -e .env -- kysely migrate:make"
   },
   "dependencies": {
     "kysely": "^0.28.2",
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.15.4",
+    "dotenv-cli": "^8.0.0",
     "kysely-ctl": "^0.12.2",
     "typescript": "^5.7.3"
   }
