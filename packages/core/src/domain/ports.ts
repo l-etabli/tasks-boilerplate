@@ -9,4 +9,4 @@ export type Uow = {
   taskRepository: TaskRepository;
 };
 
-export type WithUow = <T>(cb: (uow: Uow) => T) => T;
+export type WithUow = <T>(cb: (uow: Uow) => Promise<T>) => Promise<T>;

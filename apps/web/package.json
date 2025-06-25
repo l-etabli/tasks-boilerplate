@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "check:fix": "pnpm -w check:fix",
     "fullcheck": "pnpm -w fullcheck",
-    "migrate:latest": "dotenv -e .env.local -- kysely migrate:latest"
+    "db:up": "dotenv -e .env.local -- pnpm --dir ../../packages/db db:up",
+    "db:create": "pnpm --dir ../../packages/db db:create"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -30,6 +31,7 @@
     "@tanstack/router-plugin": "^1.114.3",
     "@tanstack/store": "^0.7.0",
     "@tasks/core": "workspace:*",
+    "@tasks/db": "workspace:*",
     "@trpc/client": "^11.0.0",
     "@trpc/server": "^11.0.0",
     "@trpc/tanstack-react-query": "^11.0.0",

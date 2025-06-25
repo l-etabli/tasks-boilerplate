@@ -1,10 +1,11 @@
 import { addTaskSchema, bootstrapUseCases } from "@tasks/core";
+import { db } from "@tasks/db";
 import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server"; // Import TRPCError
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "./init";
 
-const useCases = bootstrapUseCases({ uowKind: "in-memory" });
+const useCases = bootstrapUseCases({ kind: "pg", db });
 
 const tasksRouter = {
   list: privateProcedure.query(async ({ ctx }) => {
