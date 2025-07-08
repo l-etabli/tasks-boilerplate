@@ -1,3 +1,4 @@
+import "../server-instrument";
 import { authClient } from "@/auth-client";
 import { trpcRouter } from "@/integrations/trpc/router";
 import { createAPIFileRoute } from "@tanstack/react-start/api";

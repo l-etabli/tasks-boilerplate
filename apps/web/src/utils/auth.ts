@@ -15,7 +15,7 @@ export const auth = betterAuth({
       },
     },
   },
-  database: pgPool,
+  database: pgPool(),
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,

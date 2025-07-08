@@ -5,7 +5,7 @@ import { TRPCError } from "@trpc/server"; // Import TRPCError
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "./init";
 
-const useCases = bootstrapUseCases({ kind: "pg", db });
+const useCases = bootstrapUseCases({ kind: "pg", db: db() });
 
 const tasksRouter = {
   list: privateProcedure.query(async ({ ctx }) => {
