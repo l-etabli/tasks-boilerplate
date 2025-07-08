@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import {
   HeadContent,
   Link,
@@ -46,15 +47,30 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
 
-  component: () => (
-    <RootDocument>
-      <Header />
+  component: Sentry.withErrorBoundary(
+    () => (
+      <RootDocument>
+        <Header />
 
-      <Outlet />
-      <TanStackRouterDevtools />
+        <Outlet />
+        <TanStackRouterDevtools />
 
-      <TanstackQueryLayout />
-    </RootDocument>
+        <TanstackQueryLayout />
+      </RootDocument>
+    ),
+    {
+      fallback: ({ error }) => (
+        <div className="p-8 text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
+          <p className="text-gray-600 mb-4">
+            {error instanceof Error ? error.message : "An unknown error occurred"}
+          </p>
+          <Link to="/" className="text-blue-500 hover:underline">
+            Go back to Home
+          </Link>
+        </div>
+      ),
+    },
   ),
 
   notFoundComponent: () => (
