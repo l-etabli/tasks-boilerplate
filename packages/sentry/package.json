@@ -1,0 +1,28 @@
+{
+  "name": "@l-etabli/sentry",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./client": {
+      "import": "./dist/client.js",
+      "types": "./dist/client.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@sentry/node": "^9.35.0",
+    "@sentry/profiling-node": "^9.35.0",
+    "@sentry/react": "^9.35.0",
+    "@sentry/tracing": "^7.120.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

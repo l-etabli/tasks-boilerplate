@@ -1,3 +1,4 @@
+import "../instrument-server";
 import { auth } from "@/utils/auth";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 

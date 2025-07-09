@@ -1,4 +1,7 @@
-import "./instrument";
+import { initClientSentry } from "@l-etabli/sentry/client";
+import { env } from "./env";
+
+initClientSentry(env.VITE_ENVIRONMENT);
 import { StartClient } from "@tanstack/react-start";
 import { hydrateRoot } from "react-dom/client";
 
