@@ -3,7 +3,7 @@ import { jsonBuildObject } from "kysely/helpers/postgres";
 import type { TaskRepository, WithUow } from "../../domain/ports.js";
 import type { Db } from "./database.js";
 
-export const createPgTaskRepositiory = (trx: Kysely<Db>) =>
+export const createPgTaskRepository = (trx: Kysely<Db>) =>
   ({
     getAllForUser: async (userId) =>
       trx
@@ -36,7 +36,7 @@ export const createPgTaskRepositiory = (trx: Kysely<Db>) =>
 export const createWithPgUnitOfWork = (db: Kysely<Db>): WithUow => {
   return (cb) => {
     return db.transaction().execute((trx) => {
-      const uow = { taskRepository: createPgTaskRepositiory(trx) };
+      const uow = { taskRepository: createPgTaskRepository(trx) };
       return cb(uow);
     });
   };

@@ -1,8 +1,8 @@
 import { defineConfig } from 'kysely-ctl'
-import { db } from './src/connection.js'
+import { getKyselyDb } from './src/connection.js'
 
 export default defineConfig({
-  kysely: db(),
+  kysely: getKyselyDb(),
   migrations: {
     migrationFolder: './migrations'
   }
