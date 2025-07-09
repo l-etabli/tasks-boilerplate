@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/node";
+import { Sentry } from "@l-etabli/sentry/server";
 import type { User } from "@tasks/core";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";

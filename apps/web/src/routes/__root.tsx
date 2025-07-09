@@ -1,4 +1,4 @@
-import * as Sentry from "@sentry/react";
+import { Sentry } from "@l-etabli/sentry/client";
 import {
   HeadContent,
   Link,
@@ -59,7 +59,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       </RootDocument>
     ),
     {
-      fallback: ({ error }) => (
+      fallback: ({ error }: { error: unknown }) => (
         <div className="p-8 text-center">
           <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
           <p className="text-gray-600 mb-4">

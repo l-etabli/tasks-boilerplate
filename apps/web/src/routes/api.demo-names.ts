@@ -1,3 +1,4 @@
+import "../instrument-server";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 
 export const APIRoute = createAPIFileRoute("/api/demo-names")({

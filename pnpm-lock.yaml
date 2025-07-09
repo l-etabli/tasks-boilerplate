@@ -32,6 +32,9 @@ importers:
       '@ai-sdk/react':
         specifier: ^1.1.23
         version: 1.2.12(react@19.1.0)(zod@3.24.4)
+      '@l-etabli/sentry':
+        specifier: workspace:*
+        version: link:../../packages/sentry
       '@modelcontextprotocol/sdk':
         specifier: ^1.8.0
         version: 1.12.1
@@ -235,6 +238,25 @@ importers:
         version: 0.12.2(kysely@0.28.2)(magicast@0.3.5)
       typescript:
         specifier: ^5.7.3
+        version: 5.7.3
+
+  packages/sentry:
+    dependencies:
+      '@sentry/node':
+        specifier: ^9.35.0
+        version: 9.35.0
+      '@sentry/profiling-node':
+        specifier: ^9.35.0
+        version: 9.35.0
+      '@sentry/react':
+        specifier: ^9.35.0
+        version: 9.35.0(react@19.1.0)
+      '@sentry/tracing':
+        specifier: ^7.120.3
+        version: 7.120.3
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
         version: 5.7.3
 
   packages/trousse:
