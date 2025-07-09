@@ -1,5 +1,5 @@
-import { Sentry } from "@l-etabli/sentry/server";
 import type { User } from "@tasks/core";
+import { Sentry } from "@tasks/sentry/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 

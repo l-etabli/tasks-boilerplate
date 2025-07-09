@@ -46,7 +46,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Web App
-        run: pnpm build --filter=@tasks/web -- --preset netlify
+        run: pnpm build:prod --filter=@tasks/web
+        env:
+          VITE_ENVIRONMENT: production
 
       - name: Run DB migrations
         run: DATABASE_URL=${{ secrets.DATABASE_URL }} pnpm db:up

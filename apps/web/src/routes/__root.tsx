@@ -1,4 +1,3 @@
-import { Sentry } from "@l-etabli/sentry/client";
 import {
   HeadContent,
   Link,
@@ -7,6 +6,7 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Sentry } from "@tasks/sentry/client";
 
 import Header from "../components/Header";
 

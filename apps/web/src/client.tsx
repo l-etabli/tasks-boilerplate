@@ -1,4 +1,4 @@
-import { initClientSentry } from "@l-etabli/sentry/client";
+import { initClientSentry } from "@tasks/sentry/client";
 import { env } from "./env";
 
 initClientSentry(env.VITE_ENVIRONMENT);
