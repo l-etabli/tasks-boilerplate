@@ -1,27 +1,28 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
-import type { Db } from "./database.js";
+import type { Db } from "./db-schema/database.js";
 
-let _pgPool: Pool | null = null;
-let _db: Kysely<Db> | null = null;
+let pgPool: Pool | null = null;
+let db: Kysely<Db> | null = null;
 
-export const pgPool = () => {
-  if (!_pgPool) {
-    _pgPool = new Pool({
+export const createPgPool = () => {
+  if (!pgPool) {
+    pgPool = new Pool({
       connectionString: process.env.DATABASE_URL,
     });
   }
-  return _pgPool;
+  return pgPool;
 };
 
-export const db = () => {
-  if (!_db) {
+export const getKyselyDb = () => {
+  if (!db) {
     const dialect = new PostgresDialect({
-      pool: pgPool(),
+      pool: createPgPool(),
     });
-    _db = new Kysely<Db>({
+    db = new Kysely<Db>({
       dialect,
     });
   }
-  return _db;
+
+  return db;
 };

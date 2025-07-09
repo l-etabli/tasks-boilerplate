@@ -1,2 +1,2 @@
-export { pgPool, db } from "./connection.js";
-export type { Db } from "./database.js";
+export { createPgPool, getKyselyDb } from "./connection.js";
+export type { Db } from "./db-schema/database.js";
