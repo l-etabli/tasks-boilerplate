@@ -38,12 +38,9 @@ RUN pnpm build
 # Production stage
 FROM node:22-alpine AS production
 
-# Install pnpm
-RUN npm install -g pnpm@10.9.0
-
 WORKDIR /app
 
-# Copy built application from builder stage
+# Copy built application from builder stage (includes migrations)
 COPY --from=builder /app/apps/web/.output ./
 
 # Expose port

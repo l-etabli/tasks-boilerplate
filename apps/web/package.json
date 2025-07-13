@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vinxi dev",
     "start": "vinxi start",
-    "build": "vinxi build",
+    "build": "vinxi build && pnpm copy:migrations",
+    "copy:migrations": "mkdir -p .output/server/migrations && cp ../../packages/db/dist/src/migrations/*.js .output/server/migrations/ && cp ../../packages/db/dist/src/migrate.js .output/server/migrate.mjs && cp ../../packages/db/dist/src/connection.js .output/server/",
     "build:prod": "vinxi build --preset netlify",
     "serve": "vite preview",
     "test": "echo \"No tests\" #vitest run",
@@ -65,7 +66,6 @@
     "@vitejs/plugin-react": "^4.3.4",
     "dotenv-cli": "^8.0.0",
     "jsdom": "^26.0.0",
-    "kysely-ctl": "^0.12.2",
     "typescript": "^5.7.2",
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
