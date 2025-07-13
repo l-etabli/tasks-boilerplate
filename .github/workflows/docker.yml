@@ -45,16 +45,6 @@ jobs:
           type=ref,event=pr
           type=sha
 
-    - name: Build and push base image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./apps/web/Dockerfile
-        target: base
-        push: true
-        tags: ${{ steps.meta-base.outputs.tags }}
-        labels: ${{ steps.meta-base.outputs.labels }}
-
     - name: Build and push web image
       uses: docker/build-push-action@v5
       with:
