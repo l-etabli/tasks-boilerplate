@@ -7,6 +7,8 @@ import { Sentry } from "@tasks/sentry/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 function handler({ request }: { request: Request }) {
+  console.info(`\n----- tRPC route called : ${request.method} ${new URL(request.url).pathname}`);
+  console.info({ body: request.body }, "\n----- \n");
   return fetchRequestHandler({
     req: request,
     router: trpcRouter,

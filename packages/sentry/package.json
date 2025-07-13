@@ -14,8 +14,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:prod": "pnpm build",
-    "dev": "tsc --watch"
+    "build:prod": "pnpm build"
   },
   "dependencies": {
     "@sentry/node": "^9.35.0",

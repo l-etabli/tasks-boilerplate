@@ -4,6 +4,6 @@ import { getKyselyDb } from './src/connection.js'
 export default defineConfig({
   kysely: getKyselyDb(),
   migrations: {
-    migrationFolder: './migrations'
+    migrationFolder: './src/migrations'
   }
 })

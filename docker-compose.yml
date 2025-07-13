@@ -1,4 +1,19 @@
 services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    # For production, use versioned image:
+    # image: ghcr.io/jeromeburkard/l-etabli-tasks-web:v1.2.3
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   postgres:
     image: postgres:16-alpine
     environment:
@@ -14,32 +29,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-  migrate:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-      target: base
-    env_file:
-      - .env
-    command: ["pnpm", "db:up"]
-    depends_on:
-      postgres:
-        condition: service_healthy
-    profiles: ["migration"]
-
-  web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-    env_file:
-      - .env
-    ports:
-      - "3000:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
 
 volumes:
   postgres_data:
