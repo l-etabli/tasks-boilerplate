@@ -24,6 +24,11 @@ export async function runMigrations() {
 
     const { error, results } = await migrator.migrateToLatest();
 
+    if (results?.length === 0) {
+      console.info("No migrations to run.");
+      process.exit(0);
+    }
+
     for (const it of results ?? []) {
       if (it.status === "Success") {
         console.info(`✅ Migration "${it.migrationName}" was executed successfully`);
@@ -46,9 +51,4 @@ export async function runMigrations() {
   } finally {
     await db.destroy();
   }
-}
-
-// Auto-run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  runMigrations();
 }
