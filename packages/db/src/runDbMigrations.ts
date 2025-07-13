@@ -7,7 +7,7 @@ import { getKyselyDb } from "./connection.js";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-export async function runMigrations() {
+export async function runDbMigrations() {
   console.info("Starting database migrations...");
 
   const db = getKyselyDb();
@@ -51,4 +51,14 @@ export async function runMigrations() {
   } finally {
     await db.destroy();
   }
+}
+
+const isFileExecutedDirectly = import.meta.url === `file://${process.argv[1]}`;
+console.info("runDbMigrations.js was run : ", {
+  "import.meta.url": import.meta.url,
+  isFileExecutedDirectly,
+});
+
+if (import.meta.url.includes(".output") && isFileExecutedDirectly) {
+  runDbMigrations();
 }
