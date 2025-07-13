@@ -1,5 +1,5 @@
+import { auth } from "@/utils/auth";
 import "../instrument-server";
-import { authClient } from "@/auth-client";
 import { trpcRouter } from "@/integrations/trpc/router";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { getHeaders } from "@tanstack/react-start/server";
@@ -17,11 +17,11 @@ function handler({ request }: { request: Request }) {
       return await Sentry.startSpan(
         { op: "trpc.createContext", name: "Create tRPC Context" },
         async () => {
-          const { data: session } = await authClient.getSession({
-            fetchOptions: {
-              headers: getHeaders() as HeadersInit,
-            },
+          const session = await auth.api.getSession({
+            headers: getHeaders() as any,
           });
+
+          console.info("session.email : ", session?.user?.email);
 
           return {
             currentUser: session?.user,
