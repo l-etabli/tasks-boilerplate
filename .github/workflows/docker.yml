@@ -54,3 +54,15 @@ jobs:
         push: true
         tags: ${{ steps.meta-web.outputs.tags }}
         labels: ${{ steps.meta-web.outputs.labels }}
+
+    - name: Trigger Coolify deployment
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "GitHub SHA: ${{ github.sha }}"
+        echo "Generated tags: ${{ steps.meta-web.outputs.tags }}"
+        echo "Repository: ${{ github.repository }}"
+        IMAGE_TAG="ghcr.io/${{ github.repository }}-web:sha-${{ github.sha }}"
+        echo "Using image tag: ${IMAGE_TAG}"
+        curl -X GET "${{ secrets.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}&tag=${IMAGE_TAG}" \
+          -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+          -H "Content-Type: application/json"
