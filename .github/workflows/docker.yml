@@ -58,6 +58,6 @@ jobs:
     - name: Trigger Coolify deployment
       if: github.ref == 'refs/heads/main'
       run: |
-        curl -X GET "${{ secrets.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}" \
+        curl -X GET "${{ vars.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}" \
           -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
           -H "Content-Type: application/json"

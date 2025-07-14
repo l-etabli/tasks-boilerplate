@@ -38,6 +38,8 @@ RUN pnpm build
 # Production stage
 FROM node:22-alpine AS production
 
+RUN apk add --no-cache curl
+
 WORKDIR /app
 
 # Copy built application from builder stage (includes migrations)
