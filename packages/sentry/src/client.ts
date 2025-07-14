@@ -1,7 +1,8 @@
 import * as Sentry from "@sentry/react";
-import { SENTRY_DSN } from "./sentry.helpers.js";
+import { type Environment, SENTRY_DSN, environments } from "./sentry.helpers.js";
 
-export function initClientSentry(environment: string) {
+export function initClientSentry(environment: Environment) {
+  console.info("initClientSentry, environment : ", environment);
   Sentry.init({
     dsn: SENTRY_DSN,
     integrations: [Sentry.replayIntegration()],
@@ -12,4 +13,5 @@ export function initClientSentry(environment: string) {
   });
 }
 
-export { Sentry };
+export type { Environment };
+export { Sentry, environments };

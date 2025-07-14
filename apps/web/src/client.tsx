@@ -1,7 +1,21 @@
-import { initClientSentry } from "@tasks/sentry/client";
-import { env } from "./env";
+import { type Environment, initClientSentry } from "@tasks/sentry/client";
 
-initClientSentry(env.VITE_ENVIRONMENT);
+const getSentryEnvironment = (): Environment => {
+  const { hostname } = window.location;
+
+  switch (true) {
+    case hostname.includes("localhost"):
+      return "local";
+    case hostname.includes("staging"):
+      return "staging";
+    case hostname.includes("dev"):
+      return "dev";
+    default:
+      return "production";
+  }
+};
+
+initClientSentry(getSentryEnvironment());
 import { StartClient } from "@tanstack/react-start";
 import { hydrateRoot } from "react-dom/client";
 

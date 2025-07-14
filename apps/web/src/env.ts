@@ -1,4 +1,5 @@
 import { createEnv } from "@t3-oss/env-core";
+import { environments } from "@tasks/sentry/server";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -7,6 +8,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    ENVIRONMENT: z.enum(environments).default("local"),
   },
 
   /**
@@ -17,7 +19,6 @@ export const env = createEnv({
 
   client: {
     VITE_APP_TITLE: z.string().min(1).optional(),
-    VITE_ENVIRONMENT: z.enum(["local", "staging", "production"]).default("local"),
   },
 
   /**
