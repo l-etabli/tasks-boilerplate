@@ -53,12 +53,13 @@ export async function runDbMigrations() {
   }
 }
 
+const isBuiltFile = import.meta.url === "file:///app/server/runDbMigrations.mjs";
 const isFileExecutedDirectly = import.meta.url === `file://${process.argv[1]}`;
 console.info("runDbMigrations.js was run : ", {
   "import.meta.url": import.meta.url,
   isFileExecutedDirectly,
 });
 
-if (import.meta.url.includes(".output") && isFileExecutedDirectly) {
+if (isBuiltFile && isFileExecutedDirectly) {
   runDbMigrations();
 }
