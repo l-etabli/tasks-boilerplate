@@ -15,12 +15,12 @@ export const createTRPCRouter = t.router;
 
 export const publicProcedure = t.procedure.use(({ ctx, next, path, type }) => {
   const procedureName = `${type}.${path}`;
-  return Sentry.startSpan({ op: "trpc.procedure", name: procedureName }, () => next({ ctx }));
+  return Sentry.startSpan({ op: "trpc.publicProcedure", name: procedureName }, () => next({ ctx }));
 });
 
 export const privateProcedure = t.procedure.use(({ ctx, next, path, type }) => {
   const procedureName = `${type}.${path}`;
-  return Sentry.startSpan({ op: "trpc.procedure", name: procedureName }, () => {
+  return Sentry.startSpan({ op: "trpc.privateProcedure", name: procedureName }, () => {
     const currentUser = ctx?.currentUser;
     if (!currentUser) {
       Sentry.captureException(new Error("Unauthorized access attempt"));
