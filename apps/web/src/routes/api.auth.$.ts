@@ -9,14 +9,14 @@ export const APIRoute = createAPIFileRoute("/api/auth/$")({
   GET: ({ request }) => {
     const appAndPath = `${request.method} ${new URL(request.url).pathname}`;
     log(appAndPath);
-    return Sentry.startSpan({ op: "Auth route", name: appAndPath }, () => {
+    return Sentry.startSpan({ op: appAndPath, name: appAndPath }, () => {
       return auth.handler(request);
     });
   },
   POST: ({ request }) => {
     const appAndPath = `${request.method} ${new URL(request.url).pathname}`;
     log(appAndPath);
-    return Sentry.startSpan({ op: "Auth route", name: appAndPath }, () => {
+    return Sentry.startSpan({ op: appAndPath, name: appAndPath }, () => {
       return auth.handler(request);
     });
   },
