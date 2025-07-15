@@ -1,5 +1,5 @@
 import type { User } from "@tasks/core";
-import { Sentry } from "@tasks/sentry/server";
+import { instrumentAsync } from "@tasks/otel";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 
@@ -15,22 +15,18 @@ export const createTRPCRouter = t.router;
 
 export const publicProcedure = t.procedure.use(({ ctx, next, path, type }) => {
   const procedureName = `${type}.${path}`;
-  return Sentry.startSpan({ op: "trpc.publicProcedure", name: procedureName }, () => next({ ctx }));
+  return instrumentAsync("trpc-procedure", `Public.proc : ${procedureName}`, async () => {
+    return next({ ctx });
+  });
 });
 
 export const privateProcedure = t.procedure.use(({ ctx, next, path, type }) => {
   const procedureName = `${type}.${path}`;
-  return Sentry.startSpan({ op: "trpc.privateProcedure", name: procedureName }, () => {
+  return instrumentAsync("trpc-procedure", `Private.proc : ${procedureName}`, async () => {
     const currentUser = ctx?.currentUser;
     if (!currentUser) {
-      Sentry.captureException(new Error("Unauthorized access attempt"));
       throw new TRPCError({ code: "UNAUTHORIZED", message: "You need to authenticate first" });
     }
-
-    Sentry.setUser({
-      id: currentUser.id,
-      email: currentUser.email,
-    });
 
     return next({ ctx: { currentUser } });
   });

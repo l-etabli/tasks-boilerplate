@@ -16,6 +16,7 @@ COPY apps/web/package.json ./apps/web/
 COPY packages/core/package.json ./packages/core/
 COPY packages/db/package.json ./packages/db/
 COPY packages/sentry/package.json ./packages/sentry/
+COPY packages/otel/package.json ./packages/otel/
 COPY packages/trousse/package.json ./packages/trousse/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
 COPY packages/ui/package.json ./packages/ui/

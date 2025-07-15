@@ -1,4 +1,3 @@
-import "../instrument-server";
 import { env } from "@/env";
 import { createPgPool } from "@tasks/db";
 import { betterAuth } from "better-auth";

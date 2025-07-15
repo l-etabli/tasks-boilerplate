@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "@sentry/node": "^9.35.0",
-    "@sentry/react": "^9.35.0"
+    "@sentry/react": "^9.35.0",
+    "@sentry/opentelemetry": "^9.35.0",
+    "@tasks/otel": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
