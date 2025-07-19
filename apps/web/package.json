@@ -34,6 +34,7 @@
     "@tanstack/store": "^0.7.0",
     "@tasks/core": "workspace:*",
     "@tasks/db": "workspace:*",
+    "@tasks/otel": "workspace:*",
     "@tasks/sentry": "workspace:*",
     "@trpc/client": "^11.0.0",
     "@trpc/server": "^11.0.0",

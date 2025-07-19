@@ -1,4 +1,4 @@
-import { initServerSentry } from "@tasks/sentry/server";
+import { initOpenTelemetry } from "@tasks/otel/server";
 import { env } from "./env";
 
-initServerSentry(env.ENVIRONMENT);
+initOpenTelemetry(env.ENVIRONMENT);

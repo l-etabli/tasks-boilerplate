@@ -1,0 +1,24 @@
+{
+  "name": "@tasks/otel",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./server": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:prod": "pnpm build"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/sdk-node": "^0.203.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.62.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.203.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

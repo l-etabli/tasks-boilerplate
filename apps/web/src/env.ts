@@ -1,5 +1,5 @@
 import { createEnv } from "@t3-oss/env-core";
-import { environments } from "@tasks/sentry/server";
+import { environments } from "@tasks/otel/server";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -9,6 +9,9 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
     ENVIRONMENT: z.enum(environments).default("local"),
+    LANGFUSE_PUBLIC_KEY: z.string().optional(),
+    LANGFUSE_SECRET_KEY: z.string().optional(),
+    LANGFUSE_OTEL_ENDPOINT: z.string().url().optional(),
   },
 
   /**
