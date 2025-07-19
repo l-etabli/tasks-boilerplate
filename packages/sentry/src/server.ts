@@ -7,7 +7,6 @@ export function initServerSentry(environment: string) {
     dsn: SENTRY_DSN,
     tracesSampleRate: 1.0,
     environment,
-    skipOpenTelemetrySetup: false,
   });
 }
 

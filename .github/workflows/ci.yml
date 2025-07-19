@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build dependencies
+        run: pnpm build --filter=@tasks/sentry
+
       - name: Run Fullcheck
         run: pnpm turbo check typecheck test
 
