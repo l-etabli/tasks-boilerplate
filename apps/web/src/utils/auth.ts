@@ -1,6 +1,7 @@
 import "../instrument-server";
 import { env } from "@/env";
 import { createPgPool } from "@tasks/db";
+import { Sentry } from "@tasks/sentry/server";
 import { betterAuth } from "better-auth";
 
 export const auth = betterAuth({
@@ -16,7 +17,7 @@ export const auth = betterAuth({
       },
     },
   },
-  database: createPgPool(),
+  database: createPgPool(Sentry),
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,

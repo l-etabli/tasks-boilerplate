@@ -1,11 +1,12 @@
 import { addTaskSchema, bootstrapUseCases } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
+import { Sentry } from "@tasks/sentry/server";
 import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server"; // Import TRPCError
 
 import { createTRPCRouter, privateProcedure, publicProcedure } from "./init";
 
-const useCases = bootstrapUseCases({ kind: "pg", db: getKyselyDb() });
+const useCases = bootstrapUseCases({ kind: "pg", db: getKyselyDb(Sentry) });
 
 const tasksRouter = {
   list: privateProcedure.query(async ({ ctx }) => {
