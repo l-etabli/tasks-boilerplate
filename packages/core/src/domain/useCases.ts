@@ -13,12 +13,6 @@ export const addTask = createAuthTransacUseCase
     });
   });
 
-export const listMyTasks = createAuthTransacUseCase.build(async ({ currentUser, uow }) => {
-  // call a placeholder api, just to analyse how it appears in sentry trace
-
-  console.time("fetching jsonplaceholder");
-  await fetch("https://jsonplaceholder.typicode.com/todos/1").then((res) => res.json());
-  console.timeEnd("fetching jsonplaceholder");
-
-  return uow.taskRepository.getAllForUser(currentUser.id);
-});
+export const listMyTasks = createAuthTransacUseCase.build(async ({ currentUser, uow }) =>
+  uow.taskRepository.getAllForUser(currentUser.id),
+);
