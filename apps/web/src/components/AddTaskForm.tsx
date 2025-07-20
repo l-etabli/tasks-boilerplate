@@ -1,13 +1,21 @@
 import { useAppForm } from "@/hooks/demo.form.ts";
-import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/integrations/trpc/react";
 
 export const AddTaskForm = () => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const trpc = useTRPC();
-  const addTaskMutation = useMutation(trpc.tasks.add.mutationOptions());
+
+  const addTaskMutation = useMutation({
+    ...trpc.tasks.add.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: trpc.tasks.list.queryKey(),
+      });
+    },
+  });
 
   const form = useAppForm({
     defaultValues: { description: "" },
@@ -20,7 +28,6 @@ export const AddTaskForm = () => {
         description: value.description,
       });
       formApi.reset();
-      await router.invalidate();
     },
   });
 

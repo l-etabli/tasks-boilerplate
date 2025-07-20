@@ -16,16 +16,22 @@ import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
 
+import { authClient } from "@/auth-client";
 import type { TRPCRouter } from "@/integrations/trpc/router";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 
 interface MyRouterContext {
   queryClient: QueryClient;
-
   trpc: TRPCOptionsProxy<TRPCRouter>;
+  session?: Awaited<ReturnType<typeof authClient.getSession>>["data"];
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad: async () => {
+    // Load session once at root level for consistency
+    const { data: session } = await authClient.getSession();
+    return { session };
+  },
   head: () => ({
     meta: [
       {

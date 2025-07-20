@@ -1,10 +1,9 @@
-import { authClient } from "@/auth-client";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { LoggedInAs } from "./LoggedInAs";
 import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
-  const { data: session } = authClient.useSession();
+  const { session } = useRouteContext({ from: "__root__" });
   return (
     <header className="p-2 flex gap-2 bg-white text-black justify-between">
       <nav className="flex flex-row">
