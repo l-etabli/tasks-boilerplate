@@ -9,6 +9,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Sentry } from "@tasks/sentry/client";
 
 import Header from "../components/Header";
+import { SessionProvider } from "../providers/SessionProvider";
 
 import TanstackQueryLayout from "../integrations/tanstack-query/layout";
 
@@ -16,22 +17,15 @@ import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
 
-import { authClient } from "@/auth-client";
 import type { TRPCRouter } from "@/integrations/trpc/router";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 
 interface MyRouterContext {
   queryClient: QueryClient;
   trpc: TRPCOptionsProxy<TRPCRouter>;
-  session?: Awaited<ReturnType<typeof authClient.getSession>>["data"];
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  beforeLoad: async () => {
-    // Load session once at root level for consistency
-    const { data: session } = await authClient.getSession();
-    return { session };
-  },
   head: () => ({
     meta: [
       {
@@ -56,12 +50,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: Sentry.withErrorBoundary(
     () => (
       <RootDocument>
-        <Header />
+        <SessionProvider>
+          <Header />
 
-        <Outlet />
-        <TanStackRouterDevtools />
+          <Outlet />
+          <TanStackRouterDevtools />
 
-        <TanstackQueryLayout />
+          <TanstackQueryLayout />
+        </SessionProvider>
       </RootDocument>
     ),
     {
