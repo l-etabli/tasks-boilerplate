@@ -1,24 +1,47 @@
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useSession } from "../providers/SessionProvider";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ location, context }) => {
-    const session = context.session;
-
-    if (!session) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-
-    return { user: session.user };
-  },
   component: AuthenticatedLayout,
 });
 
 function AuthenticatedLayout() {
-  // const { session } = Route.useRouteContext(); // Example if you return data from beforeLoad
+  console.log("[SESSION DEBUG] AuthenticatedLayout rendering");
+  const { session, isLoading } = useSession();
+  const navigate = useNavigate();
+
+  console.log(
+    "[SESSION DEBUG] AuthenticatedLayout session check:",
+    session ? "logged in" : "not logged in",
+    "loading:",
+    isLoading,
+  );
+
+  useEffect(() => {
+    if (!isLoading && !session) {
+      console.log("[SESSION DEBUG] AuthenticatedLayout redirecting to login");
+      navigate({
+        to: "/login",
+        search: {
+          redirect: window.location.pathname,
+        },
+      });
+    }
+  }, [session, isLoading, navigate]);
+
+  // Show loading while checking session
+  if (isLoading) {
+    console.log("[SESSION DEBUG] AuthenticatedLayout showing loading");
+    return <div>Checking authentication...</div>;
+  }
+
+  // Show loading while redirecting
+  if (!session) {
+    console.log("[SESSION DEBUG] AuthenticatedLayout showing redirecting message");
+    return <div>Redirecting to login...</div>;
+  }
+
+  console.log("[SESSION DEBUG] AuthenticatedLayout rendering outlet");
   return <Outlet />;
 }

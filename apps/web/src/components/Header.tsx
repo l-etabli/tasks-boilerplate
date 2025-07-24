@@ -1,9 +1,17 @@
-import { Link, useRouteContext } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { useSession } from "../providers/SessionProvider";
 import { LoggedInAs } from "./LoggedInAs";
 import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
-  const { session } = useRouteContext({ from: "__root__" });
+  console.log("[SESSION DEBUG] Header component rendering");
+  const { session, isLoading } = useSession();
+  console.log(
+    "[SESSION DEBUG] Header session from context:",
+    session ? "logged in" : "not logged in",
+    "loading:",
+    isLoading,
+  );
   return (
     <header className="p-2 flex gap-2 bg-white text-black justify-between">
       <nav className="flex flex-row">
@@ -20,9 +28,15 @@ export default function Header() {
         </div>
 
         <div className="px-2">
-          {session && <LoggedInAs user={session.user} />}
-          {session && <LogoutButton />}
-          {!session && <Link to="/login">Login</Link>}
+          {isLoading ? (
+            <span>Loading...</span>
+          ) : (
+            <>
+              {session && <LoggedInAs user={session.user} />}
+              {session && <LogoutButton />}
+              {!session && <Link to="/login">Login</Link>}
+            </>
+          )}
         </div>
       </nav>
     </header>

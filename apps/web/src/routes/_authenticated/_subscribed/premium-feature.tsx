@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useSession } from "../../../providers/SessionProvider";
 
 export const Route = createFileRoute("/_authenticated/_subscribed/premium-feature")({
   component: PremiumFeature,
 });
 
 function PremiumFeature() {
-  const { user } = Route.useRouteContext();
+  const { session } = useSession();
+  const user = session?.user;
+
+  if (!user) {
+    return <div>Loading user...</div>;
+  }
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
