@@ -29,14 +29,15 @@ export default function Header() {
 
 const AuthSection = () => {
   const { session, isLoading } = useSession();
+  const currentUser = session?.user;
 
   if (isLoading) return <span>Loading...</span>;
 
   return (
     <>
-      {session && <LoggedInAs user={session.user} />}
-      {session && <LogoutButton />}
-      {!session && <Link to="/login">Login</Link>}
+      {currentUser && <LoggedInAs user={currentUser} />}
+      {currentUser && <LogoutButton />}
+      {!currentUser && <Link to="/login">Login</Link>}
     </>
   );
 };

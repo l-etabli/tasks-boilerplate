@@ -8,10 +8,11 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   const { session, isLoading } = useSession();
+  const currentUser = session?.user;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !session) {
+    if (!isLoading && !currentUser) {
       navigate({
         to: "/login",
         search: {
@@ -19,15 +20,15 @@ function AuthenticatedLayout() {
         },
       });
     }
-  }, [session, isLoading, navigate]);
+  }, [currentUser, isLoading, navigate]);
 
-  // Show loading while checking session
+  // Show loading while checking authentication
   if (isLoading) {
     return <div>Checking authentication...</div>;
   }
 
   // Show loading while redirecting
-  if (!session) {
+  if (!currentUser) {
     return <div>Redirecting to login...</div>;
   }
 

@@ -29,3 +29,23 @@ export function useSession() {
 
   return context;
 }
+
+/**
+ * Will THROW if the user is not authenticated. Usage is fine when in _authenticated folder.
+ * If you want to check if the user is authenticated, use useSession instead.
+ */
+
+export const useCurrentUser = () => {
+  const { session, error } = useSession();
+  if (!session) {
+    throw new Error(
+      "useCurrentUser must be used within a SessionProvider, and with a user. Usage should be only in _authenticated folder",
+    );
+  }
+
+  if (error) {
+    throw new Error("Error fetching session", { cause: error });
+  }
+
+  return { currentUser: session.user };
+};
