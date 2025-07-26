@@ -22,15 +22,9 @@ function AuthenticatedLayout() {
     }
   }, [currentUser, isLoading, navigate]);
 
-  // Show loading while checking authentication
-  if (isLoading) {
-    return <div>Checking authentication...</div>;
-  }
-
-  // Show loading while redirecting
-  if (!currentUser) {
-    return <div>Redirecting to login...</div>;
-  }
-
-  return <Outlet />;
+  return (
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {isLoading ? <div>Checking authentication...</div> : <Outlet />}
+    </div>
+  );
 }

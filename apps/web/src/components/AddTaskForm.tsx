@@ -32,34 +32,43 @@ export const AddTaskForm = () => {
   });
 
   return (
-    <>
-      <h2 className="text-2xl mb-4">Add a task</h2>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          await form.handleSubmit();
-        }}
-      >
-        <form.AppField name="description">
-          {(field) => <field.TextField label="Task description" />}
-        </form.AppField>
-        <form.AppForm>
-          <form.SubscribeButton label="Add" />
-        </form.AppForm>
-      </form>
+    <div className="mt-8">
+      <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Add a task</h2>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            await form.handleSubmit();
+          }}
+          className="space-y-4"
+        >
+          <form.AppField name="description">
+            {(field) => <field.TextField label="Task description" />}
+          </form.AppField>
+          <form.AppForm>
+            <form.SubscribeButton label="Add" />
+          </form.AppForm>
+        </form>
 
-      {addTaskMutation.isError && (
-        <div className="bg-red-500 text-white p-4">{addTaskMutation.error.message}</div>
-      )}
+        {addTaskMutation.isError && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-sm text-red-800">{addTaskMutation.error.message}</p>
+          </div>
+        )}
 
-      {addTaskMutation.isSuccess && (
-        <div className="bg-green-500 text-white p-4">Task added successfully</div>
-      )}
+        {addTaskMutation.isSuccess && (
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
+            <p className="text-sm text-green-800">Task added successfully</p>
+          </div>
+        )}
 
-      {addTaskMutation.isPending && (
-        <div className="bg-yellow-500 text-white p-4">Adding task...</div>
-      )}
-    </>
+        {addTaskMutation.isPending && (
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm text-blue-800">Adding task...</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
