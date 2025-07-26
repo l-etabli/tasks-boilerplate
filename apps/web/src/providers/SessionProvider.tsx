@@ -10,15 +10,7 @@ interface SessionContextType {
 const SessionContext = createContext<SessionContextType | undefined>(undefined);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  console.log("[SESSION DEBUG] SessionProvider rendering");
-
   const { data: session, isPending, error } = authClient.useSession();
-
-  console.log("[SESSION DEBUG] SessionProvider session state:", {
-    hasSession: !!session,
-    isLoading: isPending,
-    hasError: !!error,
-  });
 
   const value: SessionContextType = {
     session: session || null,
@@ -34,5 +26,6 @@ export function useSession() {
   if (context === undefined) {
     throw new Error("useSession must be used within a SessionProvider");
   }
+
   return context;
 }

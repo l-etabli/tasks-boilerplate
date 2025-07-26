@@ -16,12 +16,7 @@ export const Route = createFileRoute("/_auth/login")({
 });
 
 function RouteComponent() {
-  console.log("[SESSION DEBUG] Login component rendering");
   const { session } = useSession();
-  console.log(
-    "[SESSION DEBUG] Login session from context:",
-    session ? "logged in" : "not logged in",
-  );
   const navigate = useNavigate();
   const { redirect: redirectUrl } = Route.useSearch();
 

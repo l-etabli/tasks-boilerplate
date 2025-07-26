@@ -6,10 +6,8 @@ import { TaskList } from "@/components/TaskList";
 import { useTRPC } from "@/integrations/trpc/react";
 
 export const Route = createFileRoute("/_authenticated/demo/tanstack-query")({
-  loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(context.trpc.tasks.list.queryOptions());
-  },
-
+  // Removed SSR data prefetching to eliminate 1+ second delay
+  // The query will be handled client-side after authentication
   component: TanStackQueryDemo,
 });
 
