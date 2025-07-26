@@ -11,6 +11,9 @@ export const createInMemoryTaskRepositiory = () => {
     save: async (task) => {
       taskById[task.id] = task;
     },
+    delete: async (taskId) => {
+      delete taskById[taskId];
+    },
   } satisfies TaskRepository;
 };
 

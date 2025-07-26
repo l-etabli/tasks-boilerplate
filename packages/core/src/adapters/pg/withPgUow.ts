@@ -31,6 +31,9 @@ export const createPgTaskRepository = (trx: Kysely<Db>) =>
         })
         .execute();
     },
+    delete: async (taskId) => {
+      await trx.deleteFrom("tasks").where("id", "=", taskId).execute();
+    },
   }) satisfies TaskRepository;
 
 export const createWithPgUnitOfWork = (db: Kysely<Db>): WithUow => {

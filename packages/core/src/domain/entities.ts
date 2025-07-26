@@ -21,6 +21,11 @@ export const addTaskSchema = z.object({
   description: z.string(),
 });
 
+export type DeleteTaskInput = Pretty<z.infer<typeof deleteTaskSchema>>;
+export const deleteTaskSchema = z.object({
+  id: z.string(),
+});
+
 export type Subscription = {
   id: string;
   plan: "pro";

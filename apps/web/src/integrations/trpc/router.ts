@@ -1,4 +1,4 @@
-import { addTaskSchema, bootstrapUseCases } from "@tasks/core";
+import { addTaskSchema, bootstrapUseCases, deleteTaskSchema } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
 import { Sentry } from "@tasks/sentry/server";
 import type { TRPCRouterRecord } from "@trpc/server";
@@ -22,6 +22,13 @@ const tasksRouter = {
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return useCases.addTask({ currentUser: ctx.currentUser, input });
+  }),
+  delete: privateProcedure.input(deleteTaskSchema).mutation(async ({ ctx, input }) => {
+    if (!ctx.currentUser) {
+      console.error("currentUser is not available in tasksRouter.delete procedure.");
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+    return useCases.deleteTask({ currentUser: ctx.currentUser, input });
   }),
 } satisfies TRPCRouterRecord;
 
