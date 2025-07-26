@@ -4,14 +4,6 @@ import { LoggedInAs } from "./LoggedInAs";
 import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
-  console.log("[SESSION DEBUG] Header component rendering");
-  const { session, isLoading } = useSession();
-  console.log(
-    "[SESSION DEBUG] Header session from context:",
-    session ? "logged in" : "not logged in",
-    "loading:",
-    isLoading,
-  );
   return (
     <header className="p-2 flex gap-2 bg-white text-black justify-between">
       <nav className="flex flex-row">
@@ -28,17 +20,23 @@ export default function Header() {
         </div>
 
         <div className="px-2">
-          {isLoading ? (
-            <span>Loading...</span>
-          ) : (
-            <>
-              {session && <LoggedInAs user={session.user} />}
-              {session && <LogoutButton />}
-              {!session && <Link to="/login">Login</Link>}
-            </>
-          )}
+          <AuthSection />
         </div>
       </nav>
     </header>
   );
 }
+
+const AuthSection = () => {
+  const { session, isLoading } = useSession();
+
+  if (isLoading) return <span>Loading...</span>;
+
+  return (
+    <>
+      {session && <LoggedInAs user={session.user} />}
+      {session && <LogoutButton />}
+      {!session && <Link to="/login">Login</Link>}
+    </>
+  );
+};
