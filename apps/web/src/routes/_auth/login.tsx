@@ -17,22 +17,23 @@ export const Route = createFileRoute("/_auth/login")({
 
 function RouteComponent() {
   const { session } = useSession();
+  const currentUser = session?.user;
   const navigate = useNavigate();
   const { redirect: redirectUrl } = Route.useSearch();
 
   React.useEffect(() => {
-    if (session && redirectUrl) {
+    if (currentUser && redirectUrl) {
       navigate({ to: redirectUrl });
     }
-  }, [session, redirectUrl, navigate]);
+  }, [currentUser, redirectUrl, navigate]);
 
   return (
     <div>
       Hello "/login" route !
       <br />
-      {session && <LogoutButton />}
-      {session && <LoggedInAs user={session.user} />}
-      {!session && <LoginWithGoogle redirectUrl={redirectUrl} />}
+      {currentUser && <LogoutButton />}
+      {currentUser && <LoggedInAs user={currentUser} />}
+      {!currentUser && <LoginWithGoogle redirectUrl={redirectUrl} />}
     </div>
   );
 }

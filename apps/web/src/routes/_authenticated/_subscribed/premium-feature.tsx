@@ -1,17 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSession } from "../../../providers/SessionProvider";
+import { useCurrentUser } from "../../../providers/SessionProvider";
 
 export const Route = createFileRoute("/_authenticated/_subscribed/premium-feature")({
   component: PremiumFeature,
 });
 
 function PremiumFeature() {
-  const { session } = useSession();
-  const user = session?.user;
-
-  if (!user) {
-    return <div>Loading user...</div>;
-  }
+  const { currentUser } = useCurrentUser();
 
   return (
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -38,7 +33,7 @@ function PremiumFeature() {
                 <div className="ml-3">
                   <p className="text-sm font-medium text-green-800">Subscription Active</p>
                   <p className="text-sm text-green-700">
-                    Welcome, {user.name || user.email}! Your subscription is active.
+                    Welcome, {currentUser.name || currentUser.email}! Your subscription is active.
                   </p>
                 </div>
               </div>
