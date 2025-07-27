@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
+    "dev:with-i18n": "vinxi dev & typesafe-i18n",
     "start": "vinxi start",
     "build": "vinxi build && pnpm copy:migrations",
     "copy:migrations": "mkdir -p .output/server/migrations && cp ../../packages/db/dist/src/migrations/*.js .output/server/migrations/ && cp ../../packages/db/dist/src/runDbMigrations.js .output/server/runDbMigrations.mjs && cp ../../packages/db/dist/src/connection.js .output/server/",
@@ -14,7 +15,8 @@
     "check:fix": "pnpm -w check:fix",
     "fullcheck": "pnpm -w fullcheck",
     "db:up": "dotenv -e .env.local -- pnpm --dir ../../packages/db db:up",
-    "db:create": "pnpm --dir ../../packages/db db:create"
+    "db:create": "pnpm --dir ../../packages/db db:create",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.1.17",
@@ -42,6 +44,7 @@
     "better-auth": "^1.2.7",
     "highlight.js": "^11.11.1",
     "kysely": "^0.28.2",
+    "lucide": "^0.526.0",
     "lucide-react": "^0.475.0",
     "pg": "^8.15.6",
     "react": "^19.0.0",
@@ -53,6 +56,7 @@
     "remark-gfm": "^4.0.1",
     "superjson": "^2.2.2",
     "tailwindcss": "^4.0.6",
+    "typesafe-i18n": "^5.26.2",
     "vinxi": "^0.5.3",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "3.24.4"

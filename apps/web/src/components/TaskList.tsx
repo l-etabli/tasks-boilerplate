@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "@tasks/core";
 import { useState } from "react";
+import { useI18nContext } from "../i18n/i18n-react";
 import { useTRPC } from "../integrations/trpc/react";
 
 type TaskItemProps = {
@@ -9,30 +10,35 @@ type TaskItemProps = {
   isDeleting: boolean;
 };
 
-const TaskItem = ({ task, onDelete, isDeleting }: TaskItemProps) => (
-  <li
-    className={`group bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 ease-out transform-gpu overflow-hidden ${
-      isDeleting ? "scale-95 opacity-0 max-h-0 py-0 my-0" : "scale-100 opacity-100 max-h-96"
-    }`}
-  >
-    <div className="flex items-center justify-between">
-      <span className="text-gray-900 font-medium">{task.description}</span>
-      <button
-        type="button"
-        onClick={onDelete}
-        disabled={isDeleting}
-        className="px-2.5 py-1 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-      >
-        {isDeleting ? "Deleting..." : "Delete"}
-      </button>
-    </div>
-  </li>
-);
+const TaskItem = ({ task, onDelete, isDeleting }: TaskItemProps) => {
+  const { LL } = useI18nContext();
+
+  return (
+    <li
+      className={`group bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 ease-out transform-gpu overflow-hidden ${
+        isDeleting ? "scale-95 opacity-0 max-h-0 py-0 my-0" : "scale-100 opacity-100 max-h-96"
+      }`}
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-gray-900 font-medium">{task.description}</span>
+        <button
+          type="button"
+          onClick={onDelete}
+          disabled={isDeleting}
+          className="px-2.5 py-1 text-sm font-medium text-red-600 bg-red-50 border border-red-200 rounded-md hover:bg-red-100 hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          {isDeleting ? LL.loading() : LL.delete()}
+        </button>
+      </div>
+    </li>
+  );
+};
 
 export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const trpc = useTRPC();
+  const { LL } = useI18nContext();
 
   const deleteTaskMutation = useMutation({
     ...trpc.tasks.delete.mutationOptions(),
@@ -58,8 +64,8 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
     return (
       <div className="space-y-6">
         <div className="border-b border-gray-200 pb-4">
-          <h1 className="text-3xl font-bold text-gray-900">My Tasks</h1>
-          <p className="text-gray-600 mt-1">0 tasks</p>
+          <h1 className="text-3xl font-bold text-gray-900">{LL.tasks.title()}</h1>
+          <p className="text-gray-600 mt-1">{LL.tasks.taskCount({ count: 0 })}</p>
         </div>
         <div className="text-center py-12">
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
@@ -78,8 +84,8 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks yet</h3>
-          <p className="text-gray-500">Add your first task to get started</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{LL.tasks.noTasks()}</h3>
+          <p className="text-gray-500">{LL.tasks.noTasks()}</p>
         </div>
       </div>
     );
@@ -88,10 +94,8 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   return (
     <div className="space-y-6">
       <div className="border-b border-gray-200 pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">My Tasks</h1>
-        <p className="text-gray-600 mt-1">
-          {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
-        </p>
+        <h1 className="text-3xl font-bold text-gray-900">{LL.tasks.title()}</h1>
+        <p className="text-gray-600 mt-1">{LL.tasks.taskCount({ count: tasks.length })}</p>
       </div>
       <ul className="space-y-2">
         {tasks.map((task) => (

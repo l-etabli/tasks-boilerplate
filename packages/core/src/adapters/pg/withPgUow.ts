@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { jsonBuildObject } from "kysely/helpers/postgres";
-import type { TaskRepository, WithUow } from "../../domain/ports.js";
+import type { TaskRepository, UserRepository, WithUow } from "../../domain/ports.js";
 import type { Db } from "./database.js";
 
 export const createPgTaskRepository = (trx: Kysely<Db>) =>
@@ -18,6 +18,7 @@ export const createPgTaskRepository = (trx: Kysely<Db>) =>
             email: ref("user.email"),
             activePlan: ref("user.activePlan"),
             activeSubscriptionId: ref("user.activeSubscriptionId"),
+            preferredLocale: ref("user.preferredLocale"),
           }).as("owner"),
         ])
         .execute(),
@@ -36,10 +37,27 @@ export const createPgTaskRepository = (trx: Kysely<Db>) =>
     },
   }) satisfies TaskRepository;
 
+export const createPgUserRepository = (trx: Kysely<Db>) =>
+  ({
+    updatePreferences: async (userId, preferences) => {
+      const result = await trx
+        .updateTable("user")
+        .set(preferences)
+        .where("id", "=", userId)
+        .returning(["id", "email", "activePlan", "activeSubscriptionId", "preferredLocale"])
+        .executeTakeFirstOrThrow();
+
+      return result;
+    },
+  }) satisfies UserRepository;
+
 export const createWithPgUnitOfWork = (db: Kysely<Db>): WithUow => {
   return (cb) => {
     return db.transaction().execute((trx) => {
-      const uow = { taskRepository: createPgTaskRepository(trx) };
+      const uow = {
+        taskRepository: createPgTaskRepository(trx),
+        userRepository: createPgUserRepository(trx),
+      };
       return cb(uow);
     });
   };

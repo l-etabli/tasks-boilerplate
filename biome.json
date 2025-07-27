@@ -36,7 +36,12 @@
       "**/dist",
       "**/public",
       "**/.turbo",
-      "**/routeTree.gen.ts"
+      "**/routeTree.gen.ts",
+      "**/i18n-types.ts",
+      "**/i18n-react.tsx",
+      "**/i18n-util.ts",
+      "**/i18n-util.sync.ts",
+      "**/i18n-util.async.ts"
     ],
     "include": ["apps/*/src/**/*", "packages/*/src/**/*", "apps/web/.config"]
   }

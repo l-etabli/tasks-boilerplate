@@ -1,5 +1,5 @@
-import type { Task } from "../domain/entities.js";
-import type { TaskRepository, WithUow } from "../domain/ports.js";
+import type { Task, UpdateUserPreferencesInput, User } from "../domain/entities.js";
+import type { TaskRepository, UserRepository, WithUow } from "../domain/ports.js";
 
 // type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
 export const createInMemoryTaskRepositiory = () => {
@@ -17,11 +17,30 @@ export const createInMemoryTaskRepositiory = () => {
   } satisfies TaskRepository;
 };
 
-// type InMemoryUow = {
-//   taskRepositiory: InMemoryTaskRepository;
-// };
+export const createInMemoryUserRepository = () => {
+  const userById: Record<string, User> = {};
+
+  return {
+    updatePreferences: async (
+      userId: string,
+      preferences: UpdateUserPreferencesInput,
+    ): Promise<User> => {
+      const existingUser = userById[userId];
+      if (!existingUser) {
+        throw new Error(`User with id ${userId} not found`);
+      }
+
+      const updatedUser = { ...existingUser, ...preferences };
+      userById[userId] = updatedUser;
+      return updatedUser;
+    },
+  } satisfies UserRepository;
+};
 
 export const createWithInMemoryUnitOfWork = (): WithUow => {
-  const uow = { taskRepository: createInMemoryTaskRepositiory() };
+  const uow = {
+    taskRepository: createInMemoryTaskRepositiory(),
+    userRepository: createInMemoryUserRepository(),
+  };
   return (cb) => cb(uow);
 };
