@@ -5,6 +5,7 @@ export type User = {
   email: string;
   activePlan: "pro" | null;
   activeSubscriptionId: string | null;
+  preferredLocale: "en" | "fr" | null;
 };
 
 export type Task = {
@@ -33,3 +34,8 @@ export type Subscription = {
   expiresAt: Date;
   isTrial: boolean;
 };
+
+export type UpdateUserPreferencesInput = Pretty<z.infer<typeof updateUserPreferencesSchema>>;
+export const updateUserPreferencesSchema = z.object({
+  preferredLocale: z.enum(["en", "fr"]).nullable(),
+});

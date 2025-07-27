@@ -2,7 +2,7 @@ import type { Kysely } from "kysely";
 import type { Db } from "./adapters/pg/database.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
 import { createWithInMemoryUnitOfWork } from "./adapters/withInMemoryUow.js";
-import { addTask, deleteTask, listMyTasks } from "./domain/useCases.js";
+import { addTask, deleteTask, listMyTasks, updateUserPreferences } from "./domain/useCases.js";
 
 export * from "./domain/entities.js";
 
@@ -28,5 +28,6 @@ export const bootstrapUseCases = (config: UowConfig) => {
     listMyTasks: listMyTasks(uowSetup),
     addTask: addTask(uowSetup),
     deleteTask: deleteTask(uowSetup),
+    updateUserPreferences: updateUserPreferences(uowSetup),
   };
 };

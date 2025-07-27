@@ -2,9 +2,11 @@ import { useAppForm } from "@/hooks/demo.form.ts";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useTRPC } from "@/integrations/trpc/react";
+import { useI18nContext } from "../i18n/i18n-react";
 
 export const AddTaskForm = () => {
   const queryClient = useQueryClient();
+  const { LL } = useI18nContext();
 
   const trpc = useTRPC();
 
@@ -34,7 +36,7 @@ export const AddTaskForm = () => {
   return (
     <div className="mt-8">
       <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Add a task</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">{LL.tasks.addTask()}</h2>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -44,10 +46,10 @@ export const AddTaskForm = () => {
           className="space-y-4"
         >
           <form.AppField name="description">
-            {(field) => <field.TextField label="Task description" />}
+            {(field) => <field.TextField label={LL.tasks.taskPlaceholder()} />}
           </form.AppField>
           <form.AppForm>
-            <form.SubscribeButton label="Add" />
+            <form.SubscribeButton label={LL.add()} />
           </form.AppForm>
         </form>
 
@@ -59,13 +61,15 @@ export const AddTaskForm = () => {
 
         {addTaskMutation.isSuccess && (
           <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-md">
-            <p className="text-sm text-green-800">Task added successfully</p>
+            <p className="text-sm text-green-800">
+              {LL.tasks.newTask()} {LL.save()}
+            </p>
           </div>
         )}
 
         {addTaskMutation.isPending && (
           <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-            <p className="text-sm text-blue-800">Adding task...</p>
+            <p className="text-sm text-blue-800">{LL.loading()}</p>
           </div>
         )}
       </div>

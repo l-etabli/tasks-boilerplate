@@ -1,8 +1,10 @@
 import { authClient } from "@/auth-client";
 import { useNavigate } from "@tanstack/react-router";
+import { useI18nContext } from "../i18n/i18n-react";
 
 export const LogoutButton = () => {
   const navigate = useNavigate();
+  const { LL } = useI18nContext();
 
   return (
     <button
@@ -13,7 +15,7 @@ export const LogoutButton = () => {
         navigate({ to: "/" });
       }}
     >
-      Logout
+      {LL.auth.logout()}
     </button>
   );
 };

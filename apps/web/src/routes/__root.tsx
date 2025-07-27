@@ -9,7 +9,10 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Sentry } from "@tasks/sentry/client";
 
 import Header from "../components/Header";
-import { SessionProvider } from "../providers/SessionProvider";
+import { useI18nContext } from "../i18n/i18n-react";
+import type { Locales } from "../i18n/i18n-types";
+import { I18nProvider } from "../providers/I18nProvider";
+import { SessionProvider, useSession } from "../providers/SessionProvider";
 
 import TanstackQueryLayout from "../integrations/tanstack-query/layout";
 
@@ -51,12 +54,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     () => (
       <RootDocument>
         <SessionProvider>
-          <Header />
-
-          <Outlet />
-          <TanStackRouterDevtools />
-
-          <TanstackQueryLayout />
+          <AppWithI18n />
         </SessionProvider>
       </RootDocument>
     ),
@@ -86,9 +84,27 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   ),
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function AppWithI18n() {
+  const { session } = useSession();
+
+  // Extract user's preferred locale from session, fallback to undefined for client detection
+  const userPreferredLocale: Locales | undefined = session?.user?.preferredLocale;
+
   return (
-    <html lang="en">
+    <I18nProvider initialLocale={userPreferredLocale}>
+      <Header />
+      <Outlet />
+      <TanStackRouterDevtools />
+      <TanstackQueryLayout />
+    </I18nProvider>
+  );
+}
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  const { locale } = useI18nContext();
+
+  return (
+    <html lang={locale}>
       <head>
         <HeadContent />
       </head>

@@ -15,6 +15,10 @@ export const auth = betterAuth({
         type: "string",
         input: false,
       },
+      preferredLocale: {
+        type: ["en", "fr"],
+        input: false,
+      },
     },
   },
   database: createPgPool(Sentry),

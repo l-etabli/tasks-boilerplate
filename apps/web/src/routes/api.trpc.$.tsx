@@ -3,6 +3,7 @@ import { trpcRouter } from "@/integrations/trpc/router";
 import { auth } from "@/utils/auth";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { getHeaders } from "@tanstack/react-start/server";
+import type { User } from "@tasks/core";
 import { Sentry } from "@tasks/sentry/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
@@ -22,8 +23,19 @@ function handler({ request }: { request: Request }) {
               headers: getHeaders() as any,
             });
 
+            // Convert better-auth user to core User type
+            const currentUser: User | undefined = session?.user
+              ? {
+                  id: session.user.id,
+                  email: session.user.email,
+                  activePlan: session.user.activePlan as "pro" | null,
+                  activeSubscriptionId: session.user.activeSubscriptionId,
+                  preferredLocale: session.user.preferredLocale as "en" | "fr" | null,
+                }
+              : undefined;
+
             return {
-              currentUser: session?.user,
+              currentUser,
             };
           },
         );

@@ -101,6 +101,9 @@ importers:
       kysely:
         specifier: ^0.28.2
         version: 0.28.2
+      lucide:
+        specifier: ^0.526.0
+        version: 0.526.0
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.1.0)
@@ -134,6 +137,9 @@ importers:
       tailwindcss:
         specifier: ^4.0.6
         version: 4.1.8
+      typesafe-i18n:
+        specifier: ^5.26.2
+        version: 5.26.2(typescript@5.7.3)
       vinxi:
         specifier: ^0.5.3
         version: 0.5.6(@types/node@20.17.57)(db0@0.3.2)(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.40.0)(tsx@4.19.4)
@@ -4524,6 +4530,9 @@ packages:
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  lucide@0.526.0:
+    resolution: {integrity: sha512-qcefehq2iyryHABeJNDRPxHRtdzWYxB0XVyWnxNjpmO9FtTupLBBc0Q3PFHGyjlmZUxDWr4q1nNepBIkjHeIbA==}
+
   luxon@3.6.1:
     resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
     engines: {node: '>=12'}
@@ -5995,6 +6004,12 @@ packages:
   type-is@2.0.1:
     resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
     engines: {node: '>= 0.6'}
+
+  typesafe-i18n@5.26.2:
+    resolution: {integrity: sha512-2QAriFmiY5JwUAJtG7yufoE/XZ1aFBY++wj7YFS2yo89a3jLBfKoWSdq5JfQYk1V2BS7V2c/u+KEcaCQoE65hw==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=3.5.1'
 
   typescript@5.7.3:
     resolution: {integrity: sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==}
@@ -11249,6 +11264,8 @@ snapshots:
     dependencies:
       react: 19.1.0
 
+  lucide@0.526.0: {}
+
   luxon@3.6.1: {}
 
   lz-string@1.5.0: {}
@@ -13076,6 +13093,10 @@ snapshots:
       content-type: 1.0.5
       media-typer: 1.1.0
       mime-types: 3.0.1
+
+  typesafe-i18n@5.26.2(typescript@5.7.3):
+    dependencies:
+      typescript: 5.7.3
 
   typescript@5.7.3: {}
 

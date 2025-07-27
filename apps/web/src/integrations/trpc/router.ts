@@ -1,4 +1,9 @@
-import { addTaskSchema, bootstrapUseCases, deleteTaskSchema } from "@tasks/core";
+import {
+  addTaskSchema,
+  bootstrapUseCases,
+  deleteTaskSchema,
+  updateUserPreferencesSchema,
+} from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
 import { Sentry } from "@tasks/sentry/server";
 import type { TRPCRouterRecord } from "@trpc/server";
@@ -40,8 +45,21 @@ const peopleRouter = {
   ),
 } satisfies TRPCRouterRecord;
 
+const userRouter = {
+  updatePreferences: privateProcedure
+    .input(updateUserPreferencesSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.currentUser) {
+        console.error("currentUser is not available in userRouter.updatePreferences procedure.");
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+      return useCases.updateUserPreferences({ currentUser: ctx.currentUser, input });
+    }),
+} satisfies TRPCRouterRecord;
+
 export const trpcRouter = createTRPCRouter({
   people: peopleRouter,
   tasks: tasksRouter,
+  user: userRouter,
 });
 export type TRPCRouter = typeof trpcRouter;
