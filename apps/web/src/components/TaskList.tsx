@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "@tasks/core";
+import { useState } from "react";
 import { useTRPC } from "../integrations/trpc/react";
 
 type TaskItemProps = {
@@ -9,7 +10,11 @@ type TaskItemProps = {
 };
 
 const TaskItem = ({ task, onDelete, isDeleting }: TaskItemProps) => (
-  <li className="group bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow duration-200">
+  <li
+    className={`group bg-white border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300 ease-out transform-gpu overflow-hidden ${
+      isDeleting ? "scale-95 opacity-0 max-h-0 py-0 my-0" : "scale-100 opacity-100 max-h-96"
+    }`}
+  >
     <div className="flex items-center justify-between">
       <span className="text-gray-900 font-medium">{task.description}</span>
       <button
@@ -25,12 +30,14 @@ const TaskItem = ({ task, onDelete, isDeleting }: TaskItemProps) => (
 );
 
 export const TaskList = ({ tasks }: { tasks: Task[] }) => {
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const trpc = useTRPC();
 
   const deleteTaskMutation = useMutation({
     ...trpc.tasks.delete.mutationOptions(),
     onSuccess: () => {
+      setDeletingTaskId(null);
       queryClient.invalidateQueries({
         queryKey: trpc.tasks.list.queryKey(),
       });
@@ -38,9 +45,13 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   });
 
   const handleDelete = (taskId: string) => {
-    if (confirm("Are you sure you want to delete this task?")) {
+    // Start animation
+    setDeletingTaskId(taskId);
+
+    // Execute deletion after animation completes
+    setTimeout(() => {
       deleteTaskMutation.mutate({ id: taskId });
-    }
+    }, 300);
   };
 
   if (tasks.length === 0) {
@@ -88,7 +99,7 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
             key={task.id}
             task={task}
             onDelete={() => handleDelete(task.id)}
-            isDeleting={deleteTaskMutation.isPending}
+            isDeleting={deletingTaskId === task.id || deleteTaskMutation.isPending}
           />
         ))}
       </ul>
