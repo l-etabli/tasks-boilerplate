@@ -95,6 +95,5 @@ packages/
 - Validate all inputs and sanitize user data
 
 ## Git Hooks
-
 - **Pre-commit**: Runs `pnpm check:fix` on staged files
 - **Pre-push**: Runs `pnpm fullcheck` (all checks including tests)
