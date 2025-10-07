@@ -89,7 +89,7 @@ function AppWithI18n() {
     <I18nProvider initialLocale={userPreferredLocale}>
       <Header />
       <Outlet />
-      <TanStackRouterDevtools />
+      {process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
       <TanstackQueryLayout />
     </I18nProvider>
   );

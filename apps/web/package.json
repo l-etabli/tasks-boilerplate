@@ -7,7 +7,7 @@
     "dev:with-i18n": "vite dev & typesafe-i18n",
     "start": "node .output/server/index.mjs",
     "build": "vite build && pnpm copy:migrations",
-    "copy:migrations": "mkdir -p .output/server/migrations && cp ../../packages/db/dist/src/migrations/*.js .output/server/migrations/ && cp ../../packages/db/dist/src/runDbMigrations.js .output/server/runDbMigrations.mjs && cp ../../packages/db/dist/src/connection.js .output/server/",
+    "copy:migrations": "mkdir -p .output/server/migrations && cp ../../packages/db/dist/src/migrations/*.js .output/server/migrations/ && cp ../../packages/db/dist/src/runDbMigrations.js .output/server/runDbMigrations.mjs && cp ../../packages/db/dist/src/connection.js ../../packages/db/dist/src/postgres-instrumentation.js .output/server/",
     "build:prod": "vite build",
     "serve": "vite preview",
     "test": "echo \"No tests\" #vitest run",
