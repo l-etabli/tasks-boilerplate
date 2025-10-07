@@ -20,8 +20,8 @@ initClientSentry(getSentryEnvironment());
 import { RouterProvider } from "@tanstack/react-router";
 import { hydrateRoot } from "react-dom/client";
 
-import { createRouter } from "./router";
+import { getRouter } from "./router";
 
-const router = createRouter();
+const router = getRouter();
 
 hydrateRoot(document, <RouterProvider router={router} />);
