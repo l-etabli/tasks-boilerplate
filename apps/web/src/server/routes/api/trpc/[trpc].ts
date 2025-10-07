@@ -1,16 +1,18 @@
-import "../instrument-server";
+import "../../../instrument-server";
 import { trpcRouter } from "@/integrations/trpc/router";
 import { auth } from "@/utils/auth";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
-import { getHeaders } from "@tanstack/react-start/server";
 import type { User } from "@tasks/core";
 import { Sentry } from "@tasks/sentry/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { getHeaders } from "vinxi/http";
+import { defineEventHandler, toWebRequest } from "vinxi/http";
 
-function handler({ request }: { request: Request }) {
+export default defineEventHandler(async (event) => {
+  const request = toWebRequest(event);
   const appAndPath = `${request.method} ${new URL(request.url).pathname}`;
   console.info(`\n----- tRPC route called : ${appAndPath}`);
-  return Sentry.startSpan({ op: "tRPC route", name: appAndPath }, () => {
+
+  return Sentry.startSpan({ op: "tRPC route", name: appAndPath }, async () => {
     return fetchRequestHandler({
       req: request,
       router: trpcRouter,
@@ -42,9 +44,4 @@ function handler({ request }: { request: Request }) {
       },
     });
   });
-}
-
-export const APIRoute = createAPIFileRoute("/api/trpc/$")({
-  GET: handler,
-  POST: handler,
 });
