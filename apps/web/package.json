@@ -62,6 +62,7 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@tanstack/nitro-v2-vite-plugin": "^1.132.40",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.0",
     "@types/pg": "^8.15.5",
