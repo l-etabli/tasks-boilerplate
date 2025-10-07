@@ -4,6 +4,7 @@
   "baseBranches": ["main"],
   "prCreation": "immediate",
   "rangeStrategy": "bump",
+  "dependencyDashboardApproval": false,
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
