@@ -1,7 +1,7 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import type { Db } from "./db-schema/database.js";
-import { type SentryInterface, createSentryInstrumentedPool } from "./postgres-instrumentation.js";
+import { createSentryInstrumentedPool, type SentryInterface } from "./postgres-instrumentation.js";
 
 let pgPool: Pool | null = null;
 let db: Kysely<Db> | null = null;

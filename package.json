@@ -2,7 +2,10 @@
   "name": "shadcn-ui-monorepo",
   "version": "0.0.1",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "build:prod": "turbo build:prod",
@@ -19,11 +22,11 @@
     "db:create": "pnpm --dir packages/db db:create"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.2.5",
     "@tasks/typescript-config": "workspace:*",
-    "lefthook": "^1.11.3",
-    "turbo": "^2.5.0",
-    "typescript": "5.7.3"
+    "lefthook": "^1.13.6",
+    "turbo": "^2.5.8",
+    "typescript": "5.9.3"
   },
   "packageManager": "pnpm@10.9.0",
   "engines": {

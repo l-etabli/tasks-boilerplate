@@ -11,14 +11,14 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthenticatedSubscriptionRequiredImport } from './routes/_authenticated/subscription-required'
-import { Route as AuthenticatedSubscribedImport } from './routes/_authenticated/_subscribed'
 import { Route as AuthLoginImport } from './routes/_auth/login'
-import { Route as AuthenticatedDemoTanstackQueryImport } from './routes/_authenticated/demo.tanstack-query'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as AuthenticatedSubscribedImport } from './routes/_authenticated/_subscribed'
 import { Route as AuthenticatedSubscribedPremiumFeatureImport } from './routes/_authenticated/_subscribed/premium-feature'
 import { Route as AuthenticatedDemoStartServerFuncsImport } from './routes/_authenticated/demo.start.server-funcs'
+import { Route as AuthenticatedDemoTanstackQueryImport } from './routes/_authenticated/demo.tanstack-query'
+import { Route as AuthenticatedSubscriptionRequiredImport } from './routes/_authenticated/subscription-required'
+import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 

@@ -1,5 +1,5 @@
+import { createContext, type ReactNode, useContext } from "react";
 import { authClient } from "@/auth-client";
-import { type ReactNode, createContext, useContext } from "react";
 
 interface SessionContextType {
   session: Awaited<ReturnType<typeof authClient.getSession>>["data"] | null;

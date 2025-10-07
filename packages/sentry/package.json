@@ -17,10 +17,10 @@
     "build:prod": "pnpm build"
   },
   "dependencies": {
-    "@sentry/node": "^9.35.0",
-    "@sentry/react": "^9.35.0"
+    "@sentry/node": "^10.17.0",
+    "@sentry/react": "^10.17.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.3"
   }
 }

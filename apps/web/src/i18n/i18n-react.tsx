@@ -2,8 +2,8 @@
 /* eslint-disable */
 
 import { useContext } from 'react'
-import { initI18nReact } from 'typesafe-i18n/react'
 import type { I18nContextType } from 'typesafe-i18n/react'
+import { initI18nReact } from 'typesafe-i18n/react'
 import type { Formatters, Locales, TranslationFunctions, Translations } from './i18n-types.js'
 import { loadedFormatters, loadedLocales } from './i18n-util.js'
 

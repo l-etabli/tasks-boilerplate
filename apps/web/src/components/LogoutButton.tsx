@@ -1,5 +1,5 @@
-import { authClient } from "@/auth-client";
 import { useNavigate } from "@tanstack/react-router";
+import { authClient } from "@/auth-client";
 import { useI18nContext } from "../i18n/i18n-react";
 
 export const LogoutButton = () => {

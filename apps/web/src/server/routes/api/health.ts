@@ -1,5 +1,5 @@
-import { env } from "@/env";
 import { defineEventHandler } from "vinxi/http";
+import { env } from "@/env";
 
 export default defineEventHandler(() => {
   return {

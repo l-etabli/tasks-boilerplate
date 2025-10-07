@@ -1,4 +1,4 @@
-import { type ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
 import { navigatorDetector } from "typesafe-i18n/detectors";
 import TypesafeI18n from "../i18n/i18n-react";
 import type { Locales } from "../i18n/i18n-types";

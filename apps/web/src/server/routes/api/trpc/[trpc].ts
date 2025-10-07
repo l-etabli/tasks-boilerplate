@@ -1,11 +1,10 @@
 import "../../../instrument-server";
-import { trpcRouter } from "@/integrations/trpc/router";
-import { auth } from "@/utils/auth";
 import type { User } from "@tasks/core";
 import { Sentry } from "@tasks/sentry/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { getHeaders } from "vinxi/http";
-import { defineEventHandler, toWebRequest } from "vinxi/http";
+import { defineEventHandler, getHeaders, toWebRequest } from "vinxi/http";
+import { trpcRouter } from "@/integrations/trpc/router";
+import { auth } from "@/utils/auth";
 
 export default defineEventHandler(async (event) => {
   const request = toWebRequest(event);

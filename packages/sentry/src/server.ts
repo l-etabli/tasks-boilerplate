@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/node";
-import { type Environment, SENTRY_DSN, environments } from "./sentry.helpers.js";
+import { type Environment, environments, SENTRY_DSN } from "./sentry.helpers.js";
 
 export function initServerSentry(environment: string) {
   console.info("initServerSentry, environment : ", environment);

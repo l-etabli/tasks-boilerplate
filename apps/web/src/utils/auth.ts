@@ -1,8 +1,8 @@
 import "../instrument-server";
-import { env } from "@/env";
 import { createPgPool } from "@tasks/db";
 import { Sentry } from "@tasks/sentry/server";
 import { betterAuth } from "better-auth";
+import { env } from "@/env";
 
 export const auth = betterAuth({
   user: {

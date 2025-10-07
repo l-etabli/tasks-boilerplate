@@ -1,7 +1,7 @@
 import "../../../instrument-server";
-import { auth } from "@/utils/auth";
 import { Sentry } from "@tasks/sentry/server";
 import { defineEventHandler } from "vinxi/http";
+import { auth } from "@/utils/auth";
 
 const log = (appAndPath: string) => console.info(`Auth route : ${appAndPath}`);
 

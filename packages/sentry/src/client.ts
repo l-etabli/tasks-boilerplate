@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import { type Environment, SENTRY_DSN, environments } from "./sentry.helpers.js";
+import { type Environment, environments, SENTRY_DSN } from "./sentry.helpers.js";
 
 export function initClientSentry(environment: Environment) {
   console.info("initClientSentry, environment : ", environment);
