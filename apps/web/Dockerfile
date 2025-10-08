@@ -45,6 +45,10 @@ WORKDIR /app
 # Copy built application from builder stage (includes migrations)
 COPY --from=builder /app/apps/web/.output ./
 
+# Install dependencies needed for migration script
+# Nitro doesn't bundle these since they're only used by runDbMigrations.mjs
+RUN npm install kysely@0.28.7 pg@8.16.3
+
 # Expose port
 EXPOSE 3000
 
