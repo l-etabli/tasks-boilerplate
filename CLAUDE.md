@@ -94,6 +94,22 @@ packages/
 - Never swallow errors silently
 - Validate all inputs and sanitize user data
 
-## Git Hooks
+## Git Workflow
+
+**IMPORTANT: NEVER commit or push code without explicit user permission.**
+
+When you have completed changes that seem like a good point to commit:
+1. Ask: "This seems like a good point to commit, should I do it?"
+2. Wait for user agreement before running any git write commands
+3. NEVER use `git commit`, `git push`, `git add`, or any other git commands that modify the repository without explicit user approval
+
+**Allowed git commands** (read-only operations that don't require permission):
+- `git status` - Check repository status
+- `git diff` - View changes
+- `git log` - View commit history
+- `git show` - View commit details
+- Any other read-only git operations
+
+### Git Hooks
 - **Pre-commit**: Runs `pnpm check:fix` on staged files
 - **Pre-push**: Runs `pnpm fullcheck` (all checks including tests)
