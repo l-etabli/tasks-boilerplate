@@ -8,8 +8,6 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Sentry } from "@tasks/sentry/client";
-import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
-import type { TRPCRouter } from "@/integrations/trpc/router";
 import Header from "../components/Header";
 import { useI18nContext } from "../i18n/i18n-react";
 import type { Locales } from "../i18n/i18n-types";
@@ -20,7 +18,6 @@ import appCss from "../styles.css?url";
 
 interface MyRouterContext {
   queryClient: QueryClient;
-  trpc: TRPCOptionsProxy<TRPCRouter>;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({

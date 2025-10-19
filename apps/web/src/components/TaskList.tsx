@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Task } from "@tasks/core";
 import { useState } from "react";
+import { deleteTask } from "@/server/functions/tasks";
 import { useI18nContext } from "../i18n/i18n-react";
-import { useTRPC } from "../integrations/trpc/react";
 
 type TaskItemProps = {
   task: Task;
@@ -37,15 +37,14 @@ const TaskItem = ({ task, onDelete, isDeleting }: TaskItemProps) => {
 export const TaskList = ({ tasks }: { tasks: Task[] }) => {
   const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
   const queryClient = useQueryClient();
-  const trpc = useTRPC();
   const { LL } = useI18nContext();
 
   const deleteTaskMutation = useMutation({
-    ...trpc.tasks.delete.mutationOptions(),
+    mutationFn: deleteTask,
     onSuccess: () => {
       setDeletingTaskId(null);
       queryClient.invalidateQueries({
-        queryKey: trpc.tasks.list.queryKey(),
+        queryKey: ["tasks"],
       });
     },
   });
@@ -56,7 +55,7 @@ export const TaskList = ({ tasks }: { tasks: Task[] }) => {
 
     // Execute deletion after animation completes
     setTimeout(() => {
-      deleteTaskMutation.mutate({ id: taskId });
+      deleteTaskMutation.mutate({ data: { id: taskId } });
     }, 300);
   };
 

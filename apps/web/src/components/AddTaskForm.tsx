@@ -1,20 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppForm } from "@/hooks/demo.form.ts";
-
-import { useTRPC } from "@/integrations/trpc/react";
+import { addTask } from "@/server/functions/tasks";
 import { useI18nContext } from "../i18n/i18n-react";
 
 export const AddTaskForm = () => {
   const queryClient = useQueryClient();
   const { LL } = useI18nContext();
 
-  const trpc = useTRPC();
-
   const addTaskMutation = useMutation({
-    ...trpc.tasks.add.mutationOptions(),
+    mutationFn: addTask,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: trpc.tasks.list.queryKey(),
+        queryKey: ["tasks"],
       });
     },
   });
@@ -25,9 +22,11 @@ export const AddTaskForm = () => {
     //   onSubmit: addTaskSchema
     // },
     onSubmit: async ({ value, formApi }) => {
-      await addTaskMutation.mutate({
-        id: new Date().toISOString(),
-        description: value.description,
+      await addTaskMutation.mutateAsync({
+        data: {
+          id: new Date().toISOString(),
+          description: value.description,
+        },
       });
       formApi.reset();
     },

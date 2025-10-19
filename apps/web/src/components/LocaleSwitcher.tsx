@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { Globe } from "lucide-react";
+import { updateUserPreferences } from "@/server/functions/user";
 import { useI18nContext } from "../i18n/i18n-react";
-import { useTRPC } from "../integrations/trpc/react";
 import { useLocaleManager } from "../providers/I18nProvider";
 import { useSession } from "../providers/SessionProvider";
 
@@ -14,10 +14,9 @@ export function LocaleSwitcher() {
   const { locale } = useI18nContext();
   const { setLocale, availableLocales } = useLocaleManager();
   const { session } = useSession();
-  const trpc = useTRPC();
 
   const updatePreferencesMutation = useMutation({
-    ...trpc.user.updatePreferences.mutationOptions(),
+    mutationFn: updateUserPreferences,
   });
 
   const handleLocaleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -27,7 +26,9 @@ export function LocaleSwitcher() {
     // Only save preference to database if user is authenticated
     if (session?.user) {
       updatePreferencesMutation.mutate({
-        preferredLocale: newLocale as "en" | "fr",
+        data: {
+          preferredLocale: newLocale as "en" | "fr",
+        },
       });
     }
   };
