@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { AddTaskForm } from "@/components/AddTaskForm";
 import { TaskList } from "@/components/TaskList";
-import { useTRPC } from "@/integrations/trpc/react";
+import { listTasks } from "@/server/functions/tasks";
 
 export const Route = createFileRoute("/_authenticated/demo/tanstack-query")({
   // Removed SSR data prefetching to eliminate 1+ second delay
@@ -12,8 +12,10 @@ export const Route = createFileRoute("/_authenticated/demo/tanstack-query")({
 });
 
 function TanStackQueryDemo() {
-  const trpc = useTRPC();
-  const { data, error } = useQuery(trpc.tasks.list.queryOptions());
+  const { data, error } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: () => listTasks(),
+  });
 
   if (error) return <div className="p-4 bg-red-500 text-white">Error: {error.message}</div>;
   if (!data) return <div className="p-4">Loading...</div>;
