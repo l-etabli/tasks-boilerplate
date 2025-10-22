@@ -6,7 +6,7 @@
     "dev": "vite dev --port 3000",
     "build": "vite build",
     "build:prod": "vite build",
-    "start": "node dist/server/server.js",
+    "start": "vite preview --port 3000 --host",
     "serve": "vite preview",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
