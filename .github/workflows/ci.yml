@@ -1,9 +1,6 @@
 name: Continuous Integration
 
 on:
-  push:
-    branches:
-      - "**"
   pull_request:
     branches:
       - "main"
@@ -43,19 +40,3 @@ jobs:
       - name: Run Fullcheck
         run: pnpm turbo check typecheck test
 
-  trigger_deploy:
-    name: Trigger deploys
-    needs: [validations]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    uses: ./.github/workflows/deploy-web.yml
-    secrets: inherit
-
-  build_and_push_docker_images:
-    name: Build and Push Docker Images
-    needs: [validations]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    permissions:
-      contents: read
-      packages: write
-    uses: ./.github/workflows/docker.yml
-    secrets: inherit
