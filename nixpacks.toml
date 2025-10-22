@@ -6,11 +6,11 @@ cmds = [
   'npm install -g corepack',
   'corepack enable',
   'corepack prepare pnpm@10.9.0 --activate',
-  'cd ../.. && pnpm install --frozen-lockfile'
+  'pnpm install --frozen-lockfile'
 ]
 
 [phases.build]
-cmds = ['cd ../.. && pnpm build --filter=@tasks/web']
+cmds = ['pnpm build --filter=@tasks/web']
 
 [start]
 cmd = 'cd apps/web && pnpm start'
