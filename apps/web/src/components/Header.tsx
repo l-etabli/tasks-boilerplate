@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import {
   ChevronDown,
   ChevronRight,
+  ClipboardList,
   Home,
   Menu,
   Network,
@@ -10,27 +11,44 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useCurrentUser } from "@/providers/SessionProvider";
+import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [groupedExpanded, setGroupedExpanded] = useState<Record<string, boolean>>({});
+  const { currentUser } = useCurrentUser();
 
   return (
     <>
-      <header className="p-4 flex items-center bg-gray-800 text-white shadow-lg">
-        <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          aria-label="Open menu"
-        >
-          <Menu size={24} />
-        </button>
-        <h1 className="ml-4 text-xl font-semibold">
-          <Link to="/">
-            <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-10" />
-          </Link>
-        </h1>
+      <header className="p-4 flex items-center justify-between bg-gray-800 text-white shadow-lg">
+        <div className="flex items-center">
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+          <h1 className="ml-4 text-xl font-semibold">
+            <Link to="/">
+              <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-10" />
+            </Link>
+          </h1>
+        </div>
+        <div className="flex items-center gap-4">
+          {currentUser ? (
+            <>
+              <span className="text-sm">{currentUser.email}</span>
+              <LogoutButton />
+            </>
+          ) : (
+            <Link to="/login" className="text-sm hover:underline">
+              Sign In
+            </Link>
+          )}
+        </div>
       </header>
 
       <aside
@@ -62,6 +80,19 @@ export default function Header() {
           >
             <Home size={20} />
             <span className="font-medium">Home</span>
+          </Link>
+
+          <Link
+            to="/todos"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
+            activeProps={{
+              className:
+                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
+            }}
+          >
+            <ClipboardList size={20} />
+            <span className="font-medium">Todos</span>
           </Link>
 
           {/* Demo Links Start */}
