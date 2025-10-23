@@ -2,7 +2,13 @@ import { authClient } from "@/auth-client";
 
 export function LogoutButton() {
   const handleLogout = async () => {
-    await authClient.signOut();
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.href = "/";
+        },
+      },
+    });
   };
 
   return (

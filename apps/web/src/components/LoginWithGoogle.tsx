@@ -1,10 +1,14 @@
 import { authClient } from "@/auth-client";
 
-export function LoginWithGoogle() {
+interface LoginWithGoogleProps {
+  redirectUrl?: string;
+}
+
+export function LoginWithGoogle({ redirectUrl }: LoginWithGoogleProps) {
   const handleLogin = () => {
     authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: redirectUrl || "/",
     });
   };
 
