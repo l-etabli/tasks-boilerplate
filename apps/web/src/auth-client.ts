@@ -5,7 +5,7 @@ const baseURL =
   (typeof process !== "undefined" ? process.env?.BETTER_AUTH_URL : undefined);
 
 if (!baseURL) {
-  throw new Error("No BETTER_AUTH_URL provided");
+  throw new Error("No VITE_BETTER_AUTH_URL and/or BETTER_AUTH_URL provided");
 }
 
 export const authClient = createAuthClient({
