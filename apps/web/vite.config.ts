@@ -16,6 +16,12 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  ssr: {
+    noExternal: [/@tasks\/otel/],
+  },
+  optimizeDeps: {
+    exclude: ['@tasks/otel'],
+  },
 })
 
 export default config
