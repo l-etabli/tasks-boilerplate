@@ -10,12 +10,10 @@ type CreateOrganizationModalProps = {
 export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) {
   const router = useRouter();
   const nameId = useId();
-  const slugId = useId();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCustomForm, setShowCustomForm] = useState(false);
   const [orgName, setOrgName] = useState("");
-  const [orgSlug, setOrgSlug] = useState("");
 
   const createPersonalOrganization = async () => {
     setIsCreating(true);
@@ -45,7 +43,10 @@ export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) 
     setError(null);
 
     try {
-      const slug = orgSlug.trim() || orgName.toLowerCase().replace(/\s+/g, "-");
+      const slug = orgName
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
       await authClient.organization.create({
         name: orgName,
         slug,
@@ -89,22 +90,9 @@ export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) 
                 required
                 disabled={isCreating}
               />
-            </div>
-
-            <div>
-              <label htmlFor={slugId} className="block text-sm font-medium mb-1">
-                Slug (optional)
-              </label>
-              <input
-                id={slugId}
-                type="text"
-                value={orgSlug}
-                onChange={(e) => setOrgSlug(e.target.value)}
-                placeholder="acme-inc"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={isCreating}
-              />
-              <p className="text-xs text-gray-500 mt-1">Leave empty to auto-generate from name</p>
+              <p className="text-xs text-gray-500 mt-1">
+                Slug will be auto-generated from the name
+              </p>
             </div>
 
             <div className="flex gap-3 pt-2">

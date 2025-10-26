@@ -41,6 +41,12 @@ export default function Header() {
           {currentUser ? (
             <>
               <span className="text-sm">{currentUser.email}</span>
+              <Link
+                to="/settings"
+                className="text-sm px-3 py-1 rounded hover:bg-gray-700 transition-colors"
+              >
+                Settings
+              </Link>
               <LogoutButton />
             </>
           ) : (
