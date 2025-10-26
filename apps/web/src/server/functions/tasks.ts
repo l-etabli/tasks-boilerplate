@@ -1,36 +1,23 @@
-import { createServerFn } from "@tanstack/react-start";
 import { bootstrapUseCases } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
-import { getCurrentUserFn } from "./auth";
+import { createAuthenticatedServerFn } from "./createAuthenticatedServerFn";
 
 const useCases = bootstrapUseCases({
   kind: "pg",
   db: getKyselyDb(),
 });
 
-export const listTasks = createServerFn({
+export const listTasks = createAuthenticatedServerFn({
   method: "GET",
-}).handler(async () => {
-  const currentUser = await getCurrentUserFn();
-
-  if (!currentUser) {
-    throw new Error("Unauthorized");
-  }
-
+}).handler(async ({ currentUser }) => {
   return await useCases.listMyTasks({
     currentUser,
   });
 });
 
-export const addTask = createServerFn({ method: "POST" })
+export const addTask = createAuthenticatedServerFn({ method: "POST" })
   .inputValidator((data: { id: string; description: string }) => data)
-  .handler(async ({ data }) => {
-    const currentUser = await getCurrentUserFn();
-
-    if (!currentUser) {
-      throw new Error("Unauthorized");
-    }
-
+  .handler(async ({ data, currentUser }) => {
     await useCases.addTask({
       currentUser,
       input: data,
@@ -38,15 +25,9 @@ export const addTask = createServerFn({ method: "POST" })
     return { success: true };
   });
 
-export const deleteTask = createServerFn({ method: "POST" })
+export const deleteTask = createAuthenticatedServerFn({ method: "POST" })
   .inputValidator((data: { id: string }) => data)
-  .handler(async ({ data }) => {
-    const currentUser = await getCurrentUserFn();
-
-    if (!currentUser) {
-      throw new Error("Unauthorized");
-    }
-
+  .handler(async ({ data, currentUser }) => {
     await useCases.deleteTask({
       currentUser,
       input: data,

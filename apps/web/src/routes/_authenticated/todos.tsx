@@ -74,7 +74,7 @@ function RouteComponent() {
           <p className="text-gray-500">No tasks yet. Add one above!</p>
         ) : (
           <ul className="space-y-2">
-            {tasks.map((task) => (
+            {tasks.map((task: { id: string; description: string }) => (
               <li
                 key={task.id}
                 className="flex items-center justify-between p-4 bg-gray-50 rounded border border-gray-200"
