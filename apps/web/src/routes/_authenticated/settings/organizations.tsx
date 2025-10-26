@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { authClient } from "@/auth-client";
 
 export const Route = createFileRoute("/_authenticated/settings/organizations")({
@@ -9,7 +9,6 @@ export const Route = createFileRoute("/_authenticated/settings/organizations")({
 function OrganizationsSettings() {
   const router = useRouter();
   const { organizations, activeOrganizationId } = Route.useRouteContext();
-  const nameId = useId();
   const [isCreating, setIsCreating] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -101,11 +100,11 @@ function OrganizationsSettings() {
           <h3 className="font-semibold mb-3">Create New Organization</h3>
           <form onSubmit={handleCreateOrganization} className="space-y-3">
             <div>
-              <label htmlFor={nameId} className="block text-sm font-medium mb-1">
+              <label htmlFor={"orgName"} className="block text-sm font-medium mb-1">
                 Organization name
               </label>
               <input
-                id={nameId}
+                id={"orgName"}
                 type="text"
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}

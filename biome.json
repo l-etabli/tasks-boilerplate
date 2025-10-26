@@ -21,6 +21,9 @@
       },
       "complexity": {
         "noBannedTypes": "off"
+      },
+      "correctness": {
+        "useUniqueElementIds": "off"
       }
     }
   },

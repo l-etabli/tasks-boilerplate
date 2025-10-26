@@ -1,6 +1,6 @@
 import { useRouter } from "@tanstack/react-router";
 import type { User } from "@tasks/core";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { authClient } from "@/auth-client";
 
 type CreateOrganizationModalProps = {
@@ -9,7 +9,6 @@ type CreateOrganizationModalProps = {
 
 export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) {
   const router = useRouter();
-  const nameId = useId();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCustomForm, setShowCustomForm] = useState(false);
@@ -77,11 +76,11 @@ export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) 
 
           <form onSubmit={createCustomOrganization} className="space-y-4">
             <div>
-              <label htmlFor={nameId} className="block text-sm font-medium mb-1">
+              <label htmlFor="orgName" className="block text-sm font-medium mb-1">
                 Organization name
               </label>
               <input
-                id={nameId}
+                id="orgName"
                 type="text"
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
