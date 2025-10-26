@@ -37,6 +37,32 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     headers: request.headers,
   });
 
+  // Fetch member info for each organization to get role
+  const organizationsWithRoles = await Promise.all(
+    (organizations || []).map(async (org) => {
+      try {
+        // Get full organization details which includes member role
+        const fullOrg = await auth.api.getFullOrganization({
+          headers: request.headers,
+          query: { organizationId: org.id },
+        });
+
+        // Find current user's membership to get their role
+        const userMembership = fullOrg?.members?.find(
+          (member: any) => member.userId === session.user.id,
+        );
+
+        return {
+          ...org,
+          role: userMembership?.role || null,
+          members: fullOrg?.members || [],
+        };
+      } catch {
+        return { ...org, role: null, members: [] };
+      }
+    }),
+  );
+
   const user: User = {
     id: session.user.id,
     email: session.user.email,
@@ -47,7 +73,7 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
 
   return {
     user,
-    organizations: organizations || [],
+    organizations: organizationsWithRoles,
     activeOrganizationId: session.session.activeOrganizationId || null,
   };
 });
