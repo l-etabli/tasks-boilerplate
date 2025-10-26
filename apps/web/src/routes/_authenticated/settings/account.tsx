@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { authClient } from "@/auth-client";
 
 export const Route = createFileRoute("/_authenticated/settings/account")({
@@ -9,9 +9,6 @@ export const Route = createFileRoute("/_authenticated/settings/account")({
 function AccountSettings() {
   const { user } = Route.useRouteContext();
   const { data: session } = authClient.useSession();
-
-  const nameId = useId();
-  const emailId = useId();
 
   const [name, setName] = useState(session?.user?.name || "");
   const [email, setEmail] = useState(user.email);
@@ -88,12 +85,12 @@ function AccountSettings() {
           {/* Name Update */}
           <form onSubmit={handleUpdateName} className="space-y-3">
             <div>
-              <label htmlFor={nameId} className="block text-sm font-medium mb-1">
+              <label htmlFor="name" className="block text-sm font-medium mb-1">
                 Name
               </label>
               <div className="flex gap-2">
                 <input
-                  id={nameId}
+                  id="name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -116,12 +113,12 @@ function AccountSettings() {
           {canChangeEmail ? (
             <form onSubmit={handleUpdateEmail} className="space-y-3">
               <div>
-                <label htmlFor={emailId} className="block text-sm font-medium mb-1">
+                <label htmlFor="email" className="block text-sm font-medium mb-1">
                   Email
                 </label>
                 <div className="flex gap-2">
                   <input
-                    id={emailId}
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
