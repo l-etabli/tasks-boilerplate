@@ -5,6 +5,9 @@ export type AuthDatabase = {
   session: Session;
   user: User;
   verification: Verification;
+  organization: Organization;
+  member: Member;
+  invitation: Invitation;
 };
 
 type Timestamp = ColumnType<Date, Date | string, Date | string>;
@@ -34,6 +37,7 @@ interface Session {
   updatedAt: Timestamp;
   userAgent: string | null;
   userId: string;
+  activeOrganizationId: string | null;
 }
 
 interface User {
@@ -56,4 +60,31 @@ interface Verification {
   identifier: string;
   updatedAt: Timestamp | null;
   value: string;
+}
+
+interface Organization {
+  id: string;
+  name: string;
+  slug: string | null;
+  logo: string | null;
+  metadata: string | null;
+  createdAt: Timestamp;
+}
+
+interface Member {
+  id: string;
+  organizationId: string;
+  userId: string;
+  role: string;
+  createdAt: Timestamp;
+}
+
+interface Invitation {
+  id: string;
+  organizationId: string;
+  email: string;
+  role: string | null;
+  status: string;
+  expiresAt: Timestamp;
+  inviterId: string;
 }
