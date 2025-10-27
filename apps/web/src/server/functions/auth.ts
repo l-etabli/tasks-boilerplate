@@ -23,6 +23,16 @@ export const getCurrentUserFn = createServerFn({ method: "GET" }).handler(async 
   return user;
 });
 
+export const requireUser = createServerFn({ method: "GET" }).handler(async () => {
+  const user = await getCurrentUserFn();
+
+  if (!user) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+
+  return user;
+});
+
 export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx: unknown) => {
   const request = (ctx as { request: Request }).request;
   const session = await auth.api.getSession({

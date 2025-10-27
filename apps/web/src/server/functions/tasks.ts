@@ -1,35 +1,36 @@
+import { createServerFn } from "@tanstack/react-start";
 import { bootstrapUseCases } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
-import { createAuthenticatedServerFn } from "./createAuthenticatedServerFn";
+import { requireUser } from "./auth";
 
 const useCases = bootstrapUseCases({
   kind: "pg",
   db: getKyselyDb(),
 });
 
-export const listTasks = createAuthenticatedServerFn({
+export const listTasks = createServerFn({
   method: "GET",
-}).handler(async ({ currentUser }) => {
+}).handler(async () => {
   return await useCases.listMyTasks({
-    currentUser,
+    currentUser: await requireUser(),
   });
 });
 
-export const addTask = createAuthenticatedServerFn({ method: "POST" })
+export const addTask = createServerFn({ method: "POST" })
   .inputValidator((data: { id: string; description: string }) => data)
-  .handler(async ({ data, currentUser }) => {
+  .handler(async ({ data }) => {
     await useCases.addTask({
-      currentUser,
+      currentUser: await requireUser(),
       input: data,
     });
     return { success: true };
   });
 
-export const deleteTask = createAuthenticatedServerFn({ method: "POST" })
+export const deleteTask = createServerFn({ method: "POST" })
   .inputValidator((data: { id: string }) => data)
-  .handler(async ({ data, currentUser }) => {
+  .handler(async ({ data }) => {
     await useCases.deleteTask({
-      currentUser,
+      currentUser: await requireUser(),
       input: data,
     });
     return { success: true };

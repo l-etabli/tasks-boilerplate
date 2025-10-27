@@ -1,10 +1,9 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
+import { env } from "@/env";
 import Header from "../components/Header";
 import { SessionProvider } from "../providers/SessionProvider";
-
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -42,17 +41,19 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <SessionProvider>
           <Header />
           {children}
-          <TanStackDevtools
-            config={{
-              position: "bottom-right",
-            }}
-            plugins={[
-              {
-                name: "Tanstack Router",
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
+          {env.VITE_ENVIRONMENT === "local" && (
+            <TanStackDevtools
+              config={{
+                position: "bottom-right",
+              }}
+              plugins={[
+                {
+                  name: "Tanstack Router",
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
+          )}
         </SessionProvider>
         <Scripts />
       </body>

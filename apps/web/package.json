@@ -7,6 +7,7 @@
     "build": "vite build",
     "build:prod": "vite build",
     "start": "node .output/server/index.mjs",
+    "start:local": "dotenv -e ../../.env -- node .output/server/index.mjs",
     "serve": "vite preview",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
@@ -14,6 +15,7 @@
     "fullcheck": "pnpm -w fullcheck"
   },
   "dependencies": {
+    "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-router": "^1.132.0",
@@ -28,7 +30,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.0.6",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@tanstack/nitro-v2-vite-plugin": "^1.133.3",
@@ -38,6 +41,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
+    "dotenv-cli": "^10.0.0",
     "jsdom": "^27.0.0",
     "typescript": "^5.7.2",
     "vite": "^7.1.7",

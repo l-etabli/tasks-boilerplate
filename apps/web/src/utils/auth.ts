@@ -2,6 +2,7 @@ import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
+import { env } from "@/env";
 
 export const auth = betterAuth({
   database: {
@@ -28,8 +29,8 @@ export const auth = betterAuth({
 
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
 
@@ -62,7 +63,7 @@ export const auth = betterAuth({
       async sendInvitationEmail(data) {
         const { sendInvitationEmail } = await import("./email.js");
 
-        const acceptInvitationUrl = `${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/accept-invitation/${data.id}`;
+        const acceptInvitationUrl = `${env.BETTER_AUTH_URL}/accept-invitation/${data.id}`;
 
         await sendInvitationEmail({
           to: data.email,

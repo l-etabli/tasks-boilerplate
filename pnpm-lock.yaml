@@ -26,6 +26,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@t3-oss/env-core':
+        specifier: ^0.13.8
+        version: 0.13.8(typescript@5.9.3)(zod@4.1.12)
       '@tailwindcss/vite':
         specifier: ^4.0.6
         version: 4.1.14(vite@7.1.10(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
@@ -71,6 +74,9 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.1.10(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
+      zod:
+        specifier: ^4.1.12
+        version: 4.1.12
     devDependencies:
       '@tanstack/nitro-v2-vite-plugin':
         specifier: ^1.133.3
@@ -93,6 +99,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^5.0.4
         version: 5.0.4(vite@7.1.10(@types/node@22.18.12)(jiti@2.6.1)(lightningcss@1.30.1)(terser@5.44.0)(tsx@4.20.6))
+      dotenv-cli:
+        specifier: ^10.0.0
+        version: 10.0.0
       jsdom:
         specifier: ^27.0.0
         version: 27.0.1(postcss@8.5.6)

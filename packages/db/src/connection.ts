@@ -9,7 +9,7 @@ let db: Kysely<Db> | null = null;
 export const createPgPool = (sentry?: SentryInterface) => {
   if (!pgPool) {
     const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: typeof process !== "undefined" ? process.env.DATABASE_URL : undefined,
     });
     pgPool = sentry ? createSentryInstrumentedPool(pool, sentry) : pool;
   }

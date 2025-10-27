@@ -1,3 +1,5 @@
+import { env } from "@/env";
+
 /**
  * Email service for organization invitations
  *
@@ -31,10 +33,10 @@ export async function sendInvitationEmail(params: SendInvitationEmailParams): Pr
   // Example with Resend (commented out - uncomment and configure):
   /*
   const { Resend } = await import('resend');
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(env.RESEND_API_KEY);
 
   await resend.emails.send({
-    from: process.env.EMAIL_FROM as string,
+    from: env.EMAIL_FROM as string,
     to,
     subject: `You've been invited to join ${organizationName}`,
     html: `
@@ -47,7 +49,7 @@ export async function sendInvitationEmail(params: SendInvitationEmailParams): Pr
   */
 
   // Development fallback - log to console
-  if (process.env.NODE_ENV === "development") {
+  if (env.VITE_ENVIRONMENT === "local" || env.VITE_ENVIRONMENT === "development") {
     // biome-ignore lint: Development logging
     console.log("===== EMAIL INVITATION =====");
     // biome-ignore lint: Development logging
@@ -61,7 +63,7 @@ export async function sendInvitationEmail(params: SendInvitationEmailParams): Pr
   }
 
   // Production without email provider configured - throw error
-  if (process.env.NODE_ENV === "production" && !process.env.RESEND_API_KEY) {
+  if (env.VITE_ENVIRONMENT === "production" && !env.RESEND_API_KEY) {
     throw new Error(
       "Email service not configured. Set RESEND_API_KEY or implement alternative provider in apps/web/src/utils/email.ts",
     );

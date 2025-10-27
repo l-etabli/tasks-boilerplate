@@ -46,7 +46,8 @@
       "apps/*/src/**/*",
       "packages/*/src/**/*",
       "apps/web/.config",
-      "!apps/web/src/routeTree.gen.ts"
+      "!apps/web/src/routeTree.gen.ts",
+      "!apps/web-old/src/routeTree.gen.ts"
     ]
   },
   "overrides": [

@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Sentry } from "@tasks/sentry/client";
+import { env } from "@/env";
 import Header from "../components/Header";
 import { useI18nContext } from "../i18n/i18n-react";
 import type { Locales } from "../i18n/i18n-types";
@@ -86,7 +87,7 @@ function AppWithI18n() {
     <I18nProvider initialLocale={userPreferredLocale}>
       <Header />
       <Outlet />
-      {process.env.NODE_ENV === "development" && <TanStackRouterDevtools />}
+      {env.ENVIRONMENT === "local" && <TanStackRouterDevtools />}
       <TanstackQueryLayout />
     </I18nProvider>
   );
