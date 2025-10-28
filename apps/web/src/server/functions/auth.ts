@@ -81,9 +81,34 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
   };
 
+  let activeOrganizationId = session.session.activeOrganizationId || null;
+
+  // Auto-select if no active org is set
+  if (!activeOrganizationId && organizationsWithRoles.length > 0) {
+    // Priority 1: Personal organization (metadata contains type: "personal")
+    const personalOrg = organizationsWithRoles.find((org) => {
+      try {
+        const metadata = org.metadata ? JSON.parse(org.metadata) : {};
+        return metadata.type === "personal";
+      } catch {
+        return false;
+      }
+    });
+
+    // Priority 2: First organization
+    const orgToActivate = personalOrg || organizationsWithRoles[0];
+
+    await auth.api.setActiveOrganization({
+      headers: request.headers,
+      body: { organizationId: orgToActivate.id },
+    });
+
+    activeOrganizationId = orgToActivate.id;
+  }
+
   return {
     user,
     organizations: organizationsWithRoles,
-    activeOrganizationId: session.session.activeOrganizationId || null,
+    activeOrganizationId,
   };
 });
