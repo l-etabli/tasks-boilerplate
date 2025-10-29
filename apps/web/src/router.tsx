@@ -1,10 +1,9 @@
 import { createRouter } from "@tanstack/react-router";
-import { initSentry } from "./lib/sentry";
-import { initServerSentry } from "./lib/sentry.server";
+import { initServerSentry } from "./lib/sentry";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
-// Initialize server-side Sentry if running on server
+// Initialize server-side Sentry once at module load
 if (typeof window === "undefined") {
   initServerSentry();
 }
@@ -16,8 +15,6 @@ export const getRouter = () => {
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
   });
-
-  initSentry(router);
 
   return router;
 };

@@ -1,4 +1,3 @@
-import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
@@ -7,7 +6,7 @@ import Header from "../components/Header";
 import { SessionProvider } from "../providers/SessionProvider";
 import appCss from "../styles.css?url";
 
-export const Route = wrapCreateRootRouteWithSentry(createRootRoute)({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
