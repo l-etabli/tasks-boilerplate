@@ -1,5 +1,5 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { env } from "@/env";
 import Header from "../components/Header";
@@ -28,10 +28,23 @@ export const Route = createRootRoute({
     ],
   }),
 
-  shellComponent: RootDocument,
+  component: RootDocument,
+  errorComponent: ({ error }: { error: unknown }) => (
+    <RootDocument>
+      <div className="p-8 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
+        <p className="text-gray-600 mb-4">
+          {error instanceof Error ? error.message : "An unknown error occurred"}
+        </p>
+        <Link to="/" className="text-blue-500 hover:underline">
+          Go back to Home
+        </Link>
+      </div>
+    </RootDocument>
+  ),
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: { children?: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -40,7 +53,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <SessionProvider>
           <Header />
-          {children}
+          {children || <Outlet />}
           {env.VITE_ENVIRONMENT === "local" && (
             <TanStackDevtools
               config={{
