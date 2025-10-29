@@ -15,7 +15,7 @@
     "fullcheck": "pnpm -w fullcheck"
   },
   "dependencies": {
-    "@sentry/tanstackstart-react": "^10.17.0",
+    "@sentry/tanstackstart-react": "^10.22.0",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
