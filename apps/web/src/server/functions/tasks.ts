@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
-import { bootstrapUseCases } from "@tasks/core";
+import { addTaskSchema, bootstrapUseCases, deleteTaskSchema } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
-import { requireUser } from "./auth";
+import { authenticated } from "./auth";
 
 const useCases = bootstrapUseCases({
   kind: "pg",
@@ -11,26 +11,40 @@ const useCases = bootstrapUseCases({
 
 export const listTasks = createServerFn({
   method: "GET",
-}).handler(async () => {
-  return await useCases.listMyTasks({
-    currentUser: await requireUser(),
-  });
-});
+}).handler(
+  authenticated({
+    name: "listTasks",
+    handler: async (ctx) =>
+      useCases.listMyTasks({
+        currentUser: ctx.currentUser,
+      }),
+  }),
+);
 
 export const addTask = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: string; description: string }) => data)
-  .handler(async ({ data }) => {
-    await useCases.addTask({
-      currentUser: await requireUser(),
-      input: data,
-    });
-  });
+  .inputValidator(addTaskSchema)
+  .handler(
+    authenticated({
+      name: "addTask",
+      handler: async (ctx) => {
+        await useCases.addTask({
+          currentUser: ctx.currentUser,
+          input: ctx.data,
+        });
+      },
+    }),
+  );
 
 export const deleteTask = createServerFn({ method: "POST" })
-  .inputValidator((data: { id: string }) => data)
-  .handler(async ({ data }) => {
-    await useCases.deleteTask({
-      currentUser: await requireUser(),
-      input: data,
-    });
-  });
+  .inputValidator(deleteTaskSchema)
+  .handler(
+    authenticated({
+      name: "deleteTask",
+      handler: async (ctx) => {
+        await useCases.deleteTask({
+          currentUser: ctx.currentUser,
+          input: ctx.data,
+        });
+      },
+    }),
+  );

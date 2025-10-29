@@ -1,39 +1,51 @@
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn, type ServerFn, type ServerFnCtx } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
-import { auth } from "@/utils/auth";
 
-export const getCurrentUserFn = createServerFn({ method: "GET" }).handler(async (ctx: unknown) => {
-  const request = (ctx as { request: Request }).request;
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
+type AnyServerFnCtx = ServerFnCtx<any, any, any, any>;
 
-  if (!session?.user) {
-    return null;
-  }
+const getRequestHeaders = (ctx: AnyServerFnCtx): Request["headers"] => {
+  const { request } = ctx as unknown as { request: Request };
+  return request.headers;
+};
 
-  const user: User = {
+const getCurrentUser = async (headers: Request["headers"]): Promise<User | null> => {
+  const { auth } = await import("@/utils/auth");
+  const session = await auth.api.getSession({ headers });
+
+  if (!session?.user) return null;
+
+  return {
     id: session.user.id,
     email: session.user.email,
     activePlan: (session.user.activePlan as "pro" | null) || null,
     activeSubscriptionId: session.user.activeSubscriptionId || null,
     preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
   };
+};
 
-  return user;
-});
-
-export const requireUser = createServerFn({ method: "GET" }).handler(async () => {
-  const user = await getCurrentUserFn();
-
-  if (!user) {
-    throw new Response("Unauthorized", { status: 401 });
-  }
-
-  return user;
-});
+export const authenticated = <
+  TRegister,
+  TMethod,
+  TMiddlewares,
+  TInputValidator,
+  TResponse,
+>(params: {
+  name: string;
+  handler: (
+    params: ServerFnCtx<TRegister, TMethod, TMiddlewares, TInputValidator> & {
+      currentUser: User;
+    },
+  ) => TResponse;
+}) =>
+  (async (ctx) => {
+    const headers = getRequestHeaders(ctx);
+    const currentUser = await getCurrentUser(headers);
+    if (!currentUser) throw new Response("Unauthorized", { status: 401 });
+    return params.handler({ ...ctx, currentUser });
+  }) as ServerFn<TRegister, TMethod, TMiddlewares, TInputValidator, TResponse>;
 
 export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx: unknown) => {
+  const { auth } = await import("@/utils/auth");
   const request = (ctx as { request: Request }).request;
   const session = await auth.api.getSession({
     headers: request.headers,
