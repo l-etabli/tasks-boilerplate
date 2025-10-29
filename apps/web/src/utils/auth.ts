@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/tanstackstart-react";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { organization } from "better-auth/plugins";
@@ -6,7 +7,7 @@ import { env } from "@/env";
 
 export const auth = betterAuth({
   database: {
-    db: getKyselyDb(),
+    db: getKyselyDb(Sentry),
     type: "postgres",
   },
 

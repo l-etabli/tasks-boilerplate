@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
 import { bootstrapUseCases } from "@tasks/core";
 import { getKyselyDb } from "@tasks/db";
@@ -5,7 +6,7 @@ import { requireUser } from "./auth";
 
 const useCases = bootstrapUseCases({
   kind: "pg",
-  db: getKyselyDb(),
+  db: getKyselyDb(Sentry),
 });
 
 export const listTasks = createServerFn({
@@ -23,7 +24,6 @@ export const addTask = createServerFn({ method: "POST" })
       currentUser: await requireUser(),
       input: data,
     });
-    return { success: true };
   });
 
 export const deleteTask = createServerFn({ method: "POST" })
@@ -33,5 +33,4 @@ export const deleteTask = createServerFn({ method: "POST" })
       currentUser: await requireUser(),
       input: data,
     });
-    return { success: true };
   });
