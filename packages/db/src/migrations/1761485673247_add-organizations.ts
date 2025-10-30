@@ -1,4 +1,5 @@
 import type { Kysely } from "kysely";
+import { sql } from "kysely";
 
 // Better Auth organization plugin tables
 // Reference: https://www.better-auth.com/docs/plugins/organization
@@ -12,7 +13,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("slug", "text", (col) => col.unique())
     .addColumn("logo", "text")
     .addColumn("metadata", "text")
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
     .execute();
 
   // Member table (links users to organizations with roles)
@@ -24,7 +25,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     )
     .addColumn("userId", "text", (col) => col.notNull().references("user.id").onDelete("cascade"))
     .addColumn("role", "text", (col) => col.notNull())
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
     .execute();
 
   // Invitation table
@@ -37,7 +38,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("email", "text", (col) => col.notNull())
     .addColumn("role", "text")
     .addColumn("status", "text", (col) => col.notNull())
-    .addColumn("expiresAt", "timestamp", (col) => col.notNull())
+    .addColumn("expiresAt", "timestamptz", (col) => col.notNull())
     .addColumn("inviterId", "text", (col) =>
       col.notNull().references("user.id").onDelete("cascade"),
     )

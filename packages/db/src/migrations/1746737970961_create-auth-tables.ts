@@ -1,4 +1,5 @@
 import type { Kysely } from "kysely";
+import { sql } from "kysely";
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
@@ -9,17 +10,17 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("emailVerified", "boolean", (col) => col.notNull())
     .addColumn("image", "text")
     .addColumn("preferences", "jsonb")
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
     .execute();
 
   await db.schema
     .createTable("session")
     .addColumn("id", "text", (col) => col.primaryKey().notNull())
-    .addColumn("expiresAt", "timestamp", (col) => col.notNull())
+    .addColumn("expiresAt", "timestamptz", (col) => col.notNull())
     .addColumn("token", "text", (col) => col.notNull().unique())
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
     .addColumn("ipAddress", "text")
     .addColumn("userAgent", "text")
     .addColumn("userId", "text", (col) => col.notNull().references("user.id"))
@@ -34,12 +35,12 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("accessToken", "text")
     .addColumn("refreshToken", "text")
     .addColumn("idToken", "text")
-    .addColumn("accessTokenExpiresAt", "timestamp")
-    .addColumn("refreshTokenExpiresAt", "timestamp")
+    .addColumn("accessTokenExpiresAt", "timestamptz")
+    .addColumn("refreshTokenExpiresAt", "timestamptz")
     .addColumn("scope", "text")
     .addColumn("password", "text")
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
     .execute();
 
   await db.schema
@@ -47,9 +48,9 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("id", "text", (col) => col.primaryKey().notNull())
     .addColumn("identifier", "text", (col) => col.notNull())
     .addColumn("value", "text", (col) => col.notNull())
-    .addColumn("expiresAt", "timestamp", (col) => col.notNull())
-    .addColumn("createdAt", "timestamp")
-    .addColumn("updatedAt", "timestamp")
+    .addColumn("expiresAt", "timestamptz", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz")
     .execute();
 }
 
