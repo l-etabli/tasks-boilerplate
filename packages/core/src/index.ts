@@ -1,15 +1,18 @@
 import type { Kysely } from "kysely";
-import {
-  createInMemoryTaskQueries,
-  createInMemoryUserQueries,
-} from "./adapters/inMemoryQueries.js";
+import { createInMemoryTaskQueries } from "./adapters/inMemory/taskQueries.js";
+import { createInMemoryUserQueries } from "./adapters/inMemory/userQueries.js";
+import { createWithInMemoryUnitOfWork } from "./adapters/inMemory/withInMemoryUow.js";
 import type { Db } from "./adapters/pg/database.js";
-import { createPgTaskQueries, createPgUserQueries } from "./adapters/pg/queries.js";
+import { createPgTaskQueries } from "./adapters/pg/taskQueries.js";
+import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
-import { createWithInMemoryUnitOfWork } from "./adapters/withInMemoryUow.js";
-import { addTask, deleteTask, updateUserPreferences } from "./domain/useCases.js";
+import { addTask } from "./domain/use-cases/addTask.js";
+import { deleteTask } from "./domain/use-cases/deleteTask.js";
+import { updateUserPreferences } from "./domain/use-cases/updateUserPreferences.js";
 
-export * from "./domain/entities.js";
+export * from "./domain/entities/subscription.js";
+export * from "./domain/entities/task.js";
+export * from "./domain/entities/user-and-organization.js";
 
 type UowConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 

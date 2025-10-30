@@ -8,32 +8,7 @@ export type User = {
   preferredLocale: "en" | "fr" | null;
 };
 
-export type Task = {
-  id: string;
-  description: string;
-  owner: User;
-};
-
 type Pretty<T> = { [K in keyof T]: T[K] };
-
-export type AddTaskInput = Pretty<z.infer<typeof addTaskSchema>>;
-export const addTaskSchema = z.object({
-  id: z.string(),
-  description: z.string(),
-});
-
-export type DeleteTaskInput = Pretty<z.infer<typeof deleteTaskSchema>>;
-export const deleteTaskSchema = z.object({
-  id: z.string(),
-});
-
-export type Subscription = {
-  id: string;
-  plan: "pro";
-  createdAt: Date;
-  expiresAt: Date;
-  isTrial: boolean;
-};
 
 export type UpdateUserPreferencesInput = Pretty<z.infer<typeof updateUserPreferencesSchema>>;
 export const updateUserPreferencesSchema = z.object({
