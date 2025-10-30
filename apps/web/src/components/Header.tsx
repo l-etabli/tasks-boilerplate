@@ -5,12 +5,15 @@ import { ModeToggle } from "@tasks/ui/components/mode-toggle";
 import { ChevronDown, ChevronRight, ClipboardList, Menu, Settings, X } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { useCurrentUser } from "@/providers/SessionProvider";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [settingsExpanded, setSettingsExpanded] = useState(false);
   const { currentUser } = useCurrentUser();
+  const { LL } = useI18nContext();
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -33,17 +36,18 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               onClick={() => setSidebarOpen(!sidebarOpen)}
               variant="ghost"
               size="icon"
-              aria-label="Toggle menu"
+              aria-label={LL.header.toggleMenu()}
               className="md:hidden"
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
             <Link to="/todos" className="flex items-center gap-2 font-semibold">
-              <span className="text-lg">Tasks</span>
+              <span className="text-lg">{LL.app.title()}</span>
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
+            <LocaleSwitcher />
             <ModeToggle />
             {currentUser ? (
               <>
@@ -51,12 +55,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                   <span className="text-xs font-normal">{currentUser.email}</span>
                 </Badge>
                 <Button type="button" onClick={handleLogout} variant="destructive" size="sm">
-                  Sign Out
+                  {LL.auth.signOut()}
                 </Button>
               </>
             ) : (
               <Button asChild>
-                <Link to="/login">Sign In</Link>
+                <Link to="/login">{LL.auth.signIn()}</Link>
               </Button>
             )}
           </div>
@@ -71,7 +75,12 @@ export default function Header({ children }: { children?: React.ReactNode }) {
           }`}
         >
           <nav className="flex flex-col gap-2 p-4">
-            <NavLink to="/todos" icon={ClipboardList} label="Todos" onNavigate={closeSidebar} />
+            <NavLink
+              to="/todos"
+              icon={ClipboardList}
+              label={LL.nav.todos()}
+              onNavigate={closeSidebar}
+            />
 
             <div className="my-4 border-t border-gray-200 dark:border-slate-800" />
 
@@ -83,7 +92,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               >
                 <div className="flex items-center gap-3">
                   <Settings size={20} />
-                  <span>Settings</span>
+                  <span>{LL.nav.settings()}</span>
                 </div>
                 {settingsExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
               </Button>
@@ -92,13 +101,13 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                   <NavLink
                     to="/settings/account"
                     icon={Settings}
-                    label="Account"
+                    label={LL.nav.account()}
                     onNavigate={closeSidebar}
                   />
                   <NavLink
                     to="/settings/organizations"
                     icon={Settings}
-                    label="Organizations"
+                    label={LL.nav.organizations()}
                     onNavigate={closeSidebar}
                   />
                 </div>

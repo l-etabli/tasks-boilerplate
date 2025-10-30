@@ -29,7 +29,16 @@ pnpm test
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
+## Internationalization
 
+This app uses [`typesafe-i18n`](https://github.com/ivanhofer/typesafe-i18n) with English (`en`) and French (`fr`) locales.
+
+- Run `pnpm dev:with-i18n` during development to keep translation types in sync.
+- Locale files live in `src/i18n/<locale>/index.ts`. Update both locales when you add new keys.
+- To regenerate the typings manually, run `pnpm typesafe-i18n`.
+- Wrap new components with `useI18nContext()` to access the `LL` translation helpers and `locale/setLocale`.
+
+The language picker in the header persists the chosen locale (local storage for guests, database for authenticated users).
 
 
 ## Routing
