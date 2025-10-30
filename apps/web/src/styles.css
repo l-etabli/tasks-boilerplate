@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import "@tasks/ui/globals.css";
 
 body {
   @apply m-0;
