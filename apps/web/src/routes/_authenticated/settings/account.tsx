@@ -73,8 +73,8 @@ function AccountSettings() {
           <div
             className={`mb-4 p-3 rounded ${
               message.type === "success"
-                ? "bg-green-50 border border-green-200 text-green-700"
-                : "bg-red-50 border border-red-200 text-red-700"
+                ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+                : "bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400"
             }`}
           >
             {message.text}
@@ -95,7 +95,7 @@ function AccountSettings() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   disabled={isUpdating}
                 />
                 <button
@@ -123,7 +123,7 @@ function AccountSettings() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled={isUpdating}
                     required
                   />
@@ -135,7 +135,7 @@ function AccountSettings() {
                     {isUpdating ? "Saving..." : "Save"}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   Changing your email will require verification
                 </p>
               </div>
@@ -143,10 +143,10 @@ function AccountSettings() {
           ) : (
             <div>
               <div className="text-sm font-medium mb-1">Email</div>
-              <div className="px-3 py-2 border border-gray-200 rounded bg-gray-50 text-gray-700">
+              <div className="px-3 py-2 border border-gray-200 dark:border-slate-800 rounded bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-gray-300">
                 {currentUser.email}
               </div>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Email cannot be changed for OAuth accounts (Google, etc.)
               </p>
             </div>
@@ -156,10 +156,10 @@ function AccountSettings() {
 
       {/* Account Overview */}
       {currentUser.activePlan && (
-        <div className="border-t border-gray-200 pt-6">
+        <div className="border-t border-gray-200 dark:border-slate-800 pt-6">
           <h3 className="text-lg font-medium mb-3">Account Overview</h3>
           <div className="text-sm">
-            <span className="text-gray-500">Plan: </span>
+            <span className="text-gray-500 dark:text-gray-400">Plan: </span>
             <span className="font-semibold capitalize">{currentUser.activePlan}</span>
           </div>
         </div>
