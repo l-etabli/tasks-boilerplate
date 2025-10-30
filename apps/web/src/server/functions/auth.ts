@@ -65,15 +65,18 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
   const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
   if (!authenticated) return null;
 
-  const { currentUser, activeOrganizationId } = authenticated;
+  const { currentUser } = authenticated;
 
   const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
+
+  const activeOrganizationId =
+    authenticated.activeOrganizationId ??
+    (organizations.length > 0 ? await getDefaultActiveOrganization(headers, organizations) : null);
 
   return {
     currentUser,
     organizations,
-    activeOrganizationId:
-      activeOrganizationId ?? (await getDefaultActiveOrganization(headers, organizations)),
+    activeOrganizationId,
   };
 });
 
@@ -81,6 +84,10 @@ const getDefaultActiveOrganization = async (
   headers: Request["headers"],
   organizationsWithRoles: { id: string; metadata?: any }[],
 ): Promise<string | null> => {
+  if (organizationsWithRoles.length === 0) {
+    return null;
+  }
+
   const { auth } = await import("@/utils/auth");
   const personalOrg = organizationsWithRoles.find((org) => {
     try {
@@ -91,13 +98,13 @@ const getDefaultActiveOrganization = async (
     }
   });
 
-  // Priority 2: First organization
-  const orgToActivate = personalOrg || organizationsWithRoles[0];
+  // Priority 1: Personal organization, Priority 2: First organization
+  const orgToActivate = personalOrg ?? organizationsWithRoles[0];
 
   await auth.api.setActiveOrganization({
     headers,
     body: { organizationId: orgToActivate.id },
   });
 
-  return orgToActivate?.id ?? null;
+  return orgToActivate.id;
 };
