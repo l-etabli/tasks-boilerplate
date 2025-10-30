@@ -31,5 +31,5 @@ export const updateUserPreferences = createServerFn({ method: "POST" })
   .inputValidator(updateUserPreferencesSchema)
   .handler(async ({ data }) => {
     const currentUser = await getCurrentUser();
-    return useCases.updateUserPreferences({ currentUser, input: data });
+    return useCases.mutations.updateUserPreferences({ currentUser, input: data });
   });

@@ -79,9 +79,7 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
 
   const { currentUser, activeOrganizationId } = authenticated;
 
-  const organizations = await useCases.getCurrentUserOrganizations({
-    currentUser,
-  });
+  const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
 
   return {
     currentUser,

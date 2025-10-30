@@ -8,10 +8,7 @@ export const listTasks = createServerFn({
 }).handler(
   authenticated({
     name: "listTasks",
-    handler: async (ctx) =>
-      useCases.listMyTasks({
-        currentUser: ctx.currentUser,
-      }),
+    handler: async (ctx) => useCases.queries.task.getAllTasksForUser(ctx.currentUser.id),
   }),
 );
 
@@ -21,7 +18,7 @@ export const addTask = createServerFn({ method: "POST" })
     authenticated({
       name: "addTask",
       handler: async (ctx) => {
-        await useCases.addTask({
+        await useCases.mutations.addTask({
           currentUser: ctx.currentUser,
           input: ctx.data,
         });
@@ -35,7 +32,7 @@ export const deleteTask = createServerFn({ method: "POST" })
     authenticated({
       name: "deleteTask",
       handler: async (ctx) => {
-        await useCases.deleteTask({
+        await useCases.mutations.deleteTask({
           currentUser: ctx.currentUser,
           input: ctx.data,
         });

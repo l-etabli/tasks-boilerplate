@@ -18,10 +18,6 @@ export const addTask = createAuthTransacUseCase
     });
   });
 
-export const listMyTasks = createAuthTransacUseCase.build(async ({ currentUser, uow }) =>
-  uow.taskRepository.getAllForUser(currentUser.id),
-);
-
 export const deleteTask = createAuthTransacUseCase
   .withInput<DeleteTaskInput>()
   .build(({ input, uow }) => {
@@ -33,9 +29,3 @@ export const updateUserPreferences = createAuthTransacUseCase
   .build(({ input, currentUser, uow }) => {
     return uow.userRepository.updatePreferences(currentUser.id, input);
   });
-
-export const getCurrentUserOrganizations = createAuthTransacUseCase.build(
-  ({ currentUser, uow }) => {
-    return uow.userRepository.getCurrentUserOrganizations(currentUser.id);
-  },
-);

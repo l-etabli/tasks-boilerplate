@@ -29,19 +29,19 @@ async function getCurrentUser(): Promise<User> {
 
 export const listTasks = createServerFn({ method: "GET" }).handler(async () => {
   const currentUser = await getCurrentUser();
-  return useCases.listMyTasks({ currentUser });
+  return useCases.queries.task.getAllTasksForUser(currentUser.id);
 });
 
 export const addTask = createServerFn({ method: "POST" })
   .inputValidator(addTaskSchema)
   .handler(async ({ data }) => {
     const currentUser = await getCurrentUser();
-    return useCases.addTask({ currentUser, input: data });
+    return useCases.mutations.addTask({ currentUser, input: data });
   });
 
 export const deleteTask = createServerFn({ method: "POST" })
   .inputValidator(deleteTaskSchema)
   .handler(async ({ data }) => {
     const currentUser = await getCurrentUser();
-    return useCases.deleteTask({ currentUser, input: data });
+    return useCases.mutations.deleteTask({ currentUser, input: data });
   });

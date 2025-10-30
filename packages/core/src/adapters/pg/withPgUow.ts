@@ -1,27 +1,9 @@
 import type { Kysely } from "kysely";
-import { jsonArrayFrom, jsonBuildObject } from "kysely/helpers/postgres";
 import type { TaskRepository, UserRepository, WithUow } from "../../domain/ports.js";
 import type { Db } from "./database.js";
 
 export const createPgTaskRepository = (trx: Kysely<Db>) =>
   ({
-    getAllForUser: async (userId) =>
-      trx
-        .selectFrom("tasks")
-        .innerJoin("user", "user.id", "tasks.ownerId")
-        .where("ownerId", "=", userId)
-        .select(({ ref }) => [
-          "tasks.id as id",
-          "description",
-          jsonBuildObject({
-            id: ref("user.id"),
-            email: ref("user.email"),
-            activePlan: ref("user.activePlan"),
-            activeSubscriptionId: ref("user.activeSubscriptionId"),
-            preferredLocale: ref("user.preferredLocale"),
-          }).as("owner"),
-        ])
-        .execute(),
     save: async (task) => {
       await trx
         .insertInto("tasks")
@@ -39,7 +21,7 @@ export const createPgTaskRepository = (trx: Kysely<Db>) =>
 
 export const createPgUserRepository = (trx: Kysely<Db>) =>
   ({
-    updatePreferences: async (userId, preferences) => {
+    updatePreferences: async (userId: string, preferences) => {
       const result = await trx
         .updateTable("user")
         .set(preferences)
@@ -48,40 +30,6 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
         .executeTakeFirstOrThrow();
 
       return result;
-    },
-    getCurrentUserOrganizations: async (userId) => {
-      const organizations = await trx
-        .selectFrom("organization")
-        .innerJoin("member as currentUserMember", (join) =>
-          join
-            .onRef("currentUserMember.organizationId", "=", "organization.id")
-            .on("currentUserMember.userId", "=", userId),
-        )
-        .select((eb) => [
-          "organization.id",
-          "organization.name",
-          "organization.slug",
-          "organization.logo",
-          "organization.metadata",
-          "organization.createdAt",
-          "currentUserMember.role as role",
-          jsonArrayFrom(
-            eb
-              .selectFrom("member")
-              .whereRef("member.organizationId", "=", "organization.id")
-              .select(["member.id", "member.userId", "member.role", "member.createdAt"]),
-          ).as("members"),
-        ])
-        .execute();
-
-      return organizations.map((org) => ({
-        ...org,
-        createdAt: new Date(org.createdAt),
-        members: org.members.map((member) => ({
-          ...member,
-          createdAt: new Date(member.createdAt),
-        })),
-      }));
     },
   }) satisfies UserRepository;
 

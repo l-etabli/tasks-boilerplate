@@ -1,27 +1,19 @@
-import type { Organization, Task, UpdateUserPreferencesInput, User } from "../domain/entities.js";
+import type { Task, UpdateUserPreferencesInput, User } from "../domain/entities.js";
 import type { TaskRepository, UserRepository, WithUow } from "../domain/ports.js";
 
-// type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
-export const createInMemoryTaskRepositiory = () => {
-  const taskById: Record<string, Task> = {};
-
-  return {
-    getAllForUser: async (userId) =>
-      Object.values(taskById).filter((task) => task.owner.id === userId),
+// type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepository>;
+export const createInMemoryTaskRepository = (taskById: Record<string, Task>) =>
+  ({
     save: async (task) => {
       taskById[task.id] = task;
     },
     delete: async (taskId) => {
       delete taskById[taskId];
     },
-  } satisfies TaskRepository;
-};
+  }) satisfies TaskRepository;
 
-export const createInMemoryUserRepository = () => {
-  const userById: Record<string, User> = {};
-  const organizationsById: Record<string, Organization> = {};
-
-  return {
+export const createInMemoryUserRepository = (userById: Record<string, User>) =>
+  ({
     updatePreferences: async (
       userId: string,
       preferences: UpdateUserPreferencesInput,
@@ -35,18 +27,15 @@ export const createInMemoryUserRepository = () => {
       userById[userId] = updatedUser;
       return updatedUser;
     },
-    getCurrentUserOrganizations: async (userId: string): Promise<Organization[]> => {
-      return Object.values(organizationsById).filter((org) =>
-        org.members.some((member) => member.userId === userId),
-      );
-    },
-  } satisfies UserRepository;
-};
+  }) satisfies UserRepository;
 
 export const createWithInMemoryUnitOfWork = (): WithUow => {
+  const taskById: Record<string, Task> = {};
+  const userById: Record<string, User> = {};
+
   const uow = {
-    taskRepository: createInMemoryTaskRepositiory(),
-    userRepository: createInMemoryUserRepository(),
+    taskRepository: createInMemoryTaskRepository(taskById),
+    userRepository: createInMemoryUserRepository(userById),
   };
   return (cb) => cb(uow);
 };
