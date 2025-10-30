@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@tasks/ui/components/badge";
 import { Button } from "@tasks/ui/components/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@tasks/ui/components/sheet";
 import {
   ChevronDown,
   ChevronRight,
@@ -10,7 +11,6 @@ import {
   Network,
   SquareFunction,
   StickyNote,
-  X,
 } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
@@ -32,12 +32,11 @@ export default function Header() {
   };
 
   return (
-    <>
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
-        <div className="flex h-16 items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="flex items-center gap-3">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <Button
-              type="button"
               onClick={() => setIsOpen(true)}
               variant="ghost"
               size="icon"
@@ -46,186 +45,136 @@ export default function Header() {
             >
               <Menu size={20} />
             </Button>
-            <Link to="/" className="flex items-center gap-2 font-semibold">
-              <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-8" />
-              <span className="hidden text-lg sm:inline">Tasks</span>
-            </Link>
-          </div>
+            <SheetContent side="left" className="w-64">
+              <SheetHeader>
+                <SheetTitle>Navigation</SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-2 mt-6">
+                <NavLink to="/" icon={Home} label="Home" onNavigate={() => setIsOpen(false)} />
+                <NavLink
+                  to="/todos"
+                  icon={ClipboardList}
+                  label="Todos"
+                  onNavigate={() => setIsOpen(false)}
+                />
 
-          <div className="flex items-center gap-4">
-            {currentUser ? (
-              <>
-                <Badge variant="outline" className="hidden gap-2 sm:flex">
-                  <span className="text-xs font-normal">{currentUser.email}</span>
-                </Badge>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/settings">Settings</Link>
-                </Button>
-                <Button type="button" onClick={handleLogout} variant="destructive" size="sm">
-                  Sign Out
-                </Button>
-              </>
-            ) : (
-              <Button asChild>
-                <Link to="/login">Sign In</Link>
+                <div className="my-4 border-t" />
+
+                {/* Demo Links Start */}
+                <NavLink
+                  to="/demo/start/server-funcs"
+                  icon={SquareFunction}
+                  label="Start - Server Functions"
+                  onNavigate={() => setIsOpen(false)}
+                />
+                <NavLink
+                  to="/demo/start/api-request"
+                  icon={Network}
+                  label="Start - API Request"
+                  onNavigate={() => setIsOpen(false)}
+                />
+
+                <div className="mb-2">
+                  <Button
+                    onClick={() =>
+                      setGroupedExpanded((prev) => ({
+                        ...prev,
+                        StartSSRDemo: !prev.StartSSRDemo,
+                      }))
+                    }
+                    variant="ghost"
+                    className="w-full justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      <StickyNote size={20} />
+                      <span>Start - SSR Demos</span>
+                    </div>
+                    {groupedExpanded.StartSSRDemo ? (
+                      <ChevronDown size={16} />
+                    ) : (
+                      <ChevronRight size={16} />
+                    )}
+                  </Button>
+                  {groupedExpanded.StartSSRDemo && (
+                    <div className="ml-4 flex flex-col gap-2 mt-2">
+                      <NavLink
+                        to="/demo/start/ssr/spa-mode"
+                        icon={StickyNote}
+                        label="SPA Mode"
+                        onNavigate={() => setIsOpen(false)}
+                      />
+                      <NavLink
+                        to="/demo/start/ssr/full-ssr"
+                        icon={StickyNote}
+                        label="Full SSR"
+                        onNavigate={() => setIsOpen(false)}
+                      />
+                      <NavLink
+                        to="/demo/start/ssr/data-only"
+                        icon={StickyNote}
+                        label="Data Only"
+                        onNavigate={() => setIsOpen(false)}
+                      />
+                    </div>
+                  )}
+                </div>
+                {/* Demo Links End */}
+              </nav>
+            </SheetContent>
+          </Sheet>
+
+          <Link to="/" className="flex items-center gap-2 font-semibold">
+            <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-8" />
+            <span className="hidden text-lg sm:inline">Tasks</span>
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-4">
+          {currentUser ? (
+            <>
+              <Badge variant="outline" className="hidden gap-2 sm:flex">
+                <span className="text-xs font-normal">{currentUser.email}</span>
+              </Badge>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/settings">Settings</Link>
               </Button>
-            )}
-          </div>
-        </div>
-      </header>
-
-      <aside
-        className={`fixed top-0 left-0 h-full w-80 bg-gray-900 text-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-gray-700">
-          <h2 className="text-xl font-bold">Navigation</h2>
-          <Button
-            type="button"
-            onClick={() => setIsOpen(false)}
-            variant="secondary"
-            size="icon"
-            className="bg-gray-800 text-white hover:bg-gray-700"
-            aria-label="Close menu"
-          >
-            <X size={24} />
-          </Button>
-        </div>
-
-        <nav className="flex-1 p-4 overflow-y-auto">
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <Home size={20} />
-            <span className="font-medium">Home</span>
-          </Link>
-
-          <Link
-            to="/todos"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <ClipboardList size={20} />
-            <span className="font-medium">Todos</span>
-          </Link>
-
-          {/* Demo Links Start */}
-
-          <Link
-            to="/demo/start/server-funcs"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <SquareFunction size={20} />
-            <span className="font-medium">Start - Server Functions</span>
-          </Link>
-
-          <Link
-            to="/demo/start/api-request"
-            onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-            activeProps={{
-              className:
-                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-            }}
-          >
-            <Network size={20} />
-            <span className="font-medium">Start - API Request</span>
-          </Link>
-
-          <div className="flex flex-row justify-between">
-            <Link
-              to="/demo/start/ssr"
-              onClick={() => setIsOpen(false)}
-              className="flex-1 flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-              activeProps={{
-                className:
-                  "flex-1 flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-              }}
-            >
-              <StickyNote size={20} />
-              <span className="font-medium">Start - SSR Demos</span>
-            </Link>
-            <Button
-              type="button"
-              variant="secondary"
-              size="icon"
-              className="bg-gray-800 text-white hover:bg-gray-700"
-              onClick={() =>
-                setGroupedExpanded((prev) => ({
-                  ...prev,
-                  StartSSRDemo: !prev.StartSSRDemo,
-                }))
-              }
-            >
-              {groupedExpanded.StartSSRDemo ? (
-                <ChevronDown size={20} />
-              ) : (
-                <ChevronRight size={20} />
-              )}
+              <Button type="button" onClick={handleLogout} variant="destructive" size="sm">
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button asChild>
+              <Link to="/login">Sign In</Link>
             </Button>
-          </div>
-          {groupedExpanded.StartSSRDemo && (
-            <div className="flex flex-col ml-4">
-              <Link
-                to="/demo/start/ssr/spa-mode"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-                activeProps={{
-                  className:
-                    "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-                }}
-              >
-                <StickyNote size={20} />
-                <span className="font-medium">SPA Mode</span>
-              </Link>
-
-              <Link
-                to="/demo/start/ssr/full-ssr"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-                activeProps={{
-                  className:
-                    "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-                }}
-              >
-                <StickyNote size={20} />
-                <span className="font-medium">Full SSR</span>
-              </Link>
-
-              <Link
-                to="/demo/start/ssr/data-only"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
-                activeProps={{
-                  className:
-                    "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
-                }}
-              >
-                <StickyNote size={20} />
-                <span className="font-medium">Data Only</span>
-              </Link>
-            </div>
           )}
+        </div>
+      </div>
+    </header>
+  );
+}
 
-          {/* Demo Links End */}
-        </nav>
-      </aside>
-    </>
+function NavLink({
+  to,
+  icon: Icon,
+  label,
+  onNavigate,
+}: {
+  to: string;
+  icon: React.ComponentType<{ size: number }>;
+  label: string;
+  onNavigate: () => void;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onNavigate}
+      className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent"
+      activeProps={{
+        className: "flex items-center gap-3 rounded-md px-3 py-2 text-sm bg-accent font-medium",
+      }}
+    >
+      <Icon size={18} />
+      <span>{label}</span>
+    </Link>
   );
 }
