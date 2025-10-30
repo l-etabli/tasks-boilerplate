@@ -27,9 +27,9 @@ export default function Header() {
           <Button
             type="button"
             onClick={() => setIsOpen(true)}
-            variant="ghost"
+            variant="secondary"
             size="icon"
-            className="hover:bg-gray-700 text-white"
+            className="bg-gray-700 text-white hover:bg-gray-600"
             aria-label="Open menu"
           >
             <Menu size={24} />
@@ -44,13 +44,22 @@ export default function Header() {
           {currentUser ? (
             <>
               <span className="text-sm">{currentUser.email}</span>
-              <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700" asChild>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-gray-700 text-white hover:bg-gray-600"
+                asChild
+              >
                 <Link to="/settings">Settings</Link>
               </Button>
               <LogoutButton />
             </>
           ) : (
-            <Button variant="link" className="text-white" asChild>
+            <Button
+              variant="secondary"
+              className="bg-gray-700 text-white hover:bg-gray-600"
+              asChild
+            >
               <Link to="/login">Sign In</Link>
             </Button>
           )}
@@ -67,9 +76,9 @@ export default function Header() {
           <Button
             type="button"
             onClick={() => setIsOpen(false)}
-            variant="ghost"
+            variant="secondary"
             size="icon"
-            className="hover:bg-gray-800 text-white"
+            className="bg-gray-800 text-white hover:bg-gray-700"
             aria-label="Close menu"
           >
             <X size={24} />
@@ -146,9 +155,9 @@ export default function Header() {
             </Link>
             <Button
               type="button"
-              variant="ghost"
+              variant="secondary"
               size="icon"
-              className="hover:bg-gray-800 text-white"
+              className="bg-gray-800 text-white hover:bg-gray-700"
               onClick={() =>
                 setGroupedExpanded((prev) => ({
                   ...prev,
