@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useI18nContext } from "@/i18n/i18n-react";
 import { addTask, deleteTask, listTasks } from "@/server/functions/tasks";
 
 export const Route = createFileRoute("/_authenticated/todos")({
@@ -15,6 +16,7 @@ function RouteComponent() {
   const [tasks, setTasks] = useState(initialTasks);
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { LL } = useI18nContext();
 
   const handleAddTask = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ function RouteComponent() {
 
   return (
     <div className="container mx-auto p-8 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-6">Todos</h1>
+      <h1 className="text-3xl font-bold mb-6">{LL.todos.title()}</h1>
 
       <form onSubmit={handleAddTask} className="mb-8">
         <div className="flex gap-2">
@@ -54,7 +56,7 @@ function RouteComponent() {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter task description..."
+            placeholder={LL.todos.inputPlaceholder()}
             className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded"
             disabled={isSubmitting}
           />
@@ -63,15 +65,17 @@ function RouteComponent() {
             disabled={isSubmitting || !description.trim()}
             className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Adding..." : "Add Task"}
+            {isSubmitting ? LL.todos.adding() : LL.todos.add()}
           </button>
         </div>
       </form>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">Tasks ({tasks.length})</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          {LL.todos.listHeading({ count: tasks.length })}
+        </h2>
         {tasks.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">No tasks yet. Add one above!</p>
+          <p className="text-gray-500 dark:text-gray-400">{LL.todos.empty()}</p>
         ) : (
           <ul className="space-y-2">
             {tasks.map((task: { id: string; description: string }) => (
@@ -85,7 +89,7 @@ function RouteComponent() {
                   onClick={() => handleDeleteTask(task.id)}
                   className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
                 >
-                  Delete
+                  {LL.todos.delete()}
                 </button>
               </li>
             ))}

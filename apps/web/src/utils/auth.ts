@@ -22,7 +22,7 @@ export const auth = betterAuth({
         required: false,
       },
       preferredLocale: {
-        type: "string",
+        type: ["en", "fr"],
         required: false,
       },
     },

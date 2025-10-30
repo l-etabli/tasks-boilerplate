@@ -12,6 +12,7 @@ import { Input } from "@tasks/ui/components/input";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
+import { useI18nContext } from "@/i18n/i18n-react";
 
 type CreateOrganizationModalProps = {
   currentUser: User;
@@ -23,6 +24,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
   const [error, setError] = useState<string | null>(null);
   const [showCustomForm, setShowCustomForm] = useState(false);
   const [orgName, setOrgName] = useState("");
+  const { LL } = useI18nContext();
 
   const createPersonalOrganization = async () => {
     setIsCreating(true);
@@ -40,7 +42,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
 
       router.invalidate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create organization");
+      setError(err instanceof Error ? err.message : LL.organization.createFailed());
     } finally {
       setIsCreating(false);
     }
@@ -63,7 +65,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
 
       router.invalidate();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create organization");
+      setError(err instanceof Error ? err.message : LL.organization.createFailed());
     } finally {
       setIsCreating(false);
     }
@@ -75,8 +77,8 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
         {showCustomForm ? (
           <>
             <DialogHeader>
-              <DialogTitle>Create organization</DialogTitle>
-              <DialogDescription>Set up your workspace with a custom name</DialogDescription>
+              <DialogTitle>{LL.organization.customFormTitle()}</DialogTitle>
+              <DialogDescription>{LL.organization.customFormDescription()}</DialogDescription>
             </DialogHeader>
 
             {error && (
@@ -89,20 +91,18 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
             <form onSubmit={createCustomOrganization} className="space-y-4">
               <div className="space-y-2">
                 <label htmlFor="orgName" className="text-sm font-medium">
-                  Organization name
+                  {LL.organization.nameLabel()}
                 </label>
                 <Input
                   id="orgName"
                   type="text"
                   value={orgName}
                   onChange={(e) => setOrgName(e.target.value)}
-                  placeholder="Acme Inc"
+                  placeholder={LL.organization.namePlaceholder()}
                   required
                   disabled={isCreating}
                 />
-                <p className="text-xs text-muted-foreground">
-                  Slug will be auto-generated from the name
-                </p>
+                <p className="text-xs text-muted-foreground">{LL.organization.slugHint()}</p>
               </div>
 
               <div className="flex gap-2">
@@ -113,10 +113,10 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                   disabled={isCreating}
                   className="flex-1"
                 >
-                  Back
+                  {LL.organization.back()}
                 </Button>
                 <Button type="submit" disabled={isCreating || !orgName.trim()} className="flex-1">
-                  {isCreating ? "Creating..." : "Create"}
+                  {isCreating ? LL.organization.creating() : LL.organization.create()}
                 </Button>
               </div>
             </form>
@@ -124,8 +124,8 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Create your organization</DialogTitle>
-              <DialogDescription>Choose how you'll use this workspace</DialogDescription>
+              <DialogTitle>{LL.organization.modalTitle()}</DialogTitle>
+              <DialogDescription>{LL.organization.modalDescription()}</DialogDescription>
             </DialogHeader>
 
             {error && (
@@ -144,9 +144,9 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                 className="h-auto w-full justify-start p-4 text-left"
               >
                 <div className="w-full">
-                  <div className="font-semibold">Personal workspace</div>
+                  <div className="font-semibold">{LL.organization.personalOptionTitle()}</div>
                   <div className="text-xs text-muted-foreground">
-                    Quick setup for individual use
+                    {LL.organization.personalOptionDescription()}
                   </div>
                 </div>
               </Button>
@@ -156,7 +156,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                   <div className="w-full border-t" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="bg-background px-2 text-muted-foreground">or</span>
+                  <span className="bg-background px-2 text-muted-foreground">{LL.common.or()}</span>
                 </div>
               </div>
 
@@ -168,9 +168,9 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                 className="h-auto w-full justify-start p-4 text-left"
               >
                 <div className="w-full">
-                  <div className="font-semibold">Custom organization</div>
+                  <div className="font-semibold">{LL.organization.customOptionTitle()}</div>
                   <div className="text-xs text-muted-foreground">
-                    Set up with custom name and settings
+                    {LL.organization.customOptionDescription()}
                   </div>
                 </div>
               </Button>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
+import { useI18nContext } from "@/i18n/i18n-react";
 
 export const Route = createFileRoute("/_authenticated/settings/account")({
   component: AccountSettings,
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/_authenticated/settings/account")({
 function AccountSettings() {
   const { currentUser } = Route.useRouteContext();
   const { data: session } = authClient.useSession();
+  const { LL } = useI18nContext();
+  const t = LL.settings.account;
 
   const [name, setName] = useState(session?.user?.name || "");
   const [email, setEmail] = useState(currentUser.email);
@@ -30,11 +33,11 @@ function AccountSettings() {
       await authClient.updateUser({
         name,
       });
-      setMessage({ type: "success", text: "Name updated successfully" });
+      setMessage({ type: "success", text: t.nameSuccess() });
     } catch (err) {
       setMessage({
         type: "error",
-        text: err instanceof Error ? err.message : "Failed to update name",
+        text: err instanceof Error ? err.message : t.nameError(),
       });
     } finally {
       setIsUpdating(false);
@@ -52,12 +55,12 @@ function AccountSettings() {
       });
       setMessage({
         type: "success",
-        text: "Email update initiated. Check your inbox for verification.",
+        text: t.emailSuccess(),
       });
     } catch (err) {
       setMessage({
         type: "error",
-        text: err instanceof Error ? err.message : "Failed to update email",
+        text: err instanceof Error ? err.message : t.emailError(),
       });
     } finally {
       setIsUpdating(false);
@@ -67,7 +70,7 @@ function AccountSettings() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-xl font-semibold mb-4">Account Information</h2>
+        <h2 className="text-xl font-semibold mb-4">{t.heading()}</h2>
 
         {message && (
           <div
@@ -86,7 +89,7 @@ function AccountSettings() {
           <form onSubmit={handleUpdateName} className="space-y-3">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-1">
-                Name
+                {t.nameLabel()}
               </label>
               <div className="flex gap-2">
                 <input
@@ -94,7 +97,7 @@ function AccountSettings() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name"
+                  placeholder={t.namePlaceholder()}
                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   disabled={isUpdating}
                 />
@@ -103,7 +106,7 @@ function AccountSettings() {
                   disabled={isUpdating || !name.trim() || name === session?.user?.name}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isUpdating ? "Saving..." : "Save"}
+                  {isUpdating ? LL.common.saving() : LL.common.save()}
                 </button>
               </div>
             </div>
@@ -114,7 +117,7 @@ function AccountSettings() {
             <form onSubmit={handleUpdateEmail} className="space-y-3">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium mb-1">
-                  Email
+                  {t.emailLabel()}
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -122,7 +125,7 @@ function AccountSettings() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
+                    placeholder={t.emailPlaceholder()}
                     className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     disabled={isUpdating}
                     required
@@ -132,23 +135,21 @@ function AccountSettings() {
                     disabled={isUpdating || !email.trim() || email === currentUser.email}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isUpdating ? "Saving..." : "Save"}
+                    {isUpdating ? LL.common.saving() : LL.common.save()}
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Changing your email will require verification
+                  {t.emailVerificationNote()}
                 </p>
               </div>
             </form>
           ) : (
             <div>
-              <div className="text-sm font-medium mb-1">Email</div>
+              <div className="text-sm font-medium mb-1">{t.emailLabel()}</div>
               <div className="px-3 py-2 border border-gray-200 dark:border-slate-800 rounded bg-gray-50 dark:bg-slate-900 text-gray-700 dark:text-gray-300">
                 {currentUser.email}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Email cannot be changed for OAuth accounts (Google, etc.)
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t.emailOAuthNote()}</p>
             </div>
           )}
         </div>
@@ -157,9 +158,9 @@ function AccountSettings() {
       {/* Account Overview */}
       {currentUser.activePlan && (
         <div className="border-t border-gray-200 dark:border-slate-800 pt-6">
-          <h3 className="text-lg font-medium mb-3">Account Overview</h3>
+          <h3 className="text-lg font-medium mb-3">{t.overviewHeading()}</h3>
           <div className="text-sm">
-            <span className="text-gray-500 dark:text-gray-400">Plan: </span>
+            <span className="text-gray-500 dark:text-gray-400">{t.planLabel()} </span>
             <span className="font-semibold capitalize">{currentUser.activePlan}</span>
           </div>
         </div>

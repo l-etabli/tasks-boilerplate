@@ -1,13 +1,16 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { useI18nContext } from "@/i18n/i18n-react";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsLayout,
 });
 
 function SettingsLayout() {
+  const { LL } = useI18nContext();
+
   return (
     <div className="container mx-auto p-8 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
+      <h1 className="text-3xl font-bold mb-6">{LL.settings.title()}</h1>
 
       <div className="mb-6 border-b border-gray-200 dark:border-slate-800">
         <nav className="flex gap-4">
@@ -20,7 +23,7 @@ function SettingsLayout() {
             }}
             activeOptions={{ exact: false }}
           >
-            Account
+            {LL.settings.accountTab()}
           </Link>
           <Link
             to="/settings/organizations"
@@ -31,7 +34,7 @@ function SettingsLayout() {
             }}
             activeOptions={{ exact: false }}
           >
-            Organizations
+            {LL.settings.organizationsTab()}
           </Link>
         </nav>
       </div>
