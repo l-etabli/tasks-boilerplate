@@ -1,3 +1,4 @@
+import { Button } from "@tasks/ui/components/button";
 import { authClient } from "@/auth-client";
 
 export function LogoutButton() {
@@ -12,12 +13,13 @@ export function LogoutButton() {
   };
 
   return (
-    <button
+    <Button
       type="button"
       onClick={handleLogout}
-      className="px-4 py-2 border border-white/30 text-white rounded-lg hover:bg-white/10 transition-colors"
+      variant="outline"
+      className="border-white/30 text-white hover:bg-white/10"
     >
       Sign Out
-    </button>
+    </Button>
   );
 }
