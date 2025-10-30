@@ -21,8 +21,6 @@ const getCurrentUserAndActiveOrganisationId = async (
         currentUser: {
           id: session.user.id,
           email: session.user.email,
-          activePlan: (session.user.activePlan as "pro" | null) || null,
-          activeSubscriptionId: session.user.activeSubscriptionId || null,
           preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
         },
         activeOrganizationId: session.session.activeOrganizationId ?? null,

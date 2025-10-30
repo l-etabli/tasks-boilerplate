@@ -154,17 +154,6 @@ function AccountSettings() {
           )}
         </div>
       </div>
-
-      {/* Account Overview */}
-      {currentUser.activePlan && (
-        <div className="border-t border-gray-200 dark:border-slate-800 pt-6">
-          <h3 className="text-lg font-medium mb-3">{t.overviewHeading()}</h3>
-          <div className="text-sm">
-            <span className="text-gray-500 dark:text-gray-400">{t.planLabel()} </span>
-            <span className="font-semibold capitalize">{currentUser.activePlan}</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

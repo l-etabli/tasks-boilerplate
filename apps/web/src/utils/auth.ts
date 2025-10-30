@@ -13,14 +13,6 @@ export const auth = betterAuth({
 
   user: {
     additionalFields: {
-      activePlan: {
-        type: "string",
-        required: false,
-      },
-      activeSubscriptionId: {
-        type: "string",
-        required: false,
-      },
       preferredLocale: {
         type: ["en", "fr"],
         required: false,

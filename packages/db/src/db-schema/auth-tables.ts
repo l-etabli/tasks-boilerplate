@@ -41,8 +41,6 @@ interface Session {
 }
 
 interface User {
-  activePlan: "pro" | null;
-  activeSubscriptionId: string | null;
   createdAt: Timestamp;
   email: string;
   emailVerified: boolean;

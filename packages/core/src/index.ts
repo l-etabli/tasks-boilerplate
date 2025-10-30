@@ -10,7 +10,6 @@ import { addTask } from "./domain/use-cases/addTask.js";
 import { deleteTask } from "./domain/use-cases/deleteTask.js";
 import { updateUserPreferences } from "./domain/use-cases/updateUserPreferences.js";
 
-export * from "./domain/entities/subscription.js";
 export * from "./domain/entities/task.js";
 export * from "./domain/entities/user-and-organization.js";
 

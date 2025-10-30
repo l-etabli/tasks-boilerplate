@@ -1,5 +1,5 @@
 -- Insert test user for development
-INSERT INTO "user" (id, email, "emailVerified", name, image, "createdAt", "updatedAt", "activePlan", "activeSubscriptionId", "preferredLocale")
+INSERT INTO "user" (id, email, "emailVerified", name, image, "createdAt", "updatedAt", "preferredLocale")
 VALUES (
   'test-user-id',
   'test@example.com',
@@ -8,8 +8,6 @@ VALUES (
   NULL,
   NOW(),
   NOW(),
-  NULL,
-  NULL,
   NULL
 )
 ON CONFLICT (id) DO NOTHING;

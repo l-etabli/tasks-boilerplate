@@ -9,7 +9,7 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
         .updateTable("user")
         .set(preferences)
         .where("id", "=", userId)
-        .returning(["id", "email", "activePlan", "activeSubscriptionId", "preferredLocale"])
+        .returning(["id", "email", "preferredLocale"])
         .executeTakeFirstOrThrow();
 
       return result;
