@@ -1,5 +1,5 @@
-import { Button } from "@tasks/ui/components/button";
 import { Badge } from "@tasks/ui/components/badge";
+import { Button } from "@tasks/ui/components/button";
 
 /**
  * Example component demonstrating the use of shadcn/ui components from @tasks/ui package
@@ -9,9 +9,7 @@ export function ShadcnExample() {
   return (
     <div className="flex flex-col gap-4 p-8">
       <h2 className="text-2xl font-bold">shadcn/ui Example</h2>
-      <p className="text-muted-foreground">
-        Components imported from @tasks/ui package
-      </p>
+      <p className="text-muted-foreground">Components imported from @tasks/ui package</p>
 
       <div className="flex gap-2 flex-wrap">
         <Button variant="default">Default Button</Button>

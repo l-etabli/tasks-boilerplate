@@ -1,3 +1,4 @@
+import { Button } from "@tasks/ui/components/button";
 import { authClient } from "@/auth-client";
 
 interface LoginWithGoogleProps {
@@ -13,12 +14,13 @@ export function LoginWithGoogle({ redirectUrl }: LoginWithGoogleProps) {
   };
 
   return (
-    <button
+    <Button
       type="button"
       onClick={handleLogin}
-      className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+      className="w-full bg-blue-600 text-white hover:bg-blue-700"
+      size="lg"
     >
       Sign in with Google
-    </button>
+    </Button>
   );
 }

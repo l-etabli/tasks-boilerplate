@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Button } from "@tasks/ui/components/button";
 import {
   ChevronDown,
   ChevronRight,
@@ -23,14 +24,16 @@ export default function Header() {
     <>
       <header className="p-4 flex items-center justify-between bg-gray-800 text-white shadow-lg">
         <div className="flex items-center">
-          <button
+          <Button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+            variant="ghost"
+            size="icon"
+            className="hover:bg-gray-700 text-white"
             aria-label="Open menu"
           >
             <Menu size={24} />
-          </button>
+          </Button>
           <h1 className="ml-4 text-xl font-semibold">
             <Link to="/">
               <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-10" />
@@ -41,18 +44,15 @@ export default function Header() {
           {currentUser ? (
             <>
               <span className="text-sm">{currentUser.email}</span>
-              <Link
-                to="/settings"
-                className="text-sm px-3 py-1 rounded hover:bg-gray-700 transition-colors"
-              >
-                Settings
-              </Link>
+              <Button variant="ghost" size="sm" className="text-white hover:bg-gray-700" asChild>
+                <Link to="/settings">Settings</Link>
+              </Button>
               <LogoutButton />
             </>
           ) : (
-            <Link to="/login" className="text-sm hover:underline">
-              Sign In
-            </Link>
+            <Button variant="link" className="text-white" asChild>
+              <Link to="/login">Sign In</Link>
+            </Button>
           )}
         </div>
       </header>
@@ -64,14 +64,16 @@ export default function Header() {
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h2 className="text-xl font-bold">Navigation</h2>
-          <button
+          <Button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            variant="ghost"
+            size="icon"
+            className="hover:bg-gray-800 text-white"
             aria-label="Close menu"
           >
             <X size={24} />
-          </button>
+          </Button>
         </div>
 
         <nav className="flex-1 p-4 overflow-y-auto">
@@ -142,9 +144,11 @@ export default function Header() {
               <StickyNote size={20} />
               <span className="font-medium">Start - SSR Demos</span>
             </Link>
-            <button
+            <Button
               type="button"
-              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+              variant="ghost"
+              size="icon"
+              className="hover:bg-gray-800 text-white"
               onClick={() =>
                 setGroupedExpanded((prev) => ({
                   ...prev,
@@ -157,7 +161,7 @@ export default function Header() {
               ) : (
                 <ChevronRight size={20} />
               )}
-            </button>
+            </Button>
           </div>
           {groupedExpanded.StartSSRDemo && (
             <div className="flex flex-col ml-4">
