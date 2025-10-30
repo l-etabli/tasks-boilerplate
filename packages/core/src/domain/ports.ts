@@ -1,4 +1,4 @@
-import type { Task, UpdateUserPreferencesInput, User } from "./entities.js";
+import type { Organization, Task, UpdateUserPreferencesInput, User } from "./entities.js";
 
 export type TaskRepository = {
   save: (task: Task) => Promise<void>;
@@ -8,6 +8,7 @@ export type TaskRepository = {
 
 export type UserRepository = {
   updatePreferences: (userId: string, preferences: UpdateUserPreferencesInput) => Promise<User>;
+  getCurrentUserOrganizations: (userId: string) => Promise<Organization[]>;
 };
 
 export type Uow = {

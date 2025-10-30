@@ -1,4 +1,4 @@
-import type { Task, UpdateUserPreferencesInput, User } from "../domain/entities.js";
+import type { Organization, Task, UpdateUserPreferencesInput, User } from "../domain/entities.js";
 import type { TaskRepository, UserRepository, WithUow } from "../domain/ports.js";
 
 // type InMemoryTaskRepository = ReturnType<typeof createInMemoryTaskRepositiory>;
@@ -19,6 +19,7 @@ export const createInMemoryTaskRepositiory = () => {
 
 export const createInMemoryUserRepository = () => {
   const userById: Record<string, User> = {};
+  const organizationsById: Record<string, Organization> = {};
 
   return {
     updatePreferences: async (
@@ -33,6 +34,11 @@ export const createInMemoryUserRepository = () => {
       const updatedUser = { ...existingUser, ...preferences };
       userById[userId] = updatedUser;
       return updatedUser;
+    },
+    getCurrentUserOrganizations: async (userId: string): Promise<Organization[]> => {
+      return Object.values(organizationsById).filter((org) =>
+        org.members.some((member) => member.userId === userId),
+      );
     },
   } satisfies UserRepository;
 };
