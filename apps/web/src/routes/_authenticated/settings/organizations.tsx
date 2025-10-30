@@ -67,7 +67,7 @@ function OrganizationsSettings() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">Your Organizations</h2>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
             {organizations.length} {organizations.length === 1 ? "organization" : "organizations"}
           </p>
         </div>
@@ -86,8 +86,8 @@ function OrganizationsSettings() {
         <div
           className={`p-3 rounded ${
             message.type === "success"
-              ? "bg-green-50 border border-green-200 text-green-700"
-              : "bg-red-50 border border-red-200 text-red-700"
+              ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+              : "bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400"
           }`}
         >
           {message.text}
@@ -96,7 +96,7 @@ function OrganizationsSettings() {
 
       {/* Create Organization Form */}
       {showCreateForm && (
-        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div className="border border-gray-200 dark:border-slate-800 rounded-lg p-4 bg-gray-50 dark:bg-slate-900">
           <h3 className="font-semibold mb-3">Create New Organization</h3>
           <form onSubmit={handleCreateOrganization} className="space-y-3">
             <div>
@@ -109,11 +109,11 @@ function OrganizationsSettings() {
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
                 placeholder="Acme Inc"
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
                 disabled={isCreating}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Slug will be auto-generated from the name
               </p>
             </div>
@@ -125,7 +125,7 @@ function OrganizationsSettings() {
                   setShowCreateForm(false);
                   setOrgName("");
                 }}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50"
+                className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-700 rounded hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-50"
                 disabled={isCreating}
               >
                 Cancel
@@ -145,15 +145,17 @@ function OrganizationsSettings() {
       {/* Organizations List */}
       <div className="space-y-3">
         {organizations.length === 0 ? (
-          <p className="text-gray-500">No organizations yet. Create one above!</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            No organizations yet. Create one above!
+          </p>
         ) : (
           organizations.map((org) => (
             <div
               key={org.id}
               className={`border rounded-lg p-4 ${
                 org.id === activeOrganizationId
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 bg-white"
+                  ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-950"
+                  : "border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900"
               }`}
             >
               <div className="flex items-center justify-between">
@@ -166,17 +168,17 @@ function OrganizationsSettings() {
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
                     {org.slug && <span>Slug: {org.slug}</span>}
-                    <span className="text-gray-700 font-medium capitalize">
+                    <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
                       Role: {org.role || "unknown"}
                     </span>
                   </div>
 
                   {/* Members list */}
                   {org.members && org.members.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-200">
-                      <div className="text-sm font-medium text-gray-700 mb-2">
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
+                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Members ({org.members.length})
                       </div>
                       <div className="space-y-1">
@@ -185,10 +187,10 @@ function OrganizationsSettings() {
                             key={member.id}
                             className="flex items-center justify-between text-sm"
                           >
-                            <span className="text-gray-600">
+                            <span className="text-gray-600 dark:text-gray-400">
                               {member.user?.name || member.user?.email || "Unknown user"}
                             </span>
-                            <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded capitalize">
+                            <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
                               {member.role}
                             </span>
                           </div>
@@ -202,7 +204,7 @@ function OrganizationsSettings() {
                     type="button"
                     onClick={() => handleSetActive(org.id)}
                     disabled={isSwitching}
-                    className="px-4 py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-50 disabled:opacity-50"
+                    className="px-4 py-2 border border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-950 disabled:opacity-50"
                   >
                     {isSwitching ? "Switching..." : "Set Active"}
                   </button>

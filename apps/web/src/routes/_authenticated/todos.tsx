@@ -55,13 +55,13 @@ function RouteComponent() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter task description..."
-            className="flex-1 px-4 py-2 border border-gray-300 rounded"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded"
             disabled={isSubmitting}
           />
           <button
             type="submit"
             disabled={isSubmitting || !description.trim()}
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Adding..." : "Add Task"}
           </button>
@@ -71,15 +71,15 @@ function RouteComponent() {
       <div>
         <h2 className="text-xl font-semibold mb-4">Tasks ({tasks.length})</h2>
         {tasks.length === 0 ? (
-          <p className="text-gray-500">No tasks yet. Add one above!</p>
+          <p className="text-gray-500 dark:text-gray-400">No tasks yet. Add one above!</p>
         ) : (
           <ul className="space-y-2">
             {tasks.map((task: { id: string; description: string }) => (
               <li
                 key={task.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded border border-gray-200"
+                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-900 rounded border border-gray-200 dark:border-slate-800"
               >
-                <span>{task.description}</span>
+                <span className="dark:text-gray-100">{task.description}</span>
                 <button
                   type="button"
                   onClick={() => handleDeleteTask(task.id)}
