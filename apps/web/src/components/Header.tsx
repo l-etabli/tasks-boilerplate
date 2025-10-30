@@ -16,7 +16,7 @@ import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { useCurrentUser } from "@/providers/SessionProvider";
 
-export default function Header() {
+export default function Header({ children }: { children?: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [groupedExpanded, setGroupedExpanded] = useState<Record<string, boolean>>({});
   const { currentUser } = useCurrentUser();
@@ -151,7 +151,7 @@ export default function Header() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1" />
+        <main className="flex-1 overflow-auto">{children}</main>
       </div>
     </>
   );
