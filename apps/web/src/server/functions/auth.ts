@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn, type ServerFn, type ServerFnCtx } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
 
@@ -8,19 +9,32 @@ const getRequestHeaders = (ctx: AnyServerFnCtx): Request["headers"] => {
   return request.headers;
 };
 
-const getCurrentUser = async (headers: Request["headers"]): Promise<User | null> => {
-  const { auth } = await import("@/utils/auth");
-  const session = await auth.api.getSession({ headers });
+const getCurrentUserAndActiveOrganisationId = async (
+  headers: Request["headers"],
+): Promise<{ currentUser: User; activeOrganizationId: string | null } | null> => {
+  return Sentry.startSpan(
+    {
+      op: "auth.session",
+      name: "getCurrentUser",
+    },
+    async () => {
+      const { auth } = await import("@/utils/auth");
+      const session = await auth.api.getSession({ headers });
 
-  if (!session?.user) return null;
+      if (!session?.user) return null;
 
-  return {
-    id: session.user.id,
-    email: session.user.email,
-    activePlan: (session.user.activePlan as "pro" | null) || null,
-    activeSubscriptionId: session.user.activeSubscriptionId || null,
-    preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
-  };
+      return {
+        currentUser: {
+          id: session.user.id,
+          email: session.user.email,
+          activePlan: (session.user.activePlan as "pro" | null) || null,
+          activeSubscriptionId: session.user.activeSubscriptionId || null,
+          preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
+        },
+        activeOrganizationId: session.session.activeOrganizationId ?? null,
+      };
+    },
+  );
 };
 
 export const authenticated = <
@@ -34,30 +48,38 @@ export const authenticated = <
   handler: (
     params: ServerFnCtx<TRegister, TMethod, TMiddlewares, TInputValidator> & {
       currentUser: User;
+      activeOrganizationId: string | null;
     },
   ) => TResponse;
 }) =>
   (async (ctx) => {
-    const headers = getRequestHeaders(ctx);
-    const currentUser = await getCurrentUser(headers);
-    if (!currentUser) throw new Response("Unauthorized", { status: 401 });
-    return params.handler({ ...ctx, currentUser });
+    return Sentry.startSpan(
+      {
+        op: "useCase",
+        name: params.name,
+      },
+      async () => {
+        const headers = getRequestHeaders(ctx);
+        const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
+        if (!authenticated) throw new Response("Unauthorized", { status: 401 });
+        const { currentUser, activeOrganizationId } = authenticated;
+
+        Sentry.setUser({ id: currentUser.id });
+
+        return params.handler({ ...ctx, currentUser, activeOrganizationId });
+      },
+    );
   }) as ServerFn<TRegister, TMethod, TMiddlewares, TInputValidator, TResponse>;
 
-export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx: unknown) => {
+export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx) => {
   const { auth } = await import("@/utils/auth");
-  const request = (ctx as { request: Request }).request;
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  });
+  const headers = getRequestHeaders(ctx);
+  const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
+  if (!authenticated) return null;
 
-  if (!session?.user) {
-    return null;
-  }
+  const { currentUser, activeOrganizationId } = authenticated;
 
-  const organizations = await auth.api.listOrganizations({
-    headers: request.headers,
-  });
+  const organizations = await auth.api.listOrganizations({ headers });
 
   // Fetch member info for each organization to get role
   const organizationsWithRoles = await Promise.all(
@@ -65,13 +87,13 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
       try {
         // Get full organization details which includes member role
         const fullOrg = await auth.api.getFullOrganization({
-          headers: request.headers,
+          headers,
           query: { organizationId: org.id },
         });
 
         // Find current user's membership to get their role
         const userMembership = fullOrg?.members?.find(
-          (member: any) => member.userId === session.user.id,
+          (member: any) => member.userId === currentUser.id,
         );
 
         return {
@@ -85,42 +107,35 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     }),
   );
 
-  const user: User = {
-    id: session.user.id,
-    email: session.user.email,
-    activePlan: (session.user.activePlan as "pro" | null) || null,
-    activeSubscriptionId: session.user.activeSubscriptionId || null,
-    preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
-  };
-
-  let activeOrganizationId = session.session.activeOrganizationId || null;
-
-  // Auto-select if no active org is set
-  if (!activeOrganizationId && organizationsWithRoles.length > 0) {
-    // Priority 1: Personal organization (metadata contains type: "personal")
-    const personalOrg = organizationsWithRoles.find((org) => {
-      try {
-        const metadata = org.metadata ? JSON.parse(org.metadata) : {};
-        return metadata.type === "personal";
-      } catch {
-        return false;
-      }
-    });
-
-    // Priority 2: First organization
-    const orgToActivate = personalOrg || organizationsWithRoles[0];
-
-    await auth.api.setActiveOrganization({
-      headers: request.headers,
-      body: { organizationId: orgToActivate.id },
-    });
-
-    activeOrganizationId = orgToActivate.id;
-  }
-
   return {
-    user,
+    currentUser,
     organizations: organizationsWithRoles,
-    activeOrganizationId,
+    activeOrganizationId:
+      activeOrganizationId ?? (await getDefaultActiveOrganization(headers, organizationsWithRoles)),
   };
 });
+
+const getDefaultActiveOrganization = async (
+  headers: Request["headers"],
+  organizationsWithRoles: { id: string; metadata?: any }[],
+): Promise<string | null> => {
+  const { auth } = await import("@/utils/auth");
+  const personalOrg = organizationsWithRoles.find((org) => {
+    try {
+      const metadata = org.metadata ? JSON.parse(org.metadata) : {};
+      return metadata.type === "personal";
+    } catch {
+      return false;
+    }
+  });
+
+  // Priority 2: First organization
+  const orgToActivate = personalOrg || organizationsWithRoles[0];
+
+  await auth.api.setActiveOrganization({
+    headers,
+    body: { organizationId: orgToActivate.id },
+  });
+
+  return orgToActivate?.id ?? null;
+};

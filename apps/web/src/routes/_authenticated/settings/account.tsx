@@ -7,11 +7,11 @@ export const Route = createFileRoute("/_authenticated/settings/account")({
 });
 
 function AccountSettings() {
-  const { user } = Route.useRouteContext();
+  const { currentUser } = Route.useRouteContext();
   const { data: session } = authClient.useSession();
 
   const [name, setName] = useState(session?.user?.name || "");
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState(currentUser.email);
   const [isUpdating, setIsUpdating] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
@@ -129,7 +129,7 @@ function AccountSettings() {
                   />
                   <button
                     type="submit"
-                    disabled={isUpdating || !email.trim() || email === user.email}
+                    disabled={isUpdating || !email.trim() || email === currentUser.email}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isUpdating ? "Saving..." : "Save"}
@@ -144,7 +144,7 @@ function AccountSettings() {
             <div>
               <div className="text-sm font-medium mb-1">Email</div>
               <div className="px-3 py-2 border border-gray-200 rounded bg-gray-50 text-gray-700">
-                {user.email}
+                {currentUser.email}
               </div>
               <p className="text-xs text-gray-500 mt-1">
                 Email cannot be changed for OAuth accounts (Google, etc.)
@@ -155,12 +155,12 @@ function AccountSettings() {
       </div>
 
       {/* Account Overview */}
-      {user.activePlan && (
+      {currentUser.activePlan && (
         <div className="border-t border-gray-200 pt-6">
           <h3 className="text-lg font-medium mb-3">Account Overview</h3>
           <div className="text-sm">
             <span className="text-gray-500">Plan: </span>
-            <span className="font-semibold capitalize">{user.activePlan}</span>
+            <span className="font-semibold capitalize">{currentUser.activePlan}</span>
           </div>
         </div>
       )}

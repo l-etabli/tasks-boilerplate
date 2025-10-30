@@ -4,10 +4,10 @@ import { useState } from "react";
 import { authClient } from "@/auth-client";
 
 type CreateOrganizationModalProps = {
-  user: User;
+  currentUser: User;
 };
 
-export function CreateOrganizationModal({ user }: CreateOrganizationModalProps) {
+export function CreateOrganizationModal({ currentUser: user }: CreateOrganizationModalProps) {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
