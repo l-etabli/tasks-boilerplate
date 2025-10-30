@@ -5,37 +5,28 @@ import { useCases } from "./bootstrap";
 
 export const listTasks = createServerFn({
   method: "GET",
-}).handler(
-  authenticated({
-    name: "listTasks",
-    handler: async (ctx) => useCases.queries.task.getAllTasksForUser(ctx.currentUser.id),
-  }),
-);
+})
+  .middleware([authenticated({ name: "listTasks" })])
+  .handler(async ({ context: { currentUser } }) =>
+    useCases.queries.task.getAllTasksForUser(currentUser.id),
+  );
 
 export const addTask = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "addTask" })])
   .inputValidator(addTaskSchema)
-  .handler(
-    authenticated({
-      name: "addTask",
-      handler: async (ctx) => {
-        await useCases.mutations.addTask({
-          currentUser: ctx.currentUser,
-          input: ctx.data,
-        });
-      },
-    }),
-  );
+  .handler(async ({ data, context: { currentUser } }) => {
+    await useCases.mutations.addTask({
+      currentUser,
+      input: data,
+    });
+  });
 
 export const deleteTask = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "deleteTask" })])
   .inputValidator(deleteTaskSchema)
-  .handler(
-    authenticated({
-      name: "deleteTask",
-      handler: async (ctx) => {
-        await useCases.mutations.deleteTask({
-          currentUser: ctx.currentUser,
-          input: ctx.data,
-        });
-      },
-    }),
-  );
+  .handler(async ({ data, context: { currentUser } }) => {
+    await useCases.mutations.deleteTask({
+      currentUser,
+      input: data,
+    });
+  });

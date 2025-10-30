@@ -1,14 +1,7 @@
 import * as Sentry from "@sentry/tanstackstart-react";
-import { createServerFn, type ServerFn, type ServerFnCtx } from "@tanstack/react-start";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
 import { useCases } from "./bootstrap";
-
-type AnyServerFnCtx = ServerFnCtx<any, any, any, any>;
-
-const getRequestHeaders = (ctx: AnyServerFnCtx): Request["headers"] => {
-  const { request } = ctx as unknown as { request: Request };
-  return request.headers;
-};
 
 const getCurrentUserAndActiveOrganisationId = async (
   headers: Request["headers"],
@@ -38,42 +31,39 @@ const getCurrentUserAndActiveOrganisationId = async (
   );
 };
 
-export const authenticated = <
-  TRegister,
-  TMethod,
-  TMiddlewares,
-  TInputValidator,
-  TResponse,
->(params: {
-  name: string;
-  handler: (
-    params: ServerFnCtx<TRegister, TMethod, TMiddlewares, TInputValidator> & {
-      currentUser: User;
-      activeOrganizationId: string | null;
-    },
-  ) => TResponse;
-}) =>
-  (async (ctx) => {
-    return Sentry.startSpan(
+export type AuthenticatedContext = {
+  currentUser: User;
+  activeOrganizationId: string | null;
+};
+
+export const authenticated = (params: { name: string }) =>
+  createMiddleware().server(async ({ next, request }) =>
+    Sentry.startSpan(
       {
         op: "useCase",
-        name: params.name,
+        name: `authenticated:${params.name}`,
       },
       async () => {
-        const headers = getRequestHeaders(ctx);
-        const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
+        const authenticated = await getCurrentUserAndActiveOrganisationId(request.headers);
         if (!authenticated) throw new Response("Unauthorized", { status: 401 });
+
         const { currentUser, activeOrganizationId } = authenticated;
 
         Sentry.setUser({ id: currentUser.id });
 
-        return params.handler({ ...ctx, currentUser, activeOrganizationId });
+        return next({
+          context: {
+            currentUser,
+            activeOrganizationId,
+          },
+        });
       },
-    );
-  }) as ServerFn<TRegister, TMethod, TMiddlewares, TInputValidator, TResponse>;
+    ),
+  );
 
 export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx) => {
-  const headers = getRequestHeaders(ctx);
+  const { request } = ctx as unknown as { request: Request };
+  const headers = request.headers;
   const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
   if (!authenticated) return null;
 
