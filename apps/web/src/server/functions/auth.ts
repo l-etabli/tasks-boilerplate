@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn, type ServerFn, type ServerFnCtx } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
+import { useCases } from "./bootstrap";
 
 type AnyServerFnCtx = ServerFnCtx<any, any, any, any>;
 
@@ -72,46 +73,21 @@ export const authenticated = <
   }) as ServerFn<TRegister, TMethod, TMiddlewares, TInputValidator, TResponse>;
 
 export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx) => {
-  const { auth } = await import("@/utils/auth");
   const headers = getRequestHeaders(ctx);
   const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
   if (!authenticated) return null;
 
   const { currentUser, activeOrganizationId } = authenticated;
 
-  const organizations = await auth.api.listOrganizations({ headers });
-
-  // Fetch member info for each organization to get role
-  const organizationsWithRoles = await Promise.all(
-    (organizations || []).map(async (org) => {
-      try {
-        // Get full organization details which includes member role
-        const fullOrg = await auth.api.getFullOrganization({
-          headers,
-          query: { organizationId: org.id },
-        });
-
-        // Find current user's membership to get their role
-        const userMembership = fullOrg?.members?.find(
-          (member: any) => member.userId === currentUser.id,
-        );
-
-        return {
-          ...org,
-          role: userMembership?.role || null,
-          members: fullOrg?.members || [],
-        };
-      } catch {
-        return { ...org, role: null, members: [] };
-      }
-    }),
-  );
+  const organizations = await useCases.getCurrentUserOrganizations({
+    currentUser,
+  });
 
   return {
     currentUser,
-    organizations: organizationsWithRoles,
+    organizations,
     activeOrganizationId:
-      activeOrganizationId ?? (await getDefaultActiveOrganization(headers, organizationsWithRoles)),
+      activeOrganizationId ?? (await getDefaultActiveOrganization(headers, organizations)),
   };
 });
 

@@ -1,13 +1,7 @@
-import * as Sentry from "@sentry/tanstackstart-react";
 import { createServerFn } from "@tanstack/react-start";
-import { addTaskSchema, bootstrapUseCases, deleteTaskSchema } from "@tasks/core";
-import { getKyselyDb } from "@tasks/db";
+import { addTaskSchema, deleteTaskSchema } from "@tasks/core";
 import { authenticated } from "./auth";
-
-const useCases = bootstrapUseCases({
-  kind: "pg",
-  db: getKyselyDb(Sentry),
-});
+import { useCases } from "./bootstrap";
 
 export const listTasks = createServerFn({
   method: "GET",
