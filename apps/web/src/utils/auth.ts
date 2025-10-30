@@ -13,8 +13,8 @@ export const auth = betterAuth({
 
   user: {
     additionalFields: {
-      preferredLocale: {
-        type: ["en", "fr"],
+      preferences: {
+        type: "json",
         required: false,
       },
     },

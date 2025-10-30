@@ -47,7 +47,7 @@ interface User {
   id: string;
   image: string | null;
   name: string;
-  preferredLocale: "en" | "fr" | null;
+  preferences: { locale?: "en" | "fr" } | null;
   updatedAt: Timestamp;
 }
 

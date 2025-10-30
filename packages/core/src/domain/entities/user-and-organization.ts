@@ -1,16 +1,18 @@
 import { z } from "zod";
 
+export type UserPreferences = { locale?: "en" | "fr" } | null;
+
 export type User = {
   id: string;
   email: string;
-  preferredLocale: "en" | "fr" | null;
+  preferences: UserPreferences;
 };
 
 type Pretty<T> = { [K in keyof T]: T[K] };
 
 export type UpdateUserPreferencesInput = Pretty<z.infer<typeof updateUserPreferencesSchema>>;
 export const updateUserPreferencesSchema = z.object({
-  preferredLocale: z.enum(["en", "fr"]).nullable(),
+  locale: z.enum(["en", "fr"]).optional(),
 });
 
 export type OrganizationMember = {

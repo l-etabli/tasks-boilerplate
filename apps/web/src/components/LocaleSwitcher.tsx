@@ -31,7 +31,7 @@ export function LocaleSwitcher() {
         try {
           await updateUserPreferences({
             data: {
-              preferredLocale: nextLocale,
+              locale: nextLocale,
             },
           });
         } catch (error) {

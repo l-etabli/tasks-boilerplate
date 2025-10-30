@@ -1,6 +1,7 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import type { UserPreferences } from "@tasks/core";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import Header from "@/components/Header";
 import { env } from "@/env";
@@ -50,7 +51,8 @@ function RootApp({ error }: { error?: unknown }) {
 
 function SessionAwareI18n({ error }: { error?: unknown }) {
   const { currentUser } = useCurrentUser();
-  const initialLocale = (currentUser?.preferredLocale as Locales | null) ?? null;
+  const userPreferences = (currentUser?.preferences as UserPreferences | null) ?? null;
+  const initialLocale = (userPreferences?.locale as Locales | null) ?? null;
 
   return (
     <I18nProvider initialLocale={initialLocale}>

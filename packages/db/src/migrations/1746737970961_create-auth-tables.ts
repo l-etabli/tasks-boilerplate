@@ -8,7 +8,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("email", "text", (col) => col.notNull().unique())
     .addColumn("emailVerified", "boolean", (col) => col.notNull())
     .addColumn("image", "text")
-    .addColumn("preferredLocale", "text")
+    .addColumn("preferences", "jsonb")
     .addColumn("createdAt", "timestamp", (col) => col.notNull())
     .addColumn("updatedAt", "timestamp", (col) => col.notNull())
     .execute();

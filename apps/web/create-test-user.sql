@@ -1,5 +1,5 @@
 -- Insert test user for development
-INSERT INTO "user" (id, email, "emailVerified", name, image, "createdAt", "updatedAt", "preferredLocale")
+INSERT INTO "user" (id, email, "emailVerified", name, image, "createdAt", "updatedAt", preferences)
 VALUES (
   'test-user-id',
   'test@example.com',

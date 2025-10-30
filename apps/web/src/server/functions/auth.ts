@@ -21,7 +21,7 @@ const getCurrentUserAndActiveOrganisationId = async (
         currentUser: {
           id: session.user.id,
           email: session.user.email,
-          preferredLocale: (session.user.preferredLocale as "en" | "fr" | null) || null,
+          preferences: session.user.preferences ?? null,
         },
         activeOrganizationId: session.session.activeOrganizationId ?? null,
       };
