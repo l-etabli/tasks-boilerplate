@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Badge } from "@tasks/ui/components/badge";
 import { Button } from "@tasks/ui/components/button";
 import {
   ChevronDown,
@@ -12,57 +13,64 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { authClient } from "@/auth-client";
 import { useCurrentUser } from "@/providers/SessionProvider";
-import { LogoutButton } from "./LogoutButton";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [groupedExpanded, setGroupedExpanded] = useState<Record<string, boolean>>({});
   const { currentUser } = useCurrentUser();
 
+  const handleLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          window.location.href = "/";
+        },
+      },
+    });
+  };
+
   return (
     <>
-      <header className="p-4 flex items-center justify-between bg-gray-800 text-white shadow-lg">
-        <div className="flex items-center">
-          <Button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            variant="secondary"
-            size="icon"
-            className="bg-gray-700 text-white hover:bg-gray-600"
-            aria-label="Open menu"
-          >
-            <Menu size={24} />
-          </Button>
-          <h1 className="ml-4 text-xl font-semibold">
-            <Link to="/">
-              <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-10" />
-            </Link>
-          </h1>
-        </div>
-        <div className="flex items-center gap-4">
-          {currentUser ? (
-            <>
-              <span className="text-sm">{currentUser.email}</span>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 text-white hover:bg-gray-600"
-                asChild
-              >
-                <Link to="/settings">Settings</Link>
-              </Button>
-              <LogoutButton />
-            </>
-          ) : (
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-3">
             <Button
-              variant="secondary"
-              className="bg-gray-700 text-white hover:bg-gray-600"
-              asChild
+              type="button"
+              onClick={() => setIsOpen(true)}
+              variant="ghost"
+              size="icon"
+              aria-label="Open menu"
+              className="lg:hidden"
             >
-              <Link to="/login">Sign In</Link>
+              <Menu size={20} />
             </Button>
-          )}
+            <Link to="/" className="flex items-center gap-2 font-semibold">
+              <img src="/tanstack-word-logo-white.svg" alt="TanStack Logo" className="h-8" />
+              <span className="hidden text-lg sm:inline">Tasks</span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {currentUser ? (
+              <>
+                <Badge variant="outline" className="hidden gap-2 sm:flex">
+                  <span className="text-xs font-normal">{currentUser.email}</span>
+                </Badge>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/settings">Settings</Link>
+                </Button>
+                <Button type="button" onClick={handleLogout} variant="destructive" size="sm">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button asChild>
+                <Link to="/login">Sign In</Link>
+              </Button>
+            )}
+          </div>
         </div>
       </header>
 

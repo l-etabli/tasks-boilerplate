@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LoginWithGoogle } from "@/components/LoginWithGoogle";
+import { Button } from "@tasks/ui/components/button";
+import { authClient } from "@/auth-client";
 
 export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>): { redirect?: string } => ({
@@ -11,6 +12,13 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const { redirect } = Route.useSearch();
 
+  const handleLogin = () => {
+    authClient.signIn.social({
+      provider: "google",
+      callbackURL: redirect || "/",
+    });
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 p-8">
@@ -18,9 +26,9 @@ function LoginPage() {
           <h1 className="text-3xl font-bold">Sign In</h1>
           <p className="mt-2 text-gray-600">Sign in to access your account</p>
         </div>
-        <div className="mt-8">
-          <LoginWithGoogle redirectUrl={redirect} />
-        </div>
+        <Button onClick={handleLogin} className="w-full" size="lg">
+          Sign in with Google
+        </Button>
       </div>
     </div>
   );
