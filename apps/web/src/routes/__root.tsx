@@ -52,8 +52,7 @@ function RootDocument({ children }: { children?: React.ReactNode }) {
       </head>
       <body>
         <SessionProvider>
-          <Header />
-          {children || <Outlet />}
+          <Header>{children || <Outlet />}</Header>
           {env.VITE_ENVIRONMENT === "local" && (
             <TanStackDevtools
               config={{
