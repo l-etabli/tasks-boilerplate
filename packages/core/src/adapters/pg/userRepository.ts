@@ -9,7 +9,7 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
       const result = await trx
         .updateTable("user")
         .set({
-          preferences: sql`${JSON.stringify(preferences)}::jsonb`,
+          preferences: sql`COALESCE(preferences, '{}'::jsonb) || ${JSON.stringify(preferences)}::jsonb`,
         })
         .where("id", "=", userId)
         .returning(["id", "email", "preferences"])

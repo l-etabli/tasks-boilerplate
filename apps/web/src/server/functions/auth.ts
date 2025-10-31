@@ -65,7 +65,21 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
   const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
   if (!authenticated) return null;
 
-  const { currentUser } = authenticated;
+  let { currentUser } = authenticated;
+
+  // Merge cookie preferences with DB preferences (cookie takes priority)
+  // This prevents flash when cookie has different value than session cache
+  const cookieHeader = headers.get("cookie");
+  if (cookieHeader) {
+    const { getPreferencesCookie } = await import("@/utils/preferences");
+    const cookiePrefs = getPreferencesCookie(cookieHeader);
+    if (cookiePrefs) {
+      currentUser = {
+        ...currentUser,
+        preferences: { ...currentUser.preferences, ...cookiePrefs },
+      };
+    }
+  }
 
   const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
 
