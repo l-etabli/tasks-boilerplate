@@ -9,6 +9,7 @@ import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { I18nProvider } from "@/providers/I18nProvider";
 import { SessionProvider, useCurrentUser } from "@/providers/SessionProvider";
+import { updateUserPreferences } from "@/server/functions/user";
 import appCss from "@/styles.css?url";
 
 export const Route = createRootRoute({
@@ -56,10 +57,39 @@ function SessionAwareI18n({ error }: { error?: unknown }) {
 
   return (
     <I18nProvider initialLocale={initialLocale}>
+      <SessionAwareTheme error={error} />
+    </I18nProvider>
+  );
+}
+
+function SessionAwareTheme({ error }: { error?: unknown }) {
+  const { currentUser } = useCurrentUser();
+  const userPreferences = (currentUser?.preferences as UserPreferences | null) ?? null;
+  const initialTheme = (userPreferences?.theme as "light" | "dark" | "system" | null) ?? undefined;
+
+  const handleThemeChange = async (theme: string) => {
+    if (!currentUser) return;
+
+    try {
+      await updateUserPreferences({
+        data: { theme: theme as "light" | "dark" | "system" },
+      });
+    } catch (error) {
+      console.error("Failed to persist theme preference:", error);
+    }
+  };
+
+  return (
+    <ThemeProvider
+      initialTheme={initialTheme}
+      onThemeChange={handleThemeChange}
+      defaultTheme="system"
+      storageKey="theme"
+    >
       <LocaleAwareDocument>
         <BodyContent error={error} />
       </LocaleAwareDocument>
-    </I18nProvider>
+    </ThemeProvider>
   );
 }
 
@@ -105,7 +135,7 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
 
 function BodyContent({ error }: { error?: unknown }) {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="theme">
+    <>
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
       {env.VITE_ENVIRONMENT === "local" && (
         <TanStackDevtools
@@ -120,7 +150,7 @@ function BodyContent({ error }: { error?: unknown }) {
           ]}
         />
       )}
-    </ThemeProvider>
+    </>
   );
 }
 

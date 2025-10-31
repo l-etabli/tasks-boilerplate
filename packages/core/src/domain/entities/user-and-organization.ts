@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export type UserPreferences = { locale?: "en" | "fr" } | null;
+export type UserPreferences = { locale?: "en" | "fr"; theme?: "light" | "dark" | "system" } | null;
 
 export type User = {
   id: string;
@@ -8,11 +8,10 @@ export type User = {
   preferences: UserPreferences;
 };
 
-type Pretty<T> = { [K in keyof T]: T[K] };
-
-export type UpdateUserPreferencesInput = Pretty<z.infer<typeof updateUserPreferencesSchema>>;
+export type UpdateUserPreferencesInput = z.infer<typeof updateUserPreferencesSchema>;
 export const updateUserPreferencesSchema = z.object({
   locale: z.enum(["en", "fr"]).optional(),
+  theme: z.enum(["light", "dark", "system"]).optional(),
 });
 
 export type OrganizationMember = {

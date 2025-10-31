@@ -6,6 +6,8 @@ type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
+  initialTheme?: Theme;
+  onThemeChange?: (theme: Theme) => void;
 };
 
 type ThemeProviderState = {
@@ -24,6 +26,8 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "theme",
+  initialTheme,
+  onThemeChange,
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
@@ -31,9 +35,10 @@ export function ThemeProvider({
 
   useEffect(() => {
     const storedTheme = (localStorage.getItem(storageKey) as Theme) || defaultTheme;
-    setTheme(storedTheme);
+    const themeToUse = initialTheme ?? storedTheme;
+    setTheme(themeToUse);
     setMounted(true);
-  }, [defaultTheme, storageKey]);
+  }, [defaultTheme, storageKey, initialTheme]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -59,6 +64,7 @@ export function ThemeProvider({
     setTheme: (theme: Theme) => {
       localStorage.setItem(storageKey, theme);
       setTheme(theme);
+      onThemeChange?.(theme);
     },
   };
 
