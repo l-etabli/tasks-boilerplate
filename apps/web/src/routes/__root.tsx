@@ -69,6 +69,30 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang={locale}>
       <head>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: We need the inline script to prevent the white flash on page load.
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'system';
+                  const root = document.documentElement;
+                  root.classList.remove('light', 'dark');
+                  
+                  if (theme === 'system') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    root.classList.add(prefersDark ? 'dark' : 'light');
+                  } else {
+                    root.classList.add(theme);
+                  }
+                } catch (e) {
+                  // localStorage not available, fallback to light
+                  document.documentElement.classList.add('light');
+                }
+              })();
+            `,
+          }}
+        />
         <HeadContent />
       </head>
       <body className="bg-white dark:bg-slate-950">
@@ -81,7 +105,7 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
 
 function BodyContent({ error }: { error?: unknown }) {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="theme">
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
       {env.VITE_ENVIRONMENT === "local" && (
         <TanStackDevtools
