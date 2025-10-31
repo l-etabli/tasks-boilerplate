@@ -12,10 +12,12 @@ import TypesafeI18n from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { detectLocale } from "@/i18n/i18n-util";
 import { loadLocale } from "@/i18n/i18n-util.sync";
+import { setClientPreferences } from "@/utils/preferences";
 
 interface I18nProviderProps {
   children: ReactNode;
   initialLocale?: Locales | null;
+  onLocaleChange?: (locale: Locales) => void;
 }
 
 type LocaleContextValue = {
@@ -30,13 +32,6 @@ const fallbackLocale: Locales = "en";
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 function getClientLocale(): Locales {
-  if (typeof window !== "undefined") {
-    const storedLocale = localStorage.getItem("locale") as Locales | null;
-    if (storedLocale && availableLocales.includes(storedLocale)) {
-      return storedLocale;
-    }
-  }
-
   return detectLocale(navigatorDetector);
 }
 
@@ -48,11 +43,12 @@ function normalizeInitialLocale(locale?: Locales | null): Locales {
   return fallbackLocale;
 }
 
-export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
+export function I18nProvider({ children, initialLocale, onLocaleChange }: I18nProviderProps) {
   const normalizedInitialLocale = useMemo(
     () => normalizeInitialLocale(initialLocale),
     [initialLocale],
   );
+
   const [locale, setLocaleState] = useState<Locales>(normalizedInitialLocale);
   const [hasManualSelection, setHasManualSelection] = useState(false);
 
@@ -77,9 +73,6 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
     ) {
       loadLocale(initialLocale);
       setLocaleState(initialLocale);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("locale", initialLocale);
-      }
     }
   }, [initialLocale, locale, hasManualSelection]);
 
@@ -95,12 +88,11 @@ export function I18nProvider({ children, initialLocale }: I18nProviderProps) {
         loadLocale(newLocale);
         setLocaleState(newLocale);
         setHasManualSelection(true);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("locale", newLocale);
-        }
+        setClientPreferences({ locale: newLocale });
+        onLocaleChange?.(newLocale);
       }
     },
-    [locale],
+    [locale, onLocaleChange],
   );
 
   const value: LocaleContextValue = useMemo(

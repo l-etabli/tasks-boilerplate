@@ -1,5 +1,12 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
-import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
+import {
+  createRootRoute,
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
+  useRouteContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { UserPreferences } from "@tasks/core";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
@@ -9,10 +16,32 @@ import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { I18nProvider } from "@/providers/I18nProvider";
 import { SessionProvider, useCurrentUser } from "@/providers/SessionProvider";
+import { getAuthContextFn } from "@/server/functions/auth";
 import { updateUserPreferences } from "@/server/functions/user";
 import appCss from "@/styles.css?url";
+import { getClientPreferences, setClientPreferences } from "@/utils/preferences";
+
+export type RootRouteContext = {
+  preferences: UserPreferences;
+};
 
 export const Route = createRootRoute({
+  beforeLoad: async () => {
+    try {
+      const authContext = await getAuthContextFn();
+      // getAuthContextFn now merges cookie preferences with DB preferences server-side
+      const preferences = authContext?.currentUser?.preferences ?? null;
+      return {
+        preferences,
+      };
+    } catch {
+      // Not logged in or error fetching auth
+      return {
+        preferences: null,
+      };
+    }
+  },
+
   head: () => ({
     meta: [
       {
@@ -52,11 +81,37 @@ function RootApp({ error }: { error?: unknown }) {
 
 function SessionAwareI18n({ error }: { error?: unknown }) {
   const { currentUser } = useCurrentUser();
-  const userPreferences = (currentUser?.preferences as UserPreferences | null) ?? null;
-  const initialLocale = (userPreferences?.locale as Locales | null) ?? null;
+  const routeContext = useRouteContext({
+    from: "__root__",
+    select: (ctx: RootRouteContext) => ctx,
+  });
 
+  // Read from client cookie to get most recent preference
+  const clientPreferences = typeof window !== "undefined" ? getClientPreferences() : null;
+
+  const preferences = {
+    ...(routeContext?.preferences ?? {}),
+    ...(currentUser?.preferences ?? {}),
+    ...(clientPreferences ?? {}),
+  };
+
+  const initialLocale = (preferences?.locale as Locales | null) ?? null;
+
+  const handleLocaleChange = async (locale: Locales) => {
+    if (!currentUser) return;
+
+    try {
+      await updateUserPreferences({
+        data: { locale },
+      });
+    } catch (error) {
+      console.error("Failed to persist locale preference:", error);
+    }
+  };
+
+  // initialLocale now includes cookie preferences merged server-side, preventing flash
   return (
-    <I18nProvider initialLocale={initialLocale}>
+    <I18nProvider initialLocale={initialLocale} onLocaleChange={handleLocaleChange}>
       <SessionAwareTheme error={error} />
     </I18nProvider>
   );
@@ -64,10 +119,25 @@ function SessionAwareI18n({ error }: { error?: unknown }) {
 
 function SessionAwareTheme({ error }: { error?: unknown }) {
   const { currentUser } = useCurrentUser();
-  const userPreferences = (currentUser?.preferences as UserPreferences | null) ?? null;
-  const initialTheme = (userPreferences?.theme as "light" | "dark" | "system" | null) ?? undefined;
+  const routeContext = useRouteContext({
+    from: "__root__",
+    select: (ctx: RootRouteContext) => ctx,
+  });
+
+  // Read from client cookie to get most recent preference (prevents stale data when locale changes)
+  const clientPreferences = typeof window !== "undefined" ? getClientPreferences() : null;
+
+  const preferences = {
+    ...(routeContext?.preferences ?? {}),
+    ...(currentUser?.preferences ?? {}),
+    ...(clientPreferences ?? {}),
+  };
+
+  const initialTheme = (preferences?.theme as "light" | "dark" | "system" | null) ?? undefined;
 
   const handleThemeChange = async (theme: string) => {
+    setClientPreferences({ theme: theme as "light" | "dark" | "system" });
+
     if (!currentUser) return;
 
     try {
@@ -84,7 +154,6 @@ function SessionAwareTheme({ error }: { error?: unknown }) {
       initialTheme={initialTheme}
       onThemeChange={handleThemeChange}
       defaultTheme="system"
-      storageKey="theme"
     >
       <LocaleAwareDocument>
         <BodyContent error={error} />
@@ -95,20 +164,31 @@ function SessionAwareTheme({ error }: { error?: unknown }) {
 
 function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
   const { locale } = useI18nContext();
+  const routeContext = useRouteContext({
+    from: "__root__",
+    select: (ctx: RootRouteContext) => ctx,
+  });
+  const serverPreferences = routeContext?.preferences ?? null;
 
   return (
     <html lang={locale}>
       <head>
         <script
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: We need the inline script to prevent the white flash on page load.
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: We expose server preferences for inline script.
+          dangerouslySetInnerHTML={{
+            __html: `window.__serverPreferences = ${JSON.stringify(serverPreferences)};`,
+          }}
+        />
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Inline script to prevent theme flash during SSR hydration.
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  const theme = localStorage.getItem('theme') || 'system';
+                  const theme = window.__serverPreferences?.theme || 'system';
                   const root = document.documentElement;
                   root.classList.remove('light', 'dark');
-                  
+
                   if (theme === 'system') {
                     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                     root.classList.add(prefersDark ? 'dark' : 'light');
@@ -116,7 +196,6 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
                     root.classList.add(theme);
                   }
                 } catch (e) {
-                  // localStorage not available, fallback to light
                   document.documentElement.classList.add('light');
                 }
               })();

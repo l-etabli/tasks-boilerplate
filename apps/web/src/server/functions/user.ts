@@ -6,9 +6,16 @@ import { useCases } from "./bootstrap";
 export const updateUserPreferences = createServerFn({ method: "POST" })
   .middleware([authenticated({ name: "updateUserPreferences" })])
   .inputValidator(updateUserPreferencesSchema)
-  .handler(async ({ data, context: { currentUser } }) =>
-    useCases.mutations.updateUserPreferences({
+  .handler(async (ctx) => {
+    const {
+      data,
+      context: { currentUser },
+    } = ctx;
+
+    const result = await useCases.mutations.updateUserPreferences({
       currentUser,
       input: data,
-    }),
-  );
+    });
+
+    return result;
+  });
