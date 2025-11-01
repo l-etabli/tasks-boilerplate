@@ -29,13 +29,14 @@ export const Route = createRootRoute({
   beforeLoad: async () => {
     try {
       const authContext = await getAuthContextFn();
-      // getAuthContextFn now merges cookie preferences with DB preferences server-side
-      const preferences = authContext?.currentUser?.preferences ?? null;
+      // getAuthContextFn now returns preferences at top level (from cookies or DB+cookies)
+      // This includes cookie preferences for non-authenticated users to prevent flash
+      const preferences = authContext?.preferences ?? null;
       return {
         preferences,
       };
     } catch {
-      // Not logged in or error fetching auth
+      // Error fetching auth
       return {
         preferences: null,
       };
@@ -185,7 +186,22 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
             __html: `
               (function() {
                 try {
-                  const theme = window.__serverPreferences?.theme || 'system';
+                  // Read from cookies (same as client-side code does)
+                  function getCookie(name) {
+                    const value = '; ' + document.cookie;
+                    const parts = value.split('; ' + name + '=');
+                    if (parts.length === 2) {
+                      try {
+                        return JSON.parse(decodeURIComponent(parts.pop().split(';').shift()));
+                      } catch (e) {
+                        return null;
+                      }
+                    }
+                    return null;
+                  }
+
+                  const cookiePrefs = getCookie('preferences');
+                  const theme = cookiePrefs?.theme || window.__serverPreferences?.theme || 'system';
                   const root = document.documentElement;
                   root.classList.remove('light', 'dark');
 

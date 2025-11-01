@@ -63,22 +63,31 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
   const { request } = ctx as unknown as { request: Request };
   const headers = request.headers;
   const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
-  if (!authenticated) return null;
+
+  // Read cookie preferences for all users (authenticated or not)
+  const cookieHeader = headers.get("cookie");
+  const { getPreferencesCookie } = await import("@/utils/preferences");
+  const cookiePrefs = cookieHeader ? getPreferencesCookie(cookieHeader) : null;
+
+  if (!authenticated) {
+    // For non-authenticated users, return cookie preferences to prevent flash
+    return {
+      currentUser: null,
+      organizations: [],
+      activeOrganizationId: null,
+      preferences: cookiePrefs,
+    };
+  }
 
   let { currentUser } = authenticated;
 
   // Merge cookie preferences with DB preferences (cookie takes priority)
   // This prevents flash when cookie has different value than session cache
-  const cookieHeader = headers.get("cookie");
-  if (cookieHeader) {
-    const { getPreferencesCookie } = await import("@/utils/preferences");
-    const cookiePrefs = getPreferencesCookie(cookieHeader);
-    if (cookiePrefs) {
-      currentUser = {
-        ...currentUser,
-        preferences: { ...currentUser.preferences, ...cookiePrefs },
-      };
-    }
+  if (cookiePrefs) {
+    currentUser = {
+      ...currentUser,
+      preferences: { ...currentUser.preferences, ...cookiePrefs },
+    };
   }
 
   const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
@@ -91,6 +100,7 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     currentUser,
     organizations,
     activeOrganizationId,
+    preferences: currentUser.preferences,
   };
 });
 
