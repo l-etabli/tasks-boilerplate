@@ -10,6 +10,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { UserPreferences } from "@tasks/core";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
+import type { authClient } from "@/auth-client";
 import Header from "@/components/Header";
 import { env } from "@/env";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -21,24 +22,28 @@ import { updateUserPreferences } from "@/server/functions/user";
 import appCss from "@/styles.css?url";
 import { getClientPreferences, setClientPreferences } from "@/utils/preferences";
 
+type SessionData = ReturnType<typeof authClient.useSession>["data"];
+
 export type RootRouteContext = {
   preferences: UserPreferences;
+  session: SessionData | null;
 };
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
     try {
       const authContext = await getAuthContextFn();
-      // getAuthContextFn now returns preferences at top level (from cookies or DB+cookies)
-      // This includes cookie preferences for non-authenticated users to prevent flash
-      const preferences = authContext?.preferences ?? null;
+      const preferences = authContext?.preferences ?? null; // comming from db or cookies
+      const session = authContext?.session ?? null;
       return {
         preferences,
+        session,
       };
     } catch {
       // Error fetching auth
       return {
         preferences: null,
+        session: null,
       };
     }
   },
@@ -73,8 +78,13 @@ function RootComponent({ error }: { error?: unknown }) {
 }
 
 function RootApp({ error }: { error?: unknown }) {
+  const routeContext = useRouteContext({
+    from: "__root__",
+    select: (ctx: RootRouteContext) => ctx,
+  });
+
   return (
-    <SessionProvider>
+    <SessionProvider initialSession={routeContext?.session ?? null}>
       <SessionAwareI18n error={error} />
     </SessionProvider>
   );

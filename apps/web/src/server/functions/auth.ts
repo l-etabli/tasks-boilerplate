@@ -3,13 +3,13 @@ import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
 import { useCases } from "./bootstrap";
 
-const getCurrentUserAndActiveOrganisationId = async (
+const getSession = async (
   headers: Request["headers"],
-): Promise<{ currentUser: User; activeOrganizationId: string | null } | null> => {
+): Promise<Awaited<ReturnType<typeof import("@/utils/auth").auth.api.getSession>> | null> => {
   return Sentry.startSpan(
     {
       op: "auth.session",
-      name: "getCurrentUser",
+      name: "getSession",
     },
     async () => {
       const { auth } = await import("@/utils/auth");
@@ -17,14 +17,7 @@ const getCurrentUserAndActiveOrganisationId = async (
 
       if (!session?.user) return null;
 
-      return {
-        currentUser: {
-          id: session.user.id,
-          email: session.user.email,
-          preferences: session.user.preferences ?? null,
-        },
-        activeOrganizationId: session.session.activeOrganizationId ?? null,
-      };
+      return session;
     },
   );
 };
@@ -42,10 +35,15 @@ export const authenticated = (params: { name: string }) =>
         name: `authenticated:${params.name}`,
       },
       async () => {
-        const authenticated = await getCurrentUserAndActiveOrganisationId(request.headers);
-        if (!authenticated) throw new Response("Unauthorized", { status: 401 });
+        const session = await getSession(request.headers);
+        if (!session) throw new Response("Unauthorized", { status: 401 });
 
-        const { currentUser, activeOrganizationId } = authenticated;
+        const currentUser: User = {
+          id: session.user.id,
+          email: session.user.email,
+          preferences: session.user.preferences ?? null,
+        };
+        const activeOrganizationId = session.session.activeOrganizationId ?? null;
 
         Sentry.setUser({ id: currentUser.id });
 
@@ -62,16 +60,18 @@ export const authenticated = (params: { name: string }) =>
 export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async (ctx) => {
   const { request } = ctx as unknown as { request: Request };
   const headers = request.headers;
-  const authenticated = await getCurrentUserAndActiveOrganisationId(headers);
+
+  const session = await getSession(headers);
 
   // Read cookie preferences for all users (authenticated or not)
   const cookieHeader = headers.get("cookie");
   const { getPreferencesCookie } = await import("@/utils/preferences");
   const cookiePrefs = cookieHeader ? getPreferencesCookie(cookieHeader) : null;
 
-  if (!authenticated) {
+  if (!session) {
     // For non-authenticated users, return cookie preferences to prevent flash
     return {
+      session: null,
       currentUser: null,
       organizations: [],
       activeOrganizationId: null,
@@ -79,28 +79,45 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     };
   }
 
-  let { currentUser } = authenticated;
+  const currentUser: User = {
+    id: session.user.id,
+    email: session.user.email,
+    preferences: session.user.preferences ?? null,
+  };
 
   // Merge cookie preferences with DB preferences (cookie takes priority)
   // This prevents flash when cookie has different value than session cache
+  let mergedPreferences = currentUser.preferences;
   if (cookiePrefs) {
-    currentUser = {
-      ...currentUser,
-      preferences: { ...currentUser.preferences, ...cookiePrefs },
-    };
+    mergedPreferences = { ...currentUser.preferences, ...cookiePrefs };
   }
 
   const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
 
   const activeOrganizationId =
-    authenticated.activeOrganizationId ??
+    session.session.activeOrganizationId ??
     (organizations.length > 0 ? await getDefaultActiveOrganization(headers, organizations) : null);
 
+  // Create a session object with updated preferences if we have cookie preferences
+  const sessionWithUpdatedPrefs = cookiePrefs
+    ? {
+        ...session,
+        user: {
+          ...session.user,
+          preferences: mergedPreferences,
+        },
+      }
+    : session;
+
   return {
-    currentUser,
+    session: sessionWithUpdatedPrefs as any,
+    currentUser: {
+      ...currentUser,
+      preferences: mergedPreferences,
+    },
     organizations,
     activeOrganizationId,
-    preferences: currentUser.preferences,
+    preferences: mergedPreferences,
   };
 });
 
