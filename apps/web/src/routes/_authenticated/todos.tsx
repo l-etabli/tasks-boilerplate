@@ -1,7 +1,16 @@
+import { useForm } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
+import { Button } from "@tasks/ui/components/button";
+import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
+import { Input } from "@tasks/ui/components/input";
 import { useState } from "react";
+import { z } from "zod";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { addTask, deleteTask, listTasks } from "@/server/functions/tasks";
+
+const taskSchema = z.object({
+  description: z.string().min(1).max(500),
+});
 
 export const Route = createFileRoute("/_authenticated/todos")({
   component: RouteComponent,
@@ -14,27 +23,27 @@ export const Route = createFileRoute("/_authenticated/todos")({
 function RouteComponent() {
   const { tasks: initialTasks } = Route.useLoaderData();
   const [tasks, setTasks] = useState(initialTasks);
-  const [description, setDescription] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { LL } = useI18nContext();
 
-  const handleAddTask = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!description.trim()) return;
-
-    setIsSubmitting(true);
-    try {
-      const id = crypto.randomUUID();
-      await addTask({ data: { id, description: description.trim() } });
-      const updatedTasks = await listTasks();
-      setTasks(updatedTasks);
-      setDescription("");
-    } catch (error) {
-      console.error("Failed to add task:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const form = useForm({
+    defaultValues: {
+      description: "",
+    },
+    validators: {
+      onChange: taskSchema,
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const id = crypto.randomUUID();
+        await addTask({ data: { id, description: value.description.trim() } });
+        const updatedTasks = await listTasks();
+        setTasks(updatedTasks);
+        form.reset();
+      } catch (error) {
+        console.error("Failed to add task:", error);
+      }
+    },
+  });
 
   const handleDeleteTask = async (taskId: string) => {
     try {
@@ -50,25 +59,50 @@ function RouteComponent() {
     <div className="container mx-auto p-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">{LL.todos.title()}</h1>
 
-      <form id="form-add-task" onSubmit={handleAddTask} className="mb-8">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder={LL.todos.inputPlaceholder()}
-            className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded"
-            disabled={isSubmitting}
-          />
-          <button
-            id="btn-submit-add-task"
-            type="submit"
-            disabled={isSubmitting || !description.trim()}
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? LL.todos.adding() : LL.todos.add()}
-          </button>
-        </div>
+      <form
+        id="form-add-task"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+        }}
+        className="mb-8"
+      >
+        <form.Field name="description">
+          {(field) => (
+            <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
+              <FieldLabel htmlFor="task-description" className="sr-only">
+                {LL.todos.inputPlaceholder()}
+              </FieldLabel>
+              <div className="flex gap-2">
+                <Input
+                  id="task-description"
+                  type="text"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  placeholder={LL.todos.inputPlaceholder()}
+                  aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                  className="flex-1"
+                />
+                <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+                  {([canSubmit, isSubmitting]) => (
+                    <Button
+                      id="btn-submit-add-task"
+                      type="submit"
+                      disabled={!canSubmit || isSubmitting}
+                    >
+                      {isSubmitting ? LL.todos.adding() : LL.todos.add()}
+                    </Button>
+                  )}
+                </form.Subscribe>
+              </div>
+              {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                <FieldError errors={field.state.meta.errors} />
+              )}
+            </Field>
+          )}
+        </form.Field>
       </form>
 
       <div>
@@ -85,15 +119,16 @@ function RouteComponent() {
                 className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-900 rounded border border-gray-200 dark:border-slate-800"
               >
                 <span className="dark:text-gray-100">{task.description}</span>
-                <button
+                <Button
                   id="btn-delete-task"
                   data-task-id={task.id}
                   type="button"
                   onClick={() => handleDeleteTask(task.id)}
-                  className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"
+                  variant="destructive"
+                  size="sm"
                 >
                   {LL.todos.delete()}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>

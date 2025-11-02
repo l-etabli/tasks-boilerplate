@@ -22,6 +22,9 @@
       "complexity": {
         "noBannedTypes": "off"
       },
+      "a11y": {
+        "useSemanticElements": "off"
+      },
       "correctness": {
         "useUniqueElementIds": "off"
       }

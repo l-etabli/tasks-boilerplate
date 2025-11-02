@@ -1,7 +1,16 @@
+import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { Button } from "@tasks/ui/components/button";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
+import { Input } from "@tasks/ui/components/input";
 import { useState } from "react";
+import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
+
+const organizationSchema = z.object({
+  name: z.string().min(1).max(100),
+});
 
 export const Route = createFileRoute("/_authenticated/settings/organizations")({
   component: OrganizationsSettings,
@@ -10,13 +19,43 @@ export const Route = createFileRoute("/_authenticated/settings/organizations")({
 function OrganizationsSettings() {
   const router = useRouter();
   const { organizations, activeOrganizationId } = Route.useRouteContext();
-  const [isCreating, setIsCreating] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [orgName, setOrgName] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+    },
+    validators: {
+      onChange: organizationSchema,
+    },
+    onSubmit: async ({ value }) => {
+      setMessage(null);
+      try {
+        const slug = value.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, "");
+        await authClient.organization.create({
+          name: value.name,
+          slug,
+        });
+
+        setMessage({ type: "success", text: t.successCreate() });
+        setShowCreateForm(false);
+        form.reset();
+        router.invalidate();
+      } catch (err) {
+        setMessage({
+          type: "error",
+          text: err instanceof Error ? err.message : t.errorCreate(),
+        });
+      }
+    },
+  });
 
   const handleSetActive = async (orgId: string) => {
     setIsSwitching(true);
@@ -36,35 +75,6 @@ function OrganizationsSettings() {
     }
   };
 
-  const handleCreateOrganization = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsCreating(true);
-    setMessage(null);
-
-    try {
-      const slug = orgName
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
-      await authClient.organization.create({
-        name: orgName,
-        slug,
-      });
-
-      setMessage({ type: "success", text: t.successCreate() });
-      setShowCreateForm(false);
-      setOrgName("");
-      router.invalidate();
-    } catch (err) {
-      setMessage({
-        type: "error",
-        text: err instanceof Error ? err.message : t.errorCreate(),
-      });
-    } finally {
-      setIsCreating(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -75,14 +85,13 @@ function OrganizationsSettings() {
           </p>
         </div>
         {!showCreateForm && (
-          <button
+          <Button
             id="btn-show-create-org-form"
             type="button"
             onClick={() => setShowCreateForm(true)}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             {t.createButton()}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -104,47 +113,59 @@ function OrganizationsSettings() {
           <h3 className="font-semibold mb-3">{t.createHeading()}</h3>
           <form
             id="form-create-organization"
-            onSubmit={handleCreateOrganization}
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
             className="space-y-3"
           >
-            <div>
-              <label htmlFor={"orgName"} className="block text-sm font-medium mb-1">
-                {t.nameLabel()}
-              </label>
-              <input
-                id={"orgName"}
-                type="text"
-                value={orgName}
-                onChange={(e) => setOrgName(e.target.value)}
-                placeholder={t.namePlaceholder()}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-                disabled={isCreating}
-              />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t.slugHint()}</p>
-            </div>
+            <form.Field name="name">
+              {(field) => (
+                <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
+                  <FieldLabel htmlFor="orgName">{t.nameLabel()}</FieldLabel>
+                  <Input
+                    id="orgName"
+                    type="text"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder={t.namePlaceholder()}
+                    aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                  />
+                  <FieldDescription>{t.slugHint()}</FieldDescription>
+                  {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                    <FieldError errors={field.state.meta.errors} />
+                  )}
+                </Field>
+              )}
+            </form.Field>
 
             <div className="flex gap-2 pt-2">
-              <button
+              <Button
                 id="btn-cancel-create-org"
                 type="button"
                 onClick={() => {
                   setShowCreateForm(false);
-                  setOrgName("");
+                  form.reset();
                 }}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-slate-700 rounded hover:bg-gray-50 dark:hover:bg-slate-800 disabled:opacity-50"
-                disabled={isCreating}
+                variant="outline"
+                className="flex-1"
               >
                 {t.cancel()}
-              </button>
-              <button
-                id="btn-submit-create-org"
-                type="submit"
-                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-                disabled={isCreating || !orgName.trim()}
-              >
-                {isCreating ? t.creating() : t.create()}
-              </button>
+              </Button>
+              <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+                {([canSubmit, isSubmitting]) => (
+                  <Button
+                    id="btn-submit-create-org"
+                    type="submit"
+                    disabled={!canSubmit || isSubmitting}
+                    className="flex-1"
+                  >
+                    {isSubmitting ? t.creating() : t.create()}
+                  </Button>
+                )}
+              </form.Subscribe>
             </div>
           </form>
         </div>
@@ -210,16 +231,16 @@ function OrganizationsSettings() {
                   )}
                 </div>
                 {org.id !== activeOrganizationId && (
-                  <button
+                  <Button
                     id="btn-set-active-org"
                     data-org-id={org.id}
                     type="button"
                     onClick={() => handleSetActive(org.id)}
                     disabled={isSwitching}
-                    className="px-4 py-2 border border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-950 disabled:opacity-50"
+                    variant="outline"
                   >
                     {isSwitching ? t.switching() : t.setActive()}
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

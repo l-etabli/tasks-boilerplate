@@ -1,3 +1,4 @@
+import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
 import type { User } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
@@ -8,9 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@tasks/ui/components/dialog";
+import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 
@@ -18,13 +21,46 @@ type CreateOrganizationModalProps = {
   currentUser: User;
 };
 
+const organizationSchema = z.object({
+  name: z.string().min(1).max(100),
+});
+
 export function CreateOrganizationModal({ currentUser: user }: CreateOrganizationModalProps) {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showCustomForm, setShowCustomForm] = useState(false);
-  const [orgName, setOrgName] = useState("");
   const { LL } = useI18nContext();
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+    },
+    validators: {
+      onChange: organizationSchema,
+    },
+    onSubmit: async ({ value }) => {
+      setIsCreating(true);
+      setError(null);
+
+      try {
+        const slug = value.name
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, "");
+        await authClient.organization.create({
+          name: value.name,
+          slug,
+        });
+
+        router.invalidate();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : LL.organization.createFailed());
+      } finally {
+        setIsCreating(false);
+      }
+    },
+  });
 
   const createPersonalOrganization = async () => {
     setIsCreating(true);
@@ -38,29 +74,6 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
         name,
         slug,
         metadata: { type: "personal" },
-      });
-
-      router.invalidate();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : LL.organization.createFailed());
-    } finally {
-      setIsCreating(false);
-    }
-  };
-
-  const createCustomOrganization = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsCreating(true);
-    setError(null);
-
-    try {
-      const slug = orgName
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
-      await authClient.organization.create({
-        name: orgName,
-        slug,
       });
 
       router.invalidate();
@@ -88,22 +101,35 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
               </div>
             )}
 
-            <form onSubmit={createCustomOrganization} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="orgName" className="text-sm font-medium">
-                  {LL.organization.nameLabel()}
-                </label>
-                <Input
-                  id="orgName"
-                  type="text"
-                  value={orgName}
-                  onChange={(e) => setOrgName(e.target.value)}
-                  placeholder={LL.organization.namePlaceholder()}
-                  required
-                  disabled={isCreating}
-                />
-                <p className="text-xs text-muted-foreground">{LL.organization.slugHint()}</p>
-              </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit();
+              }}
+              className="space-y-4"
+            >
+              <form.Field name="name">
+                {(field) => (
+                  <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
+                    <FieldLabel htmlFor="orgName">{LL.organization.nameLabel()}</FieldLabel>
+                    <Input
+                      id="orgName"
+                      type="text"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      onBlur={field.handleBlur}
+                      placeholder={LL.organization.namePlaceholder()}
+                      disabled={isCreating}
+                      aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                    />
+                    <FieldDescription>{LL.organization.slugHint()}</FieldDescription>
+                    {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                )}
+              </form.Field>
 
               <div className="flex gap-2">
                 <Button
@@ -116,14 +142,18 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                 >
                   {LL.organization.back()}
                 </Button>
-                <Button
-                  id="btn-submit-custom-org"
-                  type="submit"
-                  disabled={isCreating || !orgName.trim()}
-                  className="flex-1"
-                >
-                  {isCreating ? LL.organization.creating() : LL.organization.create()}
-                </Button>
+                <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+                  {([canSubmit, isSubmitting]) => (
+                    <Button
+                      id="btn-submit-custom-org"
+                      type="submit"
+                      disabled={!canSubmit || isSubmitting}
+                      className="flex-1"
+                    >
+                      {isSubmitting ? LL.organization.creating() : LL.organization.create()}
+                    </Button>
+                  )}
+                </form.Subscribe>
               </div>
             </form>
           </>
