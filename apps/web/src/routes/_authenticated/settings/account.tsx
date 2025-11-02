@@ -13,7 +13,7 @@ function AccountSettings() {
   const { LL } = useI18nContext();
   const t = LL.settings.account;
 
-  const [name, setName] = useState(session?.user?.name || "");
+  const [name, setName] = useState(currentUser.name || "");
   const [email, setEmail] = useState(currentUser.email);
   const [isUpdating, setIsUpdating] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -103,7 +103,7 @@ function AccountSettings() {
                 />
                 <button
                   type="submit"
-                  disabled={isUpdating || !name.trim() || name === session?.user?.name}
+                  disabled={isUpdating || !name.trim() || name === currentUser.name}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isUpdating ? LL.common.saving() : LL.common.save()}

@@ -12,12 +12,13 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
           preferences: sql`COALESCE(preferences, '{}'::jsonb) || ${JSON.stringify(preferences)}::jsonb`,
         })
         .where("id", "=", userId)
-        .returning(["id", "email", "preferences"])
+        .returning(["id", "email", "name", "preferences"])
         .executeTakeFirstOrThrow();
 
       return {
         id: result.id,
         email: result.email,
+        name: result.name,
         preferences: result.preferences,
       };
     },

@@ -5,6 +5,7 @@ export type UserPreferences = { locale?: "en" | "fr"; theme?: "light" | "dark" |
 export type User = {
   id: string;
   email: string;
+  name: string | null;
   preferences: UserPreferences;
 };
 

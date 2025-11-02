@@ -41,6 +41,7 @@ export const authenticated = (params: { name: string }) =>
         const currentUser: User = {
           id: session.user.id,
           email: session.user.email,
+          name: session.user.name ?? null,
           preferences: session.user.preferences ?? null,
         };
         const activeOrganizationId = session.session.activeOrganizationId ?? null;
@@ -82,6 +83,7 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
   const currentUser: User = {
     id: session.user.id,
     email: session.user.email,
+    name: session.user.name ?? null,
     preferences: session.user.preferences ?? null,
   };
 

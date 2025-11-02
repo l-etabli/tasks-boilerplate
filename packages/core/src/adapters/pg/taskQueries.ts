@@ -15,6 +15,7 @@ export const createPgTaskQueries = (db: Kysely<Db>): TaskQueries => ({
         jsonBuildObject({
           id: ref("user.id"),
           email: ref("user.email"),
+          name: ref("user.name"),
           preferences: ref("user.preferences"),
         }).as("owner"),
       ])
