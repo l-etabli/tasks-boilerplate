@@ -23,6 +23,8 @@ export const env = createEnv({
   client: {
     VITE_BETTER_AUTH_URL: z.url().optional(),
     VITE_ENVIRONMENT: environmentSchema,
+    VITE_UMAMI_WEBSITE_ID: z.string().optional(),
+    VITE_UMAMI_SCRIPT_URL: z.url().optional(),
   },
 
   runtimeEnv: typeof window === "undefined" ? process.env : import.meta.env,

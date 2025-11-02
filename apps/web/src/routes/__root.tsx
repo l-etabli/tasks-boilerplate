@@ -13,6 +13,7 @@ import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
 import Header from "@/components/Header";
 import { env } from "@/env";
+import { useGlobalTracking } from "@/hooks/useGlobalTracking";
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { I18nProvider } from "@/providers/I18nProvider";
@@ -243,6 +244,13 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
             `,
           }}
         />
+        {env.VITE_UMAMI_WEBSITE_ID && env.VITE_UMAMI_SCRIPT_URL && (
+          <script
+            defer
+            src={env.VITE_UMAMI_SCRIPT_URL}
+            data-website-id={env.VITE_UMAMI_WEBSITE_ID}
+          />
+        )}
         <HeadContent />
       </head>
       <body className="bg-white dark:bg-slate-950">
@@ -254,6 +262,8 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
 }
 
 function BodyContent({ error }: { error?: unknown }) {
+  useGlobalTracking();
+
   return (
     <>
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
