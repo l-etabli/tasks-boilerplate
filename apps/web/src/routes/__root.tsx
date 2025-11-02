@@ -181,8 +181,23 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
   });
   const serverPreferences = routeContext?.preferences ?? null;
 
+  // Calculate initial theme class to prevent hydration mismatch
+  // This must match what the inline script does
+  const getInitialThemeClass = () => {
+    if (typeof window === "undefined") {
+      // Server-side: use server preferences, default to 'light' for SSR
+      const theme = serverPreferences?.theme ?? "system";
+      // On server, we can't detect system preference, so default to 'light' for 'system'
+      return theme === "dark" ? "dark" : "light";
+    }
+    // Client-side: this will be hydrated, matching the inline script's logic
+    return "light"; // Placeholder, inline script will have already run
+  };
+
+  const initialThemeClass = getInitialThemeClass();
+
   return (
-    <html lang={locale}>
+    <html lang={locale} className={initialThemeClass}>
       <head>
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: We expose server preferences for inline script.
