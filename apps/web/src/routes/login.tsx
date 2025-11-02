@@ -28,7 +28,7 @@ function LoginPage() {
           <h1 className="text-3xl font-bold">{LL.auth.signInTitle()}</h1>
           <p className="mt-2 text-gray-600">{LL.auth.signInSubtitle()}</p>
         </div>
-        <Button onClick={handleLogin} className="w-full" size="lg">
+        <Button id="btn-login-google" onClick={handleLogin} className="w-full" size="lg">
           {LL.auth.signInWithGoogle()}
         </Button>
       </div>

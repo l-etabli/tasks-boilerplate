@@ -76,6 +76,7 @@ function OrganizationsSettings() {
         </div>
         {!showCreateForm && (
           <button
+            id="btn-show-create-org-form"
             type="button"
             onClick={() => setShowCreateForm(true)}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -101,7 +102,11 @@ function OrganizationsSettings() {
       {showCreateForm && (
         <div className="border border-gray-200 dark:border-slate-800 rounded-lg p-4 bg-gray-50 dark:bg-slate-900">
           <h3 className="font-semibold mb-3">{t.createHeading()}</h3>
-          <form onSubmit={handleCreateOrganization} className="space-y-3">
+          <form
+            id="form-create-organization"
+            onSubmit={handleCreateOrganization}
+            className="space-y-3"
+          >
             <div>
               <label htmlFor={"orgName"} className="block text-sm font-medium mb-1">
                 {t.nameLabel()}
@@ -121,6 +126,7 @@ function OrganizationsSettings() {
 
             <div className="flex gap-2 pt-2">
               <button
+                id="btn-cancel-create-org"
                 type="button"
                 onClick={() => {
                   setShowCreateForm(false);
@@ -132,6 +138,7 @@ function OrganizationsSettings() {
                 {t.cancel()}
               </button>
               <button
+                id="btn-submit-create-org"
                 type="submit"
                 className="flex-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
                 disabled={isCreating || !orgName.trim()}
@@ -204,6 +211,8 @@ function OrganizationsSettings() {
                 </div>
                 {org.id !== activeOrganizationId && (
                   <button
+                    id="btn-set-active-org"
+                    data-org-id={org.id}
                     type="button"
                     onClick={() => handleSetActive(org.id)}
                     disabled={isSwitching}

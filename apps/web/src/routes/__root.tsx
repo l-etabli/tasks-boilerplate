@@ -13,9 +13,9 @@ import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
 import Header from "@/components/Header";
 import { env } from "@/env";
-import { useGlobalTracking } from "@/hooks/useGlobalTracking";
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
+import { useGlobalTracking } from "@/lib/useGlobalTracking";
 import { I18nProvider } from "@/providers/I18nProvider";
 import { SessionProvider, useCurrentUser } from "@/providers/SessionProvider";
 import { getAuthContextFn } from "@/server/functions/auth";
@@ -301,7 +301,11 @@ function ErrorBoundaryContent({ error }: { error: unknown }) {
       <p className="text-gray-600 dark:text-gray-400 mb-4">
         {error instanceof Error ? error.message : LL.errors.genericDescription()}
       </p>
-      <Link to="/todos" className="text-blue-500 hover:underline dark:text-blue-400">
+      <Link
+        id="link-error-back-to-todos"
+        to="/todos"
+        className="text-blue-500 hover:underline dark:text-blue-400"
+      >
         {LL.errors.goBackTodos()}
       </Link>
     </div>

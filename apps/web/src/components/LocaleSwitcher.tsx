@@ -45,7 +45,7 @@ export function LocaleSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button id="btn-locale-switcher" variant="outline" size="icon">
           <Globe className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">{LL.locale.changeLanguage()}</span>
         </Button>
@@ -56,7 +56,11 @@ export function LocaleSwitcher() {
           onValueChange={(value) => void handleLocaleChange(value as Locales)}
         >
           {availableLocales.map((availableLocale) => (
-            <DropdownMenuRadioItem key={availableLocale} value={availableLocale}>
+            <DropdownMenuRadioItem
+              id={`locale-option-${availableLocale}`}
+              key={availableLocale}
+              value={availableLocale}
+            >
               {LL.locale[availableLocale]()}
             </DropdownMenuRadioItem>
           ))}

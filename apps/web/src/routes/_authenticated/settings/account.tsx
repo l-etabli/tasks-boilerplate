@@ -86,7 +86,7 @@ function AccountSettings() {
 
         <div className="space-y-6">
           {/* Name Update */}
-          <form onSubmit={handleUpdateName} className="space-y-3">
+          <form id="form-update-name" onSubmit={handleUpdateName} className="space-y-3">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-1">
                 {t.nameLabel()}
@@ -102,6 +102,7 @@ function AccountSettings() {
                   disabled={isUpdating}
                 />
                 <button
+                  id="btn-save-name"
                   type="submit"
                   disabled={isUpdating || !name.trim() || name === currentUser.name}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -114,7 +115,7 @@ function AccountSettings() {
 
           {/* Email Update - Only for email/password users */}
           {canChangeEmail ? (
-            <form onSubmit={handleUpdateEmail} className="space-y-3">
+            <form id="form-update-email" onSubmit={handleUpdateEmail} className="space-y-3">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium mb-1">
                   {t.emailLabel()}
@@ -131,6 +132,7 @@ function AccountSettings() {
                     required
                   />
                   <button
+                    id="btn-save-email"
                     type="submit"
                     disabled={isUpdating || !email.trim() || email === currentUser.email}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"

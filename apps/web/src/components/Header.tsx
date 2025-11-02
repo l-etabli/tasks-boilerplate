@@ -33,6 +33,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         <div className="flex h-16 items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-3">
             <Button
+              id="btn-toggle-sidebar"
               onClick={() => setSidebarOpen(!sidebarOpen)}
               variant="ghost"
               size="icon"
@@ -41,7 +42,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
-            <Link to="/todos" className="flex items-center gap-2 font-semibold">
+            <Link id="link-app-title" to="/todos" className="flex items-center gap-2 font-semibold">
               <span className="text-lg">{LL.app.title()}</span>
             </Link>
           </div>
@@ -54,12 +55,18 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                 <Badge variant="outline" className="hidden gap-2 sm:flex">
                   <span className="text-xs font-normal">{currentUser.email}</span>
                 </Badge>
-                <Button type="button" onClick={handleLogout} variant="destructive" size="sm">
+                <Button
+                  id="btn-sign-out"
+                  type="button"
+                  onClick={handleLogout}
+                  variant="destructive"
+                  size="sm"
+                >
                   {LL.auth.signOut()}
                 </Button>
               </>
             ) : (
-              <Button asChild>
+              <Button id="btn-sign-in" asChild>
                 <Link to="/login">{LL.auth.signIn()}</Link>
               </Button>
             )}
@@ -76,6 +83,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
         >
           <nav className="flex flex-col gap-2 p-4">
             <NavLink
+              id="nav-link-todos"
               to="/todos"
               icon={ClipboardList}
               label={LL.nav.todos()}
@@ -86,6 +94,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
             <div className="mb-2">
               <Button
+                id="btn-toggle-settings-submenu"
                 onClick={() => setSettingsExpanded((prev) => !prev)}
                 variant="ghost"
                 className="w-full justify-between"
@@ -99,12 +108,14 @@ export default function Header({ children }: { children?: React.ReactNode }) {
               {settingsExpanded && (
                 <div className="ml-4 flex flex-col gap-2 mt-2">
                   <NavLink
+                    id="nav-link-account"
                     to="/settings/account"
                     icon={Settings}
                     label={LL.nav.account()}
                     onNavigate={closeSidebar}
                   />
                   <NavLink
+                    id="nav-link-organizations"
                     to="/settings/organizations"
                     icon={Settings}
                     label={LL.nav.organizations()}
@@ -128,14 +139,17 @@ function NavLink({
   icon: Icon,
   label,
   onNavigate,
+  id,
 }: {
   to: string;
   icon: React.ComponentType<{ size: number }>;
   label: string;
   onNavigate: () => void;
+  id?: string;
 }) {
   return (
     <Link
+      id={id}
       to={to}
       onClick={onNavigate}
       className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent"

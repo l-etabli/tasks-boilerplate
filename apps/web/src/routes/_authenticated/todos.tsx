@@ -50,7 +50,7 @@ function RouteComponent() {
     <div className="container mx-auto p-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-6">{LL.todos.title()}</h1>
 
-      <form onSubmit={handleAddTask} className="mb-8">
+      <form id="form-add-task" onSubmit={handleAddTask} className="mb-8">
         <div className="flex gap-2">
           <input
             type="text"
@@ -61,6 +61,7 @@ function RouteComponent() {
             disabled={isSubmitting}
           />
           <button
+            id="btn-submit-add-task"
             type="submit"
             disabled={isSubmitting || !description.trim()}
             className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-slate-700 disabled:cursor-not-allowed"
@@ -85,6 +86,8 @@ function RouteComponent() {
               >
                 <span className="dark:text-gray-100">{task.description}</span>
                 <button
+                  id="btn-delete-task"
+                  data-task-id={task.id}
                   type="button"
                   onClick={() => handleDeleteTask(task.id)}
                   className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600"

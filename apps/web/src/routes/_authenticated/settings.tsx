@@ -15,6 +15,7 @@ function SettingsLayout() {
       <div className="mb-6 border-b border-gray-200 dark:border-slate-800">
         <nav className="flex gap-4">
           <Link
+            id="settings-tab-account"
             to="/settings/account"
             className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
             activeProps={{
@@ -26,6 +27,7 @@ function SettingsLayout() {
             {LL.settings.accountTab()}
           </Link>
           <Link
+            id="settings-tab-organizations"
             to="/settings/organizations"
             className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
             activeProps={{

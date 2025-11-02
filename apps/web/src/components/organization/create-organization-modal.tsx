@@ -107,6 +107,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
 
               <div className="flex gap-2">
                 <Button
+                  id="btn-back-org-modal"
                   type="button"
                   onClick={() => setShowCustomForm(false)}
                   variant="outline"
@@ -115,7 +116,12 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                 >
                   {LL.organization.back()}
                 </Button>
-                <Button type="submit" disabled={isCreating || !orgName.trim()} className="flex-1">
+                <Button
+                  id="btn-submit-custom-org"
+                  type="submit"
+                  disabled={isCreating || !orgName.trim()}
+                  className="flex-1"
+                >
                   {isCreating ? LL.organization.creating() : LL.organization.create()}
                 </Button>
               </div>
@@ -137,6 +143,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
 
             <div className="space-y-3">
               <Button
+                id="btn-create-personal-org"
                 type="button"
                 onClick={createPersonalOrganization}
                 disabled={isCreating}
@@ -161,6 +168,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
               </div>
 
               <Button
+                id="btn-show-custom-org-form"
                 type="button"
                 onClick={() => setShowCustomForm(true)}
                 disabled={isCreating}
