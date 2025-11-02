@@ -1,9 +1,11 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
+import { createAuthMiddleware } from "better-auth/api";
 import { organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "@/env";
+import { setPreferencesCookie } from "./preferences";
 
 export const auth = betterAuth({
   database: {
@@ -32,6 +34,19 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 5 * 60, // 5 minutes cache (we read cookies server-side so this is safe now)
     },
+  },
+
+  hooks: {
+    after: createAuthMiddleware(async (ctx) => {
+      // Sync cookie to DB preferences after OAuth login
+      if (ctx.path.includes("/callback/")) {
+        const newSession = ctx.context.newSession;
+        if (newSession?.user?.preferences) {
+          const cookieHeader = setPreferencesCookie(newSession.user.preferences);
+          ctx.setHeader("Set-Cookie", cookieHeader);
+        }
+      }
+    }),
   },
 
   plugins: [
