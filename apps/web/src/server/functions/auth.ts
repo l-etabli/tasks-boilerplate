@@ -1,6 +1,8 @@
 import * as Sentry from "@sentry/tanstackstart-react";
 import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import type { User } from "@tasks/core";
+import type { Locales } from "@/i18n/i18n-types";
+import { fallbackLocale, initZodLocale } from "@/utils/localeUtils";
 import { useCases } from "./bootstrap";
 
 const getSession = async (
@@ -45,6 +47,10 @@ export const authenticated = (params: { name: string }) =>
           preferences: session.user.preferences ?? null,
         };
         const activeOrganizationId = session.session.activeOrganizationId ?? null;
+
+        // Initialize Zod locale for server-side validation
+        const userLocale = (currentUser.preferences?.locale as Locales) ?? fallbackLocale;
+        initZodLocale(userLocale);
 
         Sentry.setUser({ id: currentUser.id });
 

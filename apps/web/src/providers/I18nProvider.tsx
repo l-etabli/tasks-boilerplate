@@ -12,6 +12,7 @@ import TypesafeI18n from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { detectLocale } from "@/i18n/i18n-util";
 import { loadLocale } from "@/i18n/i18n-util.sync";
+import { availableLocales, fallbackLocale, initZodLocale } from "@/utils/localeUtils";
 import { setClientPreferences } from "@/utils/preferences";
 
 interface I18nProviderProps {
@@ -25,9 +26,6 @@ type LocaleContextValue = {
   locale: Locales;
   setLocale: (locale: Locales) => void;
 };
-
-const availableLocales: Locales[] = ["en", "fr"];
-const fallbackLocale: Locales = "en";
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
@@ -80,6 +78,11 @@ export function I18nProvider({ children, initialLocale, onLocaleChange }: I18nPr
     if (typeof document !== "undefined") {
       document.documentElement.lang = locale;
     }
+  }, [locale]);
+
+  // Initialize Zod locale whenever locale changes
+  useEffect(() => {
+    initZodLocale(locale);
   }, [locale]);
 
   const setLocale = useCallback(
