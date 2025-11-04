@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@tasks/ui/components/dialog";
 import { Skeleton } from "@tasks/ui/components/skeleton";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/auth-client";
 import { useHandleInvitationAction } from "@/hooks/use-handle-invitation-action";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -72,41 +72,52 @@ export function UserInvitationsCard({ refreshTrigger }: UserInvitationsCardProps
     const interval = setInterval(() => {
       setCurrentTime(new Date());
     }, 60000);
-
     return () => clearInterval(interval);
   }, []);
 
-  const loadInvitations = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await authClient.organization.listUserInvitations();
-
-      if (result.error) {
-        setError(result.error.message || t.errorLoad());
-        return;
-      }
-
-      if (result.data) {
-        setInvitations(
-          result.data.map((inv: any) => ({
-            ...inv,
-            expiresAt: new Date(inv.expiresAt),
-          })),
-        );
-      }
-    } catch (err) {
-      console.error("Failed to load user invitations:", err);
-      setError(t.errorLoad());
-    } finally {
-      setLoading(false);
-    }
-  }, [t]);
-
+  // Load invitations - simpler pattern without useCallback
   useEffect(() => {
+    let isCancelled = false;
+
+    const loadInvitations = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await authClient.organization.listUserInvitations();
+
+        if (isCancelled) return;
+
+        if (result.error) {
+          setError(result.error.message || t.errorLoad());
+          return;
+        }
+
+        if (result.data) {
+          setInvitations(
+            result.data.map((inv: any) => ({
+              ...inv,
+              expiresAt: new Date(inv.expiresAt),
+            })),
+          );
+        }
+      } catch (err) {
+        if (isCancelled) return;
+        console.error("Failed to load user invitations:", err);
+        setError(t.errorLoad());
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadInvitations();
-  }, [loadInvitations, refreshTrigger]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [refreshTrigger, t.errorLoad]);
 
   const handleAccept = async (invitation: UserInvitation) => {
     // Optimistic update

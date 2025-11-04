@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@tasks/ui/components/table";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 
@@ -77,44 +77,55 @@ export function PendingInvitationsList({
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute
-
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
-  const loadInvitations = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await authClient.organization.listInvitations({
-        organizationId,
-      });
-
-      if (result.error) {
-        setError(result.error.message || t.errorLoad());
-        return;
-      }
-
-      if (result.data) {
-        setInvitations(
-          result.data.map((inv: any) => ({
-            ...inv,
-            expiresAt: new Date(inv.expiresAt),
-          })),
-        );
-      }
-    } catch (err) {
-      console.error("Failed to load invitations:", err);
-      setError(t.errorLoad());
-    } finally {
-      setLoading(false);
-    }
-  }, [organizationId, t]);
-
+  // Load invitations - simpler pattern without useCallback
   useEffect(() => {
+    let isCancelled = false;
+
+    const loadInvitations = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await authClient.organization.listInvitations({
+          organizationId,
+        });
+
+        if (isCancelled) return;
+
+        if (result.error) {
+          setError(result.error.message || t.errorLoad());
+          return;
+        }
+
+        if (result.data) {
+          setInvitations(
+            result.data.map((inv: any) => ({
+              ...inv,
+              expiresAt: new Date(inv.expiresAt),
+            })),
+          );
+        }
+      } catch (err) {
+        if (isCancelled) return;
+        console.error("Failed to load invitations:", err);
+        setError(t.errorLoad());
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
     loadInvitations();
-  }, [loadInvitations, refreshTrigger]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [organizationId, refreshTrigger, t.errorLoad]);
 
   const handleCancelClick = (invitation: Invitation) => {
     setSelectedInvitation(invitation);
