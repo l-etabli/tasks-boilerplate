@@ -1,19 +1,45 @@
-import { Link } from "@tanstack/react-router";
-import { Badge } from "@tasks/ui/components/badge";
+import { Link, useRouter } from "@tanstack/react-router";
 import { Button } from "@tasks/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@tasks/ui/components/dropdown-menu";
 import { ModeToggle } from "@tasks/ui/components/mode-toggle";
-import { ChevronDown, ChevronRight, ClipboardList, Menu, Settings, X } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  ClipboardList,
+  LogOut,
+  Menu,
+  Settings,
+  User,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { useCurrentUser } from "@/providers/SessionProvider";
 
-export default function Header({ children }: { children?: React.ReactNode }) {
+export default function Header({
+  children,
+  organizations,
+  activeOrganizationId,
+}: {
+  children?: React.ReactNode;
+  organizations?: Array<{ id: string; name: string }>;
+  activeOrganizationId?: string | null;
+}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [settingsExpanded, setSettingsExpanded] = useState(false);
   const { currentUser } = useCurrentUser();
   const { LL } = useI18nContext();
+  const router = useRouter();
 
   const handleLogout = async () => {
     await authClient.signOut({
@@ -26,6 +52,14 @@ export default function Header({ children }: { children?: React.ReactNode }) {
   };
 
   const closeSidebar = () => setSidebarOpen(false);
+
+  const handleSwitchOrganization = async (orgId: string) => {
+    await authClient.organization.setActive({ organizationId: orgId });
+    router.invalidate();
+  };
+
+  const activeOrg = organizations?.find((org) => org.id === activeOrganizationId);
+  const displayName = currentUser?.name || currentUser?.email || "";
 
   return (
     <>
@@ -47,26 +81,77 @@ export default function Header({ children }: { children?: React.ReactNode }) {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <LocaleSwitcher />
             <ModeToggle />
             {currentUser ? (
               <>
-                <Badge variant="outline" className="hidden gap-2 sm:flex">
-                  <span className="text-xs font-normal">{currentUser.email}</span>
-                </Badge>
-                <Button
-                  id="btn-sign-out"
-                  type="button"
-                  onClick={handleLogout}
-                  variant="destructive"
-                  size="sm"
-                >
-                  {LL.auth.signOut()}
-                </Button>
+                {organizations && organizations.length > 0 && activeOrg && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        id="btn-organization-switcher"
+                        variant="outline"
+                        size="default"
+                        className="hidden h-9 gap-2 sm:flex"
+                        aria-label={LL.header.organizationSwitcher()}
+                      >
+                        <span className="text-sm">{activeOrg.name}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuRadioGroup
+                        value={activeOrganizationId || undefined}
+                        onValueChange={handleSwitchOrganization}
+                      >
+                        {organizations.map((org) => (
+                          <DropdownMenuRadioItem
+                            key={org.id}
+                            value={org.id}
+                            id={`org-option-${org.id}`}
+                          >
+                            {org.name}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      id="btn-user-menu"
+                      variant="outline"
+                      size="default"
+                      className="hidden h-9 gap-2 sm:flex"
+                    >
+                      <User className="h-4 w-4" />
+                      <span className="text-sm">{displayName}</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem id="menu-item-account" asChild>
+                      <Link to="/settings/account" className="flex items-center gap-2">
+                        <Settings className="h-4 w-4" />
+                        <span>{LL.nav.account()}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      id="menu-item-sign-out"
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 text-red-600 dark:text-red-400"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>{LL.auth.signOut()}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
-              <Button id="btn-sign-in" asChild>
+              <Button id="btn-sign-in" size="default" className="h-9" asChild>
                 <Link to="/login">{LL.auth.signIn()}</Link>
               </Button>
             )}

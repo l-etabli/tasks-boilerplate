@@ -11,7 +11,6 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { UserPreferences } from "@tasks/core";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
-import Header from "@/components/Header";
 import { env } from "@/env";
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
@@ -285,11 +284,7 @@ function BodyContent({ error }: { error?: unknown }) {
 }
 
 function AppLayout() {
-  return (
-    <Header>
-      <Outlet />
-    </Header>
-  );
+  return <Outlet />;
 }
 
 function ErrorBoundaryContent({ error }: { error: unknown }) {

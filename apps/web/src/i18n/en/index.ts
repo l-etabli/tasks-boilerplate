@@ -26,6 +26,7 @@ const en = {
 
   header: {
     toggleMenu: "Toggle menu",
+    organizationSwitcher: "Switch organization",
   },
 
   locale: {

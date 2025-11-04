@@ -81,6 +81,10 @@ type RootTranslation = {
 		 * T​o​g​g​l​e​ ​m​e​n​u
 		 */
 		toggleMenu: string
+		/**
+		 * S​w​i​t​c​h​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		organizationSwitcher: string
 	}
 	locale: {
 		/**
@@ -456,6 +460,10 @@ export type TranslationFunctions = {
 		 * Toggle menu
 		 */
 		toggleMenu: () => LocalizedString
+		/**
+		 * Switch organization
+		 */
+		organizationSwitcher: () => LocalizedString
 	}
 	locale: {
 		/**

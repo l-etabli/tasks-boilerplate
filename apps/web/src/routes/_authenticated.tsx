@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import Header from "@/components/Header";
 import { CreateOrganizationModal } from "@/components/organization/create-organization-modal";
 import { getAuthContextFn } from "@/server/functions/auth";
 
@@ -19,12 +20,16 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthenticatedLayout() {
-  const { currentUser, organizations } = Route.useRouteContext();
+  const { currentUser, organizations, activeOrganizationId } = Route.useRouteContext();
   const needsOrganization = organizations.length === 0;
 
   if (needsOrganization) {
     return <CreateOrganizationModal currentUser={currentUser} />;
   }
 
-  return <Outlet />;
+  return (
+    <Header organizations={organizations} activeOrganizationId={activeOrganizationId}>
+      <Outlet />
+    </Header>
+  );
 }

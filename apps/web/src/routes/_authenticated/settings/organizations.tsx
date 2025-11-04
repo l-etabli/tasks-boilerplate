@@ -18,8 +18,7 @@ export const Route = createFileRoute("/_authenticated/settings/organizations")({
 
 function OrganizationsSettings() {
   const router = useRouter();
-  const { organizations, activeOrganizationId } = Route.useRouteContext();
-  const [isSwitching, setIsSwitching] = useState(false);
+  const { organizations } = Route.useRouteContext();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const { LL } = useI18nContext();
@@ -56,24 +55,6 @@ function OrganizationsSettings() {
       }
     },
   });
-
-  const handleSetActive = async (orgId: string) => {
-    setIsSwitching(true);
-    setMessage(null);
-
-    try {
-      await authClient.organization.setActive({ organizationId: orgId });
-      setMessage({ type: "success", text: t.successSwitch() });
-      router.invalidate();
-    } catch (err) {
-      setMessage({
-        type: "error",
-        text: err instanceof Error ? err.message : t.errorSwitch(),
-      });
-    } finally {
-      setIsSwitching(false);
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -179,68 +160,40 @@ function OrganizationsSettings() {
           organizations.map((org) => (
             <div
               key={org.id}
-              className={`border rounded-lg p-4 ${
-                org.id === activeOrganizationId
-                  ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-950"
-                  : "border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900"
-              }`}
+              className="border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg p-4"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">{org.name}</h3>
-                    {org.id === activeOrganizationId && (
-                      <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                        {t.activeBadge()}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {org.slug && (
-                      <span>
-                        {t.slugLabel()} {org.slug}
-                      </span>
-                    )}
-                    <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
-                      {t.roleLabel({ role: org.role ?? t.roleUnknown() })}
+              <div className="flex-1">
+                <h3 className="font-semibold">{org.name}</h3>
+                <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  {org.slug && (
+                    <span>
+                      {t.slugLabel()} {org.slug}
                     </span>
-                  </div>
-
-                  {/* Members list */}
-                  {org.members && org.members.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
-                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {t.membersHeading({ count: org.members.length })}
-                      </div>
-                      <div className="space-y-1">
-                        {org.members.map((member: any) => (
-                          <div
-                            key={member.id}
-                            className="flex items-center justify-between text-sm"
-                          >
-                            <span className="text-gray-600 dark:text-gray-400">
-                              {member.user?.name || member.user?.email || t.memberUnknown()}
-                            </span>
-                            <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
-                              {member.role}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   )}
+                  <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
+                    {t.roleLabel({ role: org.role ?? t.roleUnknown() })}
+                  </span>
                 </div>
-                {org.id !== activeOrganizationId && (
-                  <Button
-                    id="btn-set-active-org"
-                    data-org-id={org.id}
-                    type="button"
-                    onClick={() => handleSetActive(org.id)}
-                    disabled={isSwitching}
-                    variant="outline"
-                  >
-                    {isSwitching ? t.switching() : t.setActive()}
-                  </Button>
+
+                {/* Members list */}
+                {org.members && org.members.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      {t.membersHeading({ count: org.members.length })}
+                    </div>
+                    <div className="space-y-1">
+                      {org.members.map((member: any) => (
+                        <div key={member.id} className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600 dark:text-gray-400">
+                            {member.user?.name || member.user?.email || t.memberUnknown()}
+                          </span>
+                          <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
+                            {member.role}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>

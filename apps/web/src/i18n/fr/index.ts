@@ -26,6 +26,7 @@ const fr = {
 
   header: {
     toggleMenu: "Basculer le menu",
+    organizationSwitcher: "Changer d'organisation",
   },
 
   locale: {
