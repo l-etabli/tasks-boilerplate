@@ -23,8 +23,16 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
         jsonArrayFrom(
           eb
             .selectFrom("member")
+            .innerJoin("user", "user.id", "member.userId")
             .whereRef("member.organizationId", "=", "organization.id")
-            .select(["member.id", "member.userId", "member.role", "member.createdAt"]),
+            .select([
+              "member.id",
+              "member.userId",
+              "member.role",
+              "member.createdAt",
+              "user.name as name",
+              "user.email as email",
+            ]),
         ).as("members"),
       ])
       .execute();

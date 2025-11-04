@@ -185,7 +185,7 @@ function OrganizationsSettings() {
                       {org.members.map((member: any) => (
                         <div key={member.id} className="flex items-center justify-between text-sm">
                           <span className="text-gray-600 dark:text-gray-400">
-                            {member.user?.name || member.user?.email || t.memberUnknown()}
+                            {member.name || member.email}
                           </span>
                           <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
                             {member.role}

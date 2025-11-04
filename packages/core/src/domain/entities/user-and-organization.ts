@@ -20,6 +20,8 @@ export type OrganizationMember = {
   userId: string;
   role: string;
   createdAt: Date;
+  name: string | null;
+  email: string;
 };
 
 export type Organization = {
