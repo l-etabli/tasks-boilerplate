@@ -3,9 +3,13 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Button } from "@tasks/ui/components/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
+import { Separator } from "@tasks/ui/components/separator";
 import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
+import { InviteMemberForm } from "@/components/organization/invite-member-form";
+import { PendingInvitationsList } from "@/components/organization/pending-invitations-list";
+import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
 
 const organizationSchema = z.object({
@@ -22,8 +26,13 @@ function OrganizationsSettings() {
   const [isSwitching, setIsSwitching] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [invitationsRefreshTrigger, setInvitationsRefreshTrigger] = useState(0);
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
+
+  // Get active organization
+  const activeOrg = organizations.find((org) => org.id === activeOrganizationId);
+  const canManageMembers = activeOrg?.role === "owner" || activeOrg?.role === "admin";
 
   const form = useForm({
     defaultValues: {
@@ -75,8 +84,16 @@ function OrganizationsSettings() {
     }
   };
 
+  const handleInvitationSuccess = () => {
+    // Refresh the invitations list
+    setInvitationsRefreshTrigger((prev) => prev + 1);
+  };
+
   return (
     <div className="space-y-6">
+      {/* User's Pending Invitations */}
+      <UserInvitationsCard refreshTrigger={invitationsRefreshTrigger} />
+
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">{t.heading()}</h2>
@@ -227,6 +244,22 @@ function OrganizationsSettings() {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+
+                  {/* Invite Member Form & Pending Invitations (only for active org and if user can manage) */}
+                  {org.id === activeOrganizationId && canManageMembers && (
+                    <div className="mt-4 space-y-4">
+                      <Separator />
+                      <InviteMemberForm
+                        organizationId={org.id}
+                        onSuccess={handleInvitationSuccess}
+                      />
+                      <Separator />
+                      <PendingInvitationsList
+                        organizationId={org.id}
+                        refreshTrigger={invitationsRefreshTrigger}
+                      />
                     </div>
                   )}
                 </div>

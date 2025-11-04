@@ -310,6 +310,361 @@ type RootTranslation = {
 			errorSwitch: string
 		}
 	}
+	invitations: {
+		inviteMember: {
+			/**
+			 * I​n​v​i​t​e​ ​M​e​m​b​e​r
+			 */
+			heading: string
+			/**
+			 * E​m​a​i​l​ ​a​d​d​r​e​s​s
+			 */
+			emailLabel: string
+			/**
+			 * c​o​l​l​e​a​g​u​e​@​e​x​a​m​p​l​e​.​c​o​m
+			 */
+			emailPlaceholder: string
+			/**
+			 * E​n​t​e​r​ ​t​h​e​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s​ ​o​f​ ​t​h​e​ ​p​e​r​s​o​n​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​i​n​v​i​t​e
+			 */
+			emailHelper: string
+			/**
+			 * R​o​l​e
+			 */
+			roleLabel: string
+			/**
+			 * S​e​l​e​c​t​ ​a​ ​r​o​l​e
+			 */
+			rolePlaceholder: string
+			/**
+			 * S​e​n​d​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			submitButton: string
+			/**
+			 * S​e​n​d​i​n​g​.​.​.
+			 */
+			submitting: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​s​e​n​t​ ​s​u​c​c​e​s​s​f​u​l​l​y​ ​t​o​ ​{​e​m​a​i​l​}
+			 * @param {unknown} email
+			 */
+			successMessage: RequiredParams<'email'>
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​s​e​n​d​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorMessage: string
+			/**
+			 * E​m​a​i​l​ ​a​d​d​r​e​s​s​ ​i​s​ ​r​e​q​u​i​r​e​d
+			 */
+			validationEmailRequired: string
+			/**
+			 * P​l​e​a​s​e​ ​e​n​t​e​r​ ​a​ ​v​a​l​i​d​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s
+			 */
+			validationEmailInvalid: string
+			/**
+			 * P​l​e​a​s​e​ ​s​e​l​e​c​t​ ​a​ ​r​o​l​e
+			 */
+			validationRoleRequired: string
+		}
+		pendingList: {
+			/**
+			 * P​e​n​d​i​n​g​ ​I​n​v​i​t​a​t​i​o​n​s
+			 */
+			heading: string
+			/**
+			 * N​o​ ​p​e​n​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n​s
+			 */
+			empty: string
+			/**
+			 * E​m​a​i​l
+			 */
+			columnEmail: string
+			/**
+			 * R​o​l​e
+			 */
+			columnRole: string
+			/**
+			 * E​x​p​i​r​e​s
+			 */
+			columnExpires: string
+			/**
+			 * A​c​t​i​o​n​s
+			 */
+			columnActions: string
+			/**
+			 * C​a​n​c​e​l
+			 */
+			cancelButton: string
+			/**
+			 * C​a​n​c​e​l​i​n​g​.​.​.
+			 */
+			canceling: string
+			/**
+			 * E​x​p​i​r​e​d
+			 */
+			expiredBadge: string
+			/**
+			 * i​n​ ​{​t​i​m​e​}
+			 * @param {unknown} time
+			 */
+			expiresIn: RequiredParams<'time'>
+			/**
+			 * C​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			cancelDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​c​a​n​c​e​l​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​{​e​m​a​i​l​}​?
+			 * @param {unknown} email
+			 */
+			cancelDialogDescription: RequiredParams<'email'>
+			/**
+			 * Y​e​s​,​ ​c​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			cancelDialogConfirm: string
+			/**
+			 * N​o​,​ ​k​e​e​p​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			cancelDialogCancel: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​c​a​n​c​e​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			successCancel: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​c​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorCancel: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​l​o​a​d​ ​p​e​n​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n​s
+			 */
+			errorLoad: string
+		}
+		userInvitations: {
+			/**
+			 * Y​o​u​r​ ​P​e​n​d​i​n​g​ ​I​n​v​i​t​a​t​i​o​n​s
+			 */
+			heading: string
+			/**
+			 * Y​o​u​ ​h​a​v​e​ ​n​o​ ​p​e​n​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n​s
+			 */
+			empty: string
+			/**
+			 * I​n​v​i​t​e​d​ ​b​y​ ​{​i​n​v​i​t​e​r​}
+			 * @param {unknown} inviter
+			 */
+			invitedBy: RequiredParams<'inviter'>
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n​:​ ​{​n​a​m​e​}
+			 * @param {unknown} name
+			 */
+			organization: RequiredParams<'name'>
+			/**
+			 * R​o​l​e​:​ ​{​r​o​l​e​}
+			 * @param {unknown} role
+			 */
+			role: RequiredParams<'role'>
+			/**
+			 * E​x​p​i​r​e​s​ ​{​t​i​m​e​}
+			 * @param {unknown} time
+			 */
+			expires: RequiredParams<'time'>
+			/**
+			 * A​c​c​e​p​t
+			 */
+			acceptButton: string
+			/**
+			 * D​e​c​l​i​n​e
+			 */
+			rejectButton: string
+			/**
+			 * A​c​c​e​p​t​i​n​g​.​.​.
+			 */
+			accepting: string
+			/**
+			 * D​e​c​l​i​n​i​n​g​.​.​.
+			 */
+			rejecting: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​a​c​c​e​p​t​e​d​!​ ​W​e​l​c​o​m​e​ ​t​o​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​}
+			 * @param {unknown} organization
+			 */
+			successAccept: RequiredParams<'organization'>
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​d​e​c​l​i​n​e​d
+			 */
+			successReject: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​a​c​c​e​p​t​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorAccept: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​d​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorReject: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​l​o​a​d​ ​y​o​u​r​ ​i​n​v​i​t​a​t​i​o​n​s
+			 */
+			errorLoad: string
+		}
+		acceptPage: {
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			title: string
+			/**
+			 * L​o​a​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n​.​.​.
+			 */
+			loadingMessage: string
+			/**
+			 * I​n​v​a​l​i​d​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			invalidTitle: string
+			/**
+			 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​l​i​n​k​ ​i​s​ ​i​n​v​a​l​i​d​ ​o​r​ ​h​a​s​ ​e​x​p​i​r​e​d​.
+			 */
+			invalidDescription: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​E​x​p​i​r​e​d
+			 */
+			expiredTitle: string
+			/**
+			 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​h​a​s​ ​e​x​p​i​r​e​d​.​ ​P​l​e​a​s​e​ ​c​o​n​t​a​c​t​ ​t​h​e​ ​o​r​g​a​n​i​z​a​t​i​o​n​ ​a​d​m​i​n​i​s​t​r​a​t​o​r​.
+			 */
+			expiredDescription: string
+			/**
+			 * A​l​r​e​a​d​y​ ​a​ ​M​e​m​b​e​r
+			 */
+			alreadyMemberTitle: string
+			/**
+			 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​ ​o​f​ ​t​h​i​s​ ​o​r​g​a​n​i​z​a​t​i​o​n​.
+			 */
+			alreadyMemberDescription: string
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n​:​ ​{​n​a​m​e​}
+			 * @param {unknown} name
+			 */
+			summaryOrganization: RequiredParams<'name'>
+			/**
+			 * I​n​v​i​t​e​d​ ​b​y​:​ ​{​i​n​v​i​t​e​r​}
+			 * @param {unknown} inviter
+			 */
+			summaryInviter: RequiredParams<'inviter'>
+			/**
+			 * R​o​l​e​:​ ​{​r​o​l​e​}
+			 * @param {unknown} role
+			 */
+			summaryRole: RequiredParams<'role'>
+			/**
+			 * E​x​p​i​r​e​s​:​ ​{​d​a​t​e​}
+			 * @param {unknown} date
+			 */
+			summaryExpires: RequiredParams<'date'>
+			/**
+			 * S​i​g​n​ ​i​n​ ​t​o​ ​a​c​c​e​p​t​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			unauthenticatedTitle: string
+			/**
+			 * Y​o​u​ ​n​e​e​d​ ​t​o​ ​s​i​g​n​ ​i​n​ ​o​r​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​ ​t​o​ ​a​c​c​e​p​t​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​.
+			 */
+			unauthenticatedDescription: string
+			/**
+			 * S​i​g​n​ ​i​n​ ​t​o​ ​c​o​n​t​i​n​u​e
+			 */
+			unauthenticatedButton: string
+			/**
+			 * A​c​c​e​p​t​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			acceptButton: string
+			/**
+			 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			rejectButton: string
+			/**
+			 * A​c​c​e​p​t​i​n​g​.​.​.
+			 */
+			accepting: string
+			/**
+			 * D​e​c​l​i​n​i​n​g​.​.​.
+			 */
+			rejecting: string
+			/**
+			 * W​e​l​c​o​m​e​ ​t​o​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​}​!
+			 * @param {unknown} organization
+			 */
+			successAccept: RequiredParams<'organization'>
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​d​e​c​l​i​n​e​d
+			 */
+			successReject: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​a​c​c​e​p​t​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorAccept: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​d​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			errorReject: string
+			/**
+			 * G​o​ ​t​o​ ​D​a​s​h​b​o​a​r​d
+			 */
+			goToDashboard: string
+			/**
+			 * D​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			rejectDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​c​l​i​n​e​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​j​o​i​n​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​}​?
+			 * @param {unknown} organization
+			 */
+			rejectDialogDescription: RequiredParams<'organization'>
+			/**
+			 * Y​e​s​,​ ​d​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			rejectDialogConfirm: string
+			/**
+			 * N​o​,​ ​k​e​e​p​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			rejectDialogCancel: string
+		}
+		roles: {
+			/**
+			 * O​w​n​e​r
+			 */
+			owner: string
+			/**
+			 * A​d​m​i​n
+			 */
+			admin: string
+			/**
+			 * M​e​m​b​e​r
+			 */
+			member: string
+		}
+		time: {
+			/**
+			 * {​c​o​u​n​t​}​ ​d​a​y​{​c​o​u​n​t​|​s​}
+			 * @param {unknown} count
+			 */
+			days: RequiredParams<'count' | 'count|s'>
+			/**
+			 * {​c​o​u​n​t​}​ ​h​o​u​r​{​c​o​u​n​t​|​s​}
+			 * @param {unknown} count
+			 */
+			hours: RequiredParams<'count' | 'count|s'>
+			/**
+			 * {​c​o​u​n​t​}​ ​m​i​n​u​t​e​{​c​o​u​n​t​|​s​}
+			 * @param {unknown} count
+			 */
+			minutes: RequiredParams<'count' | 'count|s'>
+			/**
+			 * E​x​p​i​r​e​d
+			 */
+			expired: string
+			/**
+			 * J​u​s​t​ ​n​o​w
+			 */
+			justNow: string
+		}
+	}
 	organization: {
 		/**
 		 * C​r​e​a​t​e​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n
@@ -679,6 +1034,344 @@ export type TranslationFunctions = {
 			 * Failed to switch organization
 			 */
 			errorSwitch: () => LocalizedString
+		}
+	}
+	invitations: {
+		inviteMember: {
+			/**
+			 * Invite Member
+			 */
+			heading: () => LocalizedString
+			/**
+			 * Email address
+			 */
+			emailLabel: () => LocalizedString
+			/**
+			 * colleague@example.com
+			 */
+			emailPlaceholder: () => LocalizedString
+			/**
+			 * Enter the email address of the person you want to invite
+			 */
+			emailHelper: () => LocalizedString
+			/**
+			 * Role
+			 */
+			roleLabel: () => LocalizedString
+			/**
+			 * Select a role
+			 */
+			rolePlaceholder: () => LocalizedString
+			/**
+			 * Send Invitation
+			 */
+			submitButton: () => LocalizedString
+			/**
+			 * Sending...
+			 */
+			submitting: () => LocalizedString
+			/**
+			 * Invitation sent successfully to {email}
+			 */
+			successMessage: (arg: { email: unknown }) => LocalizedString
+			/**
+			 * Failed to send invitation
+			 */
+			errorMessage: () => LocalizedString
+			/**
+			 * Email address is required
+			 */
+			validationEmailRequired: () => LocalizedString
+			/**
+			 * Please enter a valid email address
+			 */
+			validationEmailInvalid: () => LocalizedString
+			/**
+			 * Please select a role
+			 */
+			validationRoleRequired: () => LocalizedString
+		}
+		pendingList: {
+			/**
+			 * Pending Invitations
+			 */
+			heading: () => LocalizedString
+			/**
+			 * No pending invitations
+			 */
+			empty: () => LocalizedString
+			/**
+			 * Email
+			 */
+			columnEmail: () => LocalizedString
+			/**
+			 * Role
+			 */
+			columnRole: () => LocalizedString
+			/**
+			 * Expires
+			 */
+			columnExpires: () => LocalizedString
+			/**
+			 * Actions
+			 */
+			columnActions: () => LocalizedString
+			/**
+			 * Cancel
+			 */
+			cancelButton: () => LocalizedString
+			/**
+			 * Canceling...
+			 */
+			canceling: () => LocalizedString
+			/**
+			 * Expired
+			 */
+			expiredBadge: () => LocalizedString
+			/**
+			 * in {time}
+			 */
+			expiresIn: (arg: { time: unknown }) => LocalizedString
+			/**
+			 * Cancel invitation
+			 */
+			cancelDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to cancel this invitation to {email}?
+			 */
+			cancelDialogDescription: (arg: { email: unknown }) => LocalizedString
+			/**
+			 * Yes, cancel invitation
+			 */
+			cancelDialogConfirm: () => LocalizedString
+			/**
+			 * No, keep invitation
+			 */
+			cancelDialogCancel: () => LocalizedString
+			/**
+			 * Invitation canceled successfully
+			 */
+			successCancel: () => LocalizedString
+			/**
+			 * Failed to cancel invitation
+			 */
+			errorCancel: () => LocalizedString
+			/**
+			 * Failed to load pending invitations
+			 */
+			errorLoad: () => LocalizedString
+		}
+		userInvitations: {
+			/**
+			 * Your Pending Invitations
+			 */
+			heading: () => LocalizedString
+			/**
+			 * You have no pending invitations
+			 */
+			empty: () => LocalizedString
+			/**
+			 * Invited by {inviter}
+			 */
+			invitedBy: (arg: { inviter: unknown }) => LocalizedString
+			/**
+			 * Organization: {name}
+			 */
+			organization: (arg: { name: unknown }) => LocalizedString
+			/**
+			 * Role: {role}
+			 */
+			role: (arg: { role: unknown }) => LocalizedString
+			/**
+			 * Expires {time}
+			 */
+			expires: (arg: { time: unknown }) => LocalizedString
+			/**
+			 * Accept
+			 */
+			acceptButton: () => LocalizedString
+			/**
+			 * Decline
+			 */
+			rejectButton: () => LocalizedString
+			/**
+			 * Accepting...
+			 */
+			accepting: () => LocalizedString
+			/**
+			 * Declining...
+			 */
+			rejecting: () => LocalizedString
+			/**
+			 * Invitation accepted! Welcome to {organization}
+			 */
+			successAccept: (arg: { organization: unknown }) => LocalizedString
+			/**
+			 * Invitation declined
+			 */
+			successReject: () => LocalizedString
+			/**
+			 * Failed to accept invitation
+			 */
+			errorAccept: () => LocalizedString
+			/**
+			 * Failed to decline invitation
+			 */
+			errorReject: () => LocalizedString
+			/**
+			 * Failed to load your invitations
+			 */
+			errorLoad: () => LocalizedString
+		}
+		acceptPage: {
+			/**
+			 * Organization Invitation
+			 */
+			title: () => LocalizedString
+			/**
+			 * Loading invitation...
+			 */
+			loadingMessage: () => LocalizedString
+			/**
+			 * Invalid Invitation
+			 */
+			invalidTitle: () => LocalizedString
+			/**
+			 * This invitation link is invalid or has expired.
+			 */
+			invalidDescription: () => LocalizedString
+			/**
+			 * Invitation Expired
+			 */
+			expiredTitle: () => LocalizedString
+			/**
+			 * This invitation has expired. Please contact the organization administrator.
+			 */
+			expiredDescription: () => LocalizedString
+			/**
+			 * Already a Member
+			 */
+			alreadyMemberTitle: () => LocalizedString
+			/**
+			 * You are already a member of this organization.
+			 */
+			alreadyMemberDescription: () => LocalizedString
+			/**
+			 * Organization: {name}
+			 */
+			summaryOrganization: (arg: { name: unknown }) => LocalizedString
+			/**
+			 * Invited by: {inviter}
+			 */
+			summaryInviter: (arg: { inviter: unknown }) => LocalizedString
+			/**
+			 * Role: {role}
+			 */
+			summaryRole: (arg: { role: unknown }) => LocalizedString
+			/**
+			 * Expires: {date}
+			 */
+			summaryExpires: (arg: { date: unknown }) => LocalizedString
+			/**
+			 * Sign in to accept invitation
+			 */
+			unauthenticatedTitle: () => LocalizedString
+			/**
+			 * You need to sign in or create an account to accept this invitation.
+			 */
+			unauthenticatedDescription: () => LocalizedString
+			/**
+			 * Sign in to continue
+			 */
+			unauthenticatedButton: () => LocalizedString
+			/**
+			 * Accept Invitation
+			 */
+			acceptButton: () => LocalizedString
+			/**
+			 * Decline Invitation
+			 */
+			rejectButton: () => LocalizedString
+			/**
+			 * Accepting...
+			 */
+			accepting: () => LocalizedString
+			/**
+			 * Declining...
+			 */
+			rejecting: () => LocalizedString
+			/**
+			 * Welcome to {organization}!
+			 */
+			successAccept: (arg: { organization: unknown }) => LocalizedString
+			/**
+			 * Invitation declined
+			 */
+			successReject: () => LocalizedString
+			/**
+			 * Failed to accept invitation
+			 */
+			errorAccept: () => LocalizedString
+			/**
+			 * Failed to decline invitation
+			 */
+			errorReject: () => LocalizedString
+			/**
+			 * Go to Dashboard
+			 */
+			goToDashboard: () => LocalizedString
+			/**
+			 * Decline invitation
+			 */
+			rejectDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to decline this invitation to join {organization}?
+			 */
+			rejectDialogDescription: (arg: { organization: unknown }) => LocalizedString
+			/**
+			 * Yes, decline invitation
+			 */
+			rejectDialogConfirm: () => LocalizedString
+			/**
+			 * No, keep invitation
+			 */
+			rejectDialogCancel: () => LocalizedString
+		}
+		roles: {
+			/**
+			 * Owner
+			 */
+			owner: () => LocalizedString
+			/**
+			 * Admin
+			 */
+			admin: () => LocalizedString
+			/**
+			 * Member
+			 */
+			member: () => LocalizedString
+		}
+		time: {
+			/**
+			 * {count} day{count|s}
+			 */
+			days: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * {count} hour{count|s}
+			 */
+			hours: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * {count} minute{count|s}
+			 */
+			minutes: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * Expired
+			 */
+			expired: () => LocalizedString
+			/**
+			 * Just now
+			 */
+			justNow: () => LocalizedString
 		}
 	}
 	organization: {
