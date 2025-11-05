@@ -10,7 +10,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .createTable("organization")
     .addColumn("id", "text", (col) => col.primaryKey().notNull())
     .addColumn("name", "text", (col) => col.notNull())
-    .addColumn("slug", "text", (col) => col.unique())
+    .addColumn("slug", "text", (col) => col.notNull().unique())
     .addColumn("logo", "text")
     .addColumn("metadata", "text")
     .addColumn("createdAt", "timestamptz", (col) => col.notNull().defaultTo(sql`now()`))
