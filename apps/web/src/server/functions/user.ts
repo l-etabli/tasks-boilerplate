@@ -76,15 +76,8 @@ export const updateOrganization = createServerFn({ method: "POST" })
       context: { currentUser },
     } = ctx;
 
-    try {
-      const result = await useCases.mutations.updateOrganization({
-        currentUser,
-        input: data,
-      });
-
-      return result;
-    } catch (error) {
-      console.error("Error updating organization:", error);
-      throw error;
-    }
+    await useCases.mutations.updateOrganization({
+      currentUser,
+      input: data,
+    });
   });

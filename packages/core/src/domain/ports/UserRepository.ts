@@ -1,5 +1,4 @@
 import type {
-  Organization,
   UpdateOrganizationInput,
   UpdateUserPreferencesInput,
   User,
@@ -10,5 +9,5 @@ export type UserRepository = {
   updateOrganization: (
     organizationId: string,
     updates: Omit<UpdateOrganizationInput, "organizationId">,
-  ) => Promise<Organization>;
+  ) => Promise<void>;
 };
