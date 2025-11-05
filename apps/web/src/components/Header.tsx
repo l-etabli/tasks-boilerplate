@@ -11,6 +11,7 @@ import {
 } from "@tasks/ui/components/dropdown-menu";
 import { ModeToggle } from "@tasks/ui/components/mode-toggle";
 import {
+  Building2,
   ChevronDown,
   ChevronRight,
   ClipboardList,
@@ -136,6 +137,12 @@ export default function Header({
                       <Link to="/settings/account" className="flex items-center gap-2">
                         <Settings className="h-4 w-4" />
                         <span>{LL.nav.account()}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem id="menu-item-organizations" asChild>
+                      <Link to="/settings/organizations" className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4" />
+                        <span>{LL.nav.organizations()}</span>
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

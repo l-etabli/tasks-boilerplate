@@ -1,4 +1,7 @@
 import type { Kysely } from "kysely";
+import { Resend } from "resend";
+import { createInMemoryEmailGateway } from "./adapters/email/InMemoryEmailGateway.js";
+import { createResendEmailGateway } from "./adapters/email/ResendEmailGateway.js";
 import { createInMemoryTaskQueries } from "./adapters/inMemory/taskQueries.js";
 import { createInMemoryUserQueries } from "./adapters/inMemory/userQueries.js";
 import { createWithInMemoryUnitOfWork } from "./adapters/inMemory/withInMemoryUow.js";
@@ -14,9 +17,20 @@ export * from "./domain/entities/task.js";
 export * from "./domain/entities/user-and-organization.js";
 export * from "./domain/ports/UserQueries.js";
 
-type UowConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
+export type DbAdaptersConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 
-const getAdapters = (config: UowConfig) => {
+export type GatewaysConfig =
+  | {
+      kind: "inMemory";
+      defaultEmailFrom: string;
+    }
+  | {
+      kind: "resend";
+      resendApiKey: string;
+      defaultEmailFrom: string;
+    };
+
+const getDbAdapters = (config: DbAdaptersConfig) => {
   switch (config.kind) {
     case "inMemory": {
       const taskById: Record<string, any> = {};
@@ -42,13 +56,41 @@ const getAdapters = (config: UowConfig) => {
 
     default: {
       config satisfies never;
-      throw new Error(`Unsupported config: ${JSON.stringify(config)}`);
+      throw new Error(`Unsupported DB config: ${JSON.stringify(config)}`);
     }
   }
 };
 
-export const bootstrapUseCases = (config: UowConfig) => {
-  const { withUow, queries } = getAdapters(config);
+const getGateways = (config: GatewaysConfig) => {
+  switch (config.kind) {
+    case "inMemory": {
+      return {
+        email: createInMemoryEmailGateway(config.defaultEmailFrom),
+      };
+    }
+
+    case "resend": {
+      return {
+        email: createResendEmailGateway(new Resend(config.resendApiKey), config.defaultEmailFrom),
+      };
+    }
+
+    default: {
+      config satisfies never;
+      throw new Error(`Unsupported Gateways config: ${JSON.stringify(config)}`);
+    }
+  }
+};
+
+export const bootstrapUseCases = ({
+  dbConfig,
+  gatewaysConfig,
+}: {
+  dbConfig: DbAdaptersConfig;
+  gatewaysConfig: GatewaysConfig;
+}) => {
+  const { withUow, queries } = getDbAdapters(dbConfig);
+  const gateways = getGateways(gatewaysConfig);
 
   return {
     queries,
@@ -57,5 +99,6 @@ export const bootstrapUseCases = (config: UowConfig) => {
       deleteTask: deleteTask({ withUow }),
       updateUserPreferences: updateUserPreferences({ withUow }),
     },
+    gateways,
   };
 };

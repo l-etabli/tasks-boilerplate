@@ -1,10 +1,12 @@
 import * as Sentry from "@sentry/tanstackstart-react";
+import { buildInvitationEmail } from "@tasks/core/emails";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
 import { organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "@/env";
+import { gateways } from "@/server/functions/bootstrap";
 import { setPreferencesCookie } from "./preferences";
 
 export const auth = betterAuth({
@@ -67,20 +69,20 @@ export const auth = betterAuth({
       // Invitation expires after 48 hours
       invitationExpiresIn: 60 * 60 * 48,
 
-      // Send invitation emails via email service
+      // Send invitation emails via email gateway
       async sendInvitationEmail(data) {
-        const { sendInvitationEmail } = await import("./email.js");
-
         const acceptInvitationUrl = `${env.BETTER_AUTH_URL}/accept-invitation/${data.id}`;
 
-        await sendInvitationEmail({
-          to: data.email,
-          inviterName: data.inviter.user.name,
-          inviterEmail: data.inviter.user.email,
-          organizationName: data.organization.name,
-          invitationId: data.id,
-          acceptInvitationUrl,
+        const email = buildInvitationEmail({
+          to: [{ email: data.email }],
+          params: {
+            inviterName: data.inviter.user.name,
+            organizationName: data.organization.name,
+            acceptInvitationUrl,
+          },
         });
+
+        await gateways.email.send(email);
       },
     }),
   ],

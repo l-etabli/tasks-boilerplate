@@ -13,8 +13,9 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string(),
     BETTER_AUTH_URL: z.url(),
     ENVIRONMENT: environmentSchema,
-    RESEND_API_KEY: z.string().optional(),
-    EMAIL_FROM: z.string().email().optional(),
+    EMAIL_GATEWAY: z.enum(["inMemory", "resend"]).default("inMemory"),
+    EMAIL_RESEND_API_KEY: z.string().optional(),
+    EMAIL_FROM: z.email().optional(),
     SENTRY_DSN: z.url().optional(),
   },
 
