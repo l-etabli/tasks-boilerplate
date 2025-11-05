@@ -11,6 +11,7 @@ import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
 import { addTask } from "./domain/use-cases/addTask.js";
 import { deleteTask } from "./domain/use-cases/deleteTask.js";
+import { updateOrganization } from "./domain/use-cases/updateOrganization.js";
 import { updateUserPreferences } from "./domain/use-cases/updateUserPreferences.js";
 
 export * from "./domain/entities/task.js";
@@ -34,9 +35,10 @@ const getDbAdapters = (config: DbAdaptersConfig) => {
   switch (config.kind) {
     case "inMemory": {
       const taskById: Record<string, any> = {};
+      const userById: Record<string, any> = {};
       const organizationsById: Record<string, any> = {};
       return {
-        withUow: createWithInMemoryUnitOfWork(),
+        withUow: createWithInMemoryUnitOfWork(taskById, userById, organizationsById),
         queries: {
           task: createInMemoryTaskQueries(taskById),
           user: createInMemoryUserQueries(organizationsById),
@@ -98,6 +100,7 @@ export const bootstrapUseCases = ({
       addTask: addTask({ withUow }),
       deleteTask: deleteTask({ withUow }),
       updateUserPreferences: updateUserPreferences({ withUow }),
+      updateOrganization: updateOrganization({ withUow }),
     },
     gateways,
   };

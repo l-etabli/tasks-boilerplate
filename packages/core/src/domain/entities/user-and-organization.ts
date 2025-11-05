@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+/**
+ * Sanitizes a string to be used as a valid organization slug.
+ * - Converts to lowercase
+ * - Replaces spaces with hyphens
+ * - Removes all non-alphanumeric characters except hyphens
+ * - Returns a slug matching the pattern: /^[a-z0-9-]+$/
+ */
+export function sanitizeSlug(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+
 export type UserPreferences = { locale?: "en" | "fr"; theme?: "light" | "dark" | "system" } | null;
 
 export type OrganizationRole = "member" | "admin" | "owner";
@@ -46,3 +60,16 @@ export type Organization = {
   members: OrganizationMember[];
   invitations: OrganizationInvitation[];
 };
+
+export type UpdateOrganizationInput = z.infer<typeof updateOrganizationSchema>;
+export const updateOrganizationSchema = z.object({
+  organizationId: z.string(),
+  name: z.string().min(1).optional(),
+  slug: z
+    .string()
+    .min(1)
+    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
+    .optional(),
+  logo: z.string().optional(),
+  metadata: z.string().optional(),
+});

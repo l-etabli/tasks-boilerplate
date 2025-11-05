@@ -562,6 +562,18 @@ type RootTranslation = {
 		 */
 		slugHint: string
 		/**
+		 * S​l​u​g
+		 */
+		slugLabel: string
+		/**
+		 * a​c​m​e​-​i​n​c
+		 */
+		slugPlaceholder: string
+		/**
+		 * U​n​i​q​u​e​ ​i​d​e​n​t​i​f​i​e​r​ ​f​o​r​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		slugDescription: string
+		/**
 		 * B​a​c​k
 		 */
 		back: string
@@ -577,6 +589,30 @@ type RootTranslation = {
 		 * F​a​i​l​e​d​ ​t​o​ ​c​r​e​a​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
 		 */
 		createFailed: string
+		/**
+		 * E​d​i​t​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		edit: string
+		/**
+		 * E​d​i​t​ ​O​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		editTitle: string
+		/**
+		 * U​p​d​a​t​e​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n​'​s​ ​n​a​m​e​ ​a​n​d​ ​s​l​u​g
+		 */
+		editDescription: string
+		/**
+		 * S​a​v​e​ ​C​h​a​n​g​e​s
+		 */
+		saveChanges: string
+		/**
+		 * U​p​d​a​t​i​n​g​.​.​.
+		 */
+		updating: string
+		/**
+		 * F​a​i​l​e​d​ ​t​o​ ​u​p​d​a​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		updateFailed: string
 	}
 	invitation: {
 		/**
@@ -1267,6 +1303,18 @@ export type TranslationFunctions = {
 		 */
 		slugHint: () => LocalizedString
 		/**
+		 * Slug
+		 */
+		slugLabel: () => LocalizedString
+		/**
+		 * acme-inc
+		 */
+		slugPlaceholder: () => LocalizedString
+		/**
+		 * Unique identifier for your organization
+		 */
+		slugDescription: () => LocalizedString
+		/**
 		 * Back
 		 */
 		back: () => LocalizedString
@@ -1282,6 +1330,30 @@ export type TranslationFunctions = {
 		 * Failed to create organization
 		 */
 		createFailed: () => LocalizedString
+		/**
+		 * Edit organization
+		 */
+		edit: () => LocalizedString
+		/**
+		 * Edit Organization
+		 */
+		editTitle: () => LocalizedString
+		/**
+		 * Update your organization's name and slug
+		 */
+		editDescription: () => LocalizedString
+		/**
+		 * Save Changes
+		 */
+		saveChanges: () => LocalizedString
+		/**
+		 * Updating...
+		 */
+		updating: () => LocalizedString
+		/**
+		 * Failed to update organization
+		 */
+		updateFailed: () => LocalizedString
 	}
 	invitation: {
 		/**

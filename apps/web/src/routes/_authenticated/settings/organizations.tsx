@@ -1,11 +1,13 @@
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { sanitizeSlug } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
+import { EditOrganizationDialog } from "@/components/organization/edit-organization-dialog";
 import { InviteMemberDialog } from "@/components/organization/invite-member-dialog";
 import { OrganizationMembersList } from "@/components/organization/organization-members-list";
 import { PendingInvitationsList } from "@/components/organization/pending-invitations-list";
@@ -51,10 +53,7 @@ function OrganizationsSettings() {
     onSubmit: async ({ value }) => {
       setMessage(null);
       try {
-        const slug = value.name
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9-]/g, "");
+        const slug = sanitizeSlug(value.name);
         await authClient.organization.create({
           name: value.name,
           slug,
@@ -196,7 +195,12 @@ function OrganizationsSettings() {
                 className="border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg p-4"
               >
                 <div className="flex-1">
-                  <h3 className="font-semibold">{org.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">{org.name}</h3>
+                    {currentUserRoleInOrg === "owner" && (
+                      <EditOrganizationDialog organization={org} />
+                    )}
+                  </div>
                   <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
                     {org.slug && (
                       <span>
