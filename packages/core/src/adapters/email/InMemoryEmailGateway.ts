@@ -9,7 +9,7 @@ export const createInMemoryEmailGateway = (defaultFrom: string): EmailGateway =>
     async send(email: Email): Promise<void> {
       const from = email.from ? formatRecipient(email.from) : defaultFrom;
 
-      console.info("===== EMAIL =====");
+      console.info("\n\n===== EMAIL =====");
       console.info(`From: ${from}`);
       console.info(`To: ${email.to.map(formatRecipient).join(", ")}`);
       if (email.cc?.length) {
@@ -21,7 +21,7 @@ export const createInMemoryEmailGateway = (defaultFrom: string): EmailGateway =>
       console.info(`Subject: ${email.subject}`);
       console.info("Body:");
       console.info(email.body);
-      console.info("=================");
+      console.info("=================\n\n");
     },
   };
 };
