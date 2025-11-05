@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import type { UserPreferences } from "@tasks/core";
+import { Toaster } from "@tasks/ui/components/sonner";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
 import { env } from "@/env";
@@ -266,6 +267,7 @@ function BodyContent({ error }: { error?: unknown }) {
   return (
     <>
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
+      <Toaster />
       {env.VITE_ENVIRONMENT === "local" && (
         <TanStackDevtools
           config={{

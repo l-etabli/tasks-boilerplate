@@ -325,6 +325,99 @@ type RootTranslation = {
 			 * F​a​i​l​e​d​ ​t​o​ ​s​w​i​t​c​h​ ​o​r​g​a​n​i​z​a​t​i​o​n
 			 */
 			errorSwitch: string
+			/**
+			 * I​n​v​i​t​e​ ​M​e​m​b​e​r
+			 */
+			inviteButton: string
+			/**
+			 * I​n​v​i​t​e​ ​M​e​m​b​e​r
+			 */
+			inviteDialogTitle: string
+			/**
+			 * S​e​n​d​ ​a​n​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​j​o​i​n​ ​t​h​i​s​ ​o​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			inviteDialogDescription: string
+			/**
+			 * E​m​a​i​l​ ​a​d​d​r​e​s​s
+			 */
+			inviteEmailLabel: string
+			/**
+			 * m​e​m​b​e​r​@​e​x​a​m​p​l​e​.​c​o​m
+			 */
+			inviteEmailPlaceholder: string
+			/**
+			 * R​o​l​e
+			 */
+			inviteRoleLabel: string
+			/**
+			 * S​e​l​e​c​t​ ​a​ ​r​o​l​e
+			 */
+			inviteRoleSelectPlaceholder: string
+			/**
+			 * M​e​m​b​e​r
+			 */
+			inviteRoleMember: string
+			/**
+			 * A​d​m​i​n
+			 */
+			inviteRoleAdmin: string
+			/**
+			 * S​e​n​d​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			inviteSubmit: string
+			/**
+			 * S​e​n​d​i​n​g​.​.​.
+			 */
+			inviteSending: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​s​e​n​t​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			inviteSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​s​e​n​d​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			inviteError: string
+			/**
+			 * P​l​e​a​s​e​ ​e​n​t​e​r​ ​a​ ​v​a​l​i​d​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s
+			 */
+			inviteValidationEmail: string
+			/**
+			 * P​l​e​a​s​e​ ​s​e​l​e​c​t​ ​a​ ​r​o​l​e
+			 */
+			inviteValidationRole: string
+			/**
+			 * C​a​n​c​e​l
+			 */
+			cancelInviteButton: string
+			/**
+			 * C​a​n​c​e​l​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			cancelInviteDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​c​a​n​c​e​l​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​{​e​m​a​i​l​}​?
+			 * @param {unknown} email
+			 */
+			cancelInviteDialogDescription: RequiredParams<'email'>
+			/**
+			 * C​a​n​c​e​l​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			cancelInviteConfirm: string
+			/**
+			 * K​e​e​p​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			cancelInviteCancel: string
+			/**
+			 * C​a​n​c​e​l​i​n​g​.​.​.
+			 */
+			cancelInviteCanceling: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​c​a​n​c​e​l​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			cancelInviteSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​c​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			cancelInviteError: string
 		}
 	}
 	organization: {
@@ -712,6 +805,98 @@ export type TranslationFunctions = {
 			 * Failed to switch organization
 			 */
 			errorSwitch: () => LocalizedString
+			/**
+			 * Invite Member
+			 */
+			inviteButton: () => LocalizedString
+			/**
+			 * Invite Member
+			 */
+			inviteDialogTitle: () => LocalizedString
+			/**
+			 * Send an invitation to join this organization
+			 */
+			inviteDialogDescription: () => LocalizedString
+			/**
+			 * Email address
+			 */
+			inviteEmailLabel: () => LocalizedString
+			/**
+			 * member@example.com
+			 */
+			inviteEmailPlaceholder: () => LocalizedString
+			/**
+			 * Role
+			 */
+			inviteRoleLabel: () => LocalizedString
+			/**
+			 * Select a role
+			 */
+			inviteRoleSelectPlaceholder: () => LocalizedString
+			/**
+			 * Member
+			 */
+			inviteRoleMember: () => LocalizedString
+			/**
+			 * Admin
+			 */
+			inviteRoleAdmin: () => LocalizedString
+			/**
+			 * Send Invitation
+			 */
+			inviteSubmit: () => LocalizedString
+			/**
+			 * Sending...
+			 */
+			inviteSending: () => LocalizedString
+			/**
+			 * Invitation sent successfully
+			 */
+			inviteSuccess: () => LocalizedString
+			/**
+			 * Failed to send invitation
+			 */
+			inviteError: () => LocalizedString
+			/**
+			 * Please enter a valid email address
+			 */
+			inviteValidationEmail: () => LocalizedString
+			/**
+			 * Please select a role
+			 */
+			inviteValidationRole: () => LocalizedString
+			/**
+			 * Cancel
+			 */
+			cancelInviteButton: () => LocalizedString
+			/**
+			 * Cancel Invitation
+			 */
+			cancelInviteDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to cancel this invitation to {email}?
+			 */
+			cancelInviteDialogDescription: (arg: { email: unknown }) => LocalizedString
+			/**
+			 * Cancel Invitation
+			 */
+			cancelInviteConfirm: () => LocalizedString
+			/**
+			 * Keep Invitation
+			 */
+			cancelInviteCancel: () => LocalizedString
+			/**
+			 * Canceling...
+			 */
+			cancelInviteCanceling: () => LocalizedString
+			/**
+			 * Invitation canceled successfully
+			 */
+			cancelInviteSuccess: () => LocalizedString
+			/**
+			 * Failed to cancel invitation
+			 */
+			cancelInviteError: () => LocalizedString
 		}
 	}
 	organization: {
