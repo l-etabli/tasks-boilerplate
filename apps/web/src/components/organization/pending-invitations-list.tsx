@@ -66,15 +66,13 @@ export function PendingInvitationsList({ invitations, userRole }: PendingInvitat
 
           return (
             <div key={invitation.id} className="text-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600 dark:text-gray-400">{invitation.email}</span>
-                  {invitation.role && (
-                    <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
-                      {translateRole({ role: invitation.role, LL })}
-                    </span>
-                  )}
-                </div>
+              <div className="flex items-center gap-3">
+                {invitation.role && (
+                  <span className="w-24 text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize text-center">
+                    {translateRole({ role: invitation.role, LL })}
+                  </span>
+                )}
+                <span className="flex-1 text-gray-600 dark:text-gray-400">{invitation.email}</span>
                 {canCancelInvitations && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

@@ -4,6 +4,8 @@ import { sanitizeSlug } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
+import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
@@ -14,7 +16,6 @@ import { PendingInvitationsList } from "@/components/organization/pending-invita
 import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { getCurrentUserInvitations } from "@/server/functions/user";
-import { translateRole } from "@/utils/translateRole";
 
 const organizationSchema = z.object({
   name: z.string().min(1).max(100),
@@ -197,28 +198,34 @@ function OrganizationsSettings() {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold">{org.name}</h3>
-                    {currentUserRoleInOrg === "owner" && (
-                      <EditOrganizationDialog organization={org} />
-                    )}
-                  </div>
-                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {org.slug && (
-                      <span>
-                        {t.slugLabel()} {org.slug}
-                      </span>
-                    )}
-                    <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
-                      {t.roleLabel({ role: translateRole({ role: currentUserRoleInOrg, LL }) })}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      {["owner", "admin"].includes(currentUserRoleInOrg) && (
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              onClick={() => handleOpenInviteDialog(org.id)}
+                            >
+                              <UserPlus className="h-4 w-4" />
+                              <span className="sr-only">{t.inviteButton()}</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{t.inviteButton()}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                      {currentUserRoleInOrg === "owner" && (
+                        <EditOrganizationDialog organization={org} />
+                      )}
+                    </div>
                   </div>
 
                   {/* Members list */}
                   {org.members && org.members.length > 0 && (
-                    <OrganizationMembersList
-                      organization={org}
-                      currentUser={currentUser}
-                      onInviteClick={() => handleOpenInviteDialog(org.id)}
-                    />
+                    <OrganizationMembersList organization={org} currentUser={currentUser} />
                   )}
 
                   {/* Pending Invitations list */}
