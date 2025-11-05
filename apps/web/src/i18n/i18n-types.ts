@@ -480,6 +480,40 @@ type RootTranslation = {
 			 * F​a​i​l​e​d​ ​t​o​ ​d​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
 			 */
 			rejectInviteError: string
+			/**
+			 * R​e​m​o​v​e
+			 */
+			removeMemberButton: string
+			/**
+			 * R​e​m​o​v​e​ ​M​e​m​b​e​r
+			 */
+			removeMemberDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​r​e​m​o​v​e​ ​{​m​e​m​b​e​r​N​a​m​e​}​ ​f​r​o​m​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​N​a​m​e​}​?​ ​T​h​i​s​ ​a​c​t​i​o​n​ ​c​a​n​n​o​t​ ​b​e​ ​u​n​d​o​n​e​.
+			 * @param {unknown} memberName
+			 * @param {unknown} organizationName
+			 */
+			removeMemberDialogDescription: RequiredParams<'memberName' | 'organizationName'>
+			/**
+			 * R​e​m​o​v​e​ ​M​e​m​b​e​r
+			 */
+			removeMemberConfirm: string
+			/**
+			 * C​a​n​c​e​l
+			 */
+			removeMemberCancel: string
+			/**
+			 * R​e​m​o​v​i​n​g​.​.​.
+			 */
+			removeMemberRemoving: string
+			/**
+			 * M​e​m​b​e​r​ ​r​e​m​o​v​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			removeMemberSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​r​e​m​o​v​e​ ​m​e​m​b​e​r
+			 */
+			removeMemberError: string
 		}
 	}
 	organization: {
@@ -1153,6 +1187,38 @@ export type TranslationFunctions = {
 			 * Failed to decline invitation
 			 */
 			rejectInviteError: () => LocalizedString
+			/**
+			 * Remove
+			 */
+			removeMemberButton: () => LocalizedString
+			/**
+			 * Remove Member
+			 */
+			removeMemberDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to remove {memberName} from {organizationName}? This action cannot be undone.
+			 */
+			removeMemberDialogDescription: (arg: { memberName: unknown, organizationName: unknown }) => LocalizedString
+			/**
+			 * Remove Member
+			 */
+			removeMemberConfirm: () => LocalizedString
+			/**
+			 * Cancel
+			 */
+			removeMemberCancel: () => LocalizedString
+			/**
+			 * Removing...
+			 */
+			removeMemberRemoving: () => LocalizedString
+			/**
+			 * Member removed successfully
+			 */
+			removeMemberSuccess: () => LocalizedString
+			/**
+			 * Failed to remove member
+			 */
+			removeMemberError: () => LocalizedString
 		}
 	}
 	organization: {

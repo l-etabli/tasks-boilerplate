@@ -7,6 +7,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { InviteMemberDialog } from "@/components/organization/invite-member-dialog";
+import { OrganizationMembersList } from "@/components/organization/organization-members-list";
 import { PendingInvitationsList } from "@/components/organization/pending-invitations-list";
 import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -209,40 +210,11 @@ function OrganizationsSettings() {
 
                   {/* Members list */}
                   {org.members && org.members.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                          {t.membersHeading({ count: org.members.length })}
-                        </div>
-                        {["owner", "admin"].includes(currentUserRoleInOrg) && (
-                          <Button
-                            id={`btn-invite-member-${org.id}`}
-                            type="button"
-                            onClick={() => handleOpenInviteDialog(org.id)}
-                            variant="outline"
-                            size="sm"
-                            className="h-7 text-xs"
-                          >
-                            {t.inviteButton()}
-                          </Button>
-                        )}
-                      </div>
-                      <div className="space-y-1">
-                        {org.members.map((member: any) => (
-                          <div
-                            key={member.id}
-                            className="flex items-center justify-between text-sm"
-                          >
-                            <span className="text-gray-600 dark:text-gray-400">
-                              {member.name || member.email}
-                            </span>
-                            <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
-                              {translateRole({ role: member.role, LL })}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <OrganizationMembersList
+                      organization={org}
+                      currentUser={currentUser}
+                      onInviteClick={() => handleOpenInviteDialog(org.id)}
+                    />
                   )}
 
                   {/* Pending Invitations list */}

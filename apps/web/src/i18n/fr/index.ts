@@ -139,6 +139,15 @@ const fr = {
       rejectInviteCancel: "Conserver l'invitation",
       rejectInviteSuccess: "Invitation refusée avec succès",
       rejectInviteError: "Échec du refus de l'invitation",
+      removeMemberButton: "Supprimer",
+      removeMemberDialogTitle: "Supprimer le membre",
+      removeMemberDialogDescription:
+        "Êtes-vous sûr de vouloir supprimer {memberName} de {organizationName} ? Cette action est irréversible.",
+      removeMemberConfirm: "Supprimer le membre",
+      removeMemberCancel: "Annuler",
+      removeMemberRemoving: "Suppression...",
+      removeMemberSuccess: "Membre supprimé avec succès",
+      removeMemberError: "Échec de la suppression du membre",
     },
   },
 

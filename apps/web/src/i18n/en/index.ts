@@ -137,6 +137,15 @@ const en = {
       rejectInviteCancel: "Keep Invitation",
       rejectInviteSuccess: "Invitation declined successfully",
       rejectInviteError: "Failed to decline invitation",
+      removeMemberButton: "Remove",
+      removeMemberDialogTitle: "Remove Member",
+      removeMemberDialogDescription:
+        "Are you sure you want to remove {memberName} from {organizationName}? This action cannot be undone.",
+      removeMemberConfirm: "Remove Member",
+      removeMemberCancel: "Cancel",
+      removeMemberRemoving: "Removing...",
+      removeMemberSuccess: "Member removed successfully",
+      removeMemberError: "Failed to remove member",
     },
   },
 
