@@ -15,9 +15,11 @@
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "typecheck": "turbo typecheck",
+    "typesafe-i18n": "turbo typesafe-i18n",
     "fullcheck": "turbo check:fix typecheck test",
     "web": "pnpm --dir apps/web",
     "core": "pnpm --dir packages/core",
+    "db": "pnpm --dir packages/db",
     "db:up": "pnpm --dir packages/db db:up",
     "db:create": "pnpm --dir packages/db db:create"
   },

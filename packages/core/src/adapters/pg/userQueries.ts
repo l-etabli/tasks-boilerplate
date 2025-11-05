@@ -34,15 +34,34 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
               "user.email as email",
             ]),
         ).as("members"),
+        jsonArrayFrom(
+          eb
+            .selectFrom("invitation")
+            .innerJoin("user as inviter", "inviter.id", "invitation.inviterId")
+            .whereRef("invitation.organizationId", "=", "organization.id")
+            .where("invitation.status", "=", "pending")
+            .select([
+              "invitation.id",
+              "invitation.email",
+              "invitation.role",
+              "invitation.status",
+              "invitation.expiresAt",
+              "inviter.name as inviterName",
+              "inviter.email as inviterEmail",
+            ]),
+        ).as("invitations"),
       ])
       .execute();
 
     return organizations.map((org) => ({
       ...org,
-      createdAt: new Date(org.createdAt),
       members: org.members.map((member) => ({
         ...member,
         createdAt: new Date(member.createdAt),
+      })),
+      invitations: org.invitations.map((invitation) => ({
+        ...invitation,
+        expiresAt: new Date(invitation.expiresAt),
       })),
     }));
   },

@@ -1,5 +1,3 @@
-import type { ColumnType } from "kysely";
-
 export type AuthDatabase = {
   account: Account;
   session: Session;
@@ -10,53 +8,51 @@ export type AuthDatabase = {
   invitation: Invitation;
 };
 
-type Timestamp = ColumnType<Date, Date | string, Date | string>;
-
 interface Account {
   accessToken: string | null;
-  accessTokenExpiresAt: Timestamp | null;
+  accessTokenExpiresAt: Date | null;
   accountId: string;
-  createdAt: Timestamp;
+  createdAt: Date;
   id: string;
   idToken: string | null;
   password: string | null;
   providerId: string;
   refreshToken: string | null;
-  refreshTokenExpiresAt: Timestamp | null;
+  refreshTokenExpiresAt: Date | null;
   scope: string | null;
-  updatedAt: Timestamp;
+  updatedAt: Date;
   userId: string;
 }
 
 interface Session {
-  createdAt: Timestamp;
-  expiresAt: Timestamp;
+  createdAt: Date;
+  expiresAt: Date;
   id: string;
   ipAddress: string | null;
   token: string;
-  updatedAt: Timestamp;
+  updatedAt: Date;
   userAgent: string | null;
   userId: string;
   activeOrganizationId: string | null;
 }
 
 interface User {
-  createdAt: Timestamp;
+  createdAt: Date;
   email: string;
   emailVerified: boolean;
   id: string;
   image: string | null;
   name: string;
   preferences: { locale?: "en" | "fr"; theme?: "light" | "dark" | "system" } | null;
-  updatedAt: Timestamp;
+  updatedAt: Date;
 }
 
 interface Verification {
-  createdAt: Timestamp | null;
-  expiresAt: Timestamp;
+  createdAt: Date | null;
+  expiresAt: Date;
   id: string;
   identifier: string;
-  updatedAt: Timestamp | null;
+  updatedAt: Date | null;
   value: string;
 }
 
@@ -66,7 +62,7 @@ interface Organization {
   slug: string | null;
   logo: string | null;
   metadata: string | null;
-  createdAt: Timestamp;
+  createdAt: Date;
 }
 
 interface Member {
@@ -74,7 +70,7 @@ interface Member {
   organizationId: string;
   userId: string;
   role: string;
-  createdAt: Timestamp;
+  createdAt: Date;
 }
 
 interface Invitation {
@@ -83,6 +79,6 @@ interface Invitation {
   email: string;
   role: string | null;
   status: string;
-  expiresAt: Timestamp;
+  expiresAt: Date;
   inviterId: string;
 }

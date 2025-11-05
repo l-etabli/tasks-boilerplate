@@ -289,6 +289,19 @@ type RootTranslation = {
 			 */
 			memberUnknown: string
 			/**
+			 * P​e​n​d​i​n​g​ ​I​n​v​i​t​a​t​i​o​n​s​ ​(​{​c​o​u​n​t​}​)
+			 * @param {unknown} count
+			 */
+			invitationsHeading: RequiredParams<'count'>
+			/**
+			 * I​n​v​i​t​e​d​ ​b​y
+			 */
+			invitedBy: string
+			/**
+			 * E​x​p​i​r​e​s​ ​i​n
+			 */
+			expiresIn: string
+			/**
 			 * S​e​t​ ​A​c​t​i​v​e
 			 */
 			setActive: string
@@ -663,6 +676,18 @@ export type TranslationFunctions = {
 			 * Unknown user
 			 */
 			memberUnknown: () => LocalizedString
+			/**
+			 * Pending Invitations ({count})
+			 */
+			invitationsHeading: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * Invited by
+			 */
+			invitedBy: () => LocalizedString
+			/**
+			 * Expires in
+			 */
+			expiresIn: () => LocalizedString
 			/**
 			 * Set Active
 			 */

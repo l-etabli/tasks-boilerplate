@@ -195,6 +195,44 @@ function OrganizationsSettings() {
                     </div>
                   </div>
                 )}
+
+                {/* Pending Invitations list */}
+                {org.invitations && org.invitations.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      {t.invitationsHeading({ count: org.invitations.length })}
+                    </div>
+                    <div className="space-y-2">
+                      {org.invitations.map((invitation: any) => {
+                        const now = new Date();
+                        const expiresAt = new Date(invitation.expiresAt);
+                        const hoursLeft = Math.max(
+                          0,
+                          Math.floor((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60)),
+                        );
+
+                        return (
+                          <div key={invitation.id} className="text-sm">
+                            <div className="flex items-center justify-between">
+                              <span className="text-gray-600 dark:text-gray-400">
+                                {invitation.email}
+                              </span>
+                              {invitation.role && (
+                                <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
+                                  {invitation.role}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">
+                              {t.invitedBy()} {invitation.inviterName || invitation.inviterEmail} ·{" "}
+                              {t.expiresIn()} {hoursLeft}h
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))

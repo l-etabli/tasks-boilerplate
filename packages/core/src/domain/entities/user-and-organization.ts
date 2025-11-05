@@ -24,6 +24,16 @@ export type OrganizationMember = {
   email: string;
 };
 
+export type OrganizationInvitation = {
+  id: string;
+  email: string;
+  role: string | null;
+  status: string;
+  expiresAt: Date;
+  inviterName: string | null;
+  inviterEmail: string;
+};
+
 export type Organization = {
   id: string;
   name: string;
@@ -32,5 +42,6 @@ export type Organization = {
   metadata: string | null;
   createdAt: Date;
   members: OrganizationMember[];
+  invitations: OrganizationInvitation[];
   role: string | null;
 };
