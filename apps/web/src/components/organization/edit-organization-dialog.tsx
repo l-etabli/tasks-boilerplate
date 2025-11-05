@@ -12,12 +12,7 @@ import {
 } from "@tasks/ui/components/dialog";
 import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@tasks/ui/components/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
 import { AlertCircle, Pencil } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
@@ -76,106 +71,104 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
   });
 
   return (
-    <TooltipProvider>
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <Pencil className="h-4 w-4" />
-                <span className="sr-only">{LL.organization.edit()}</span>
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{LL.organization.edit()}</p>
-          </TooltipContent>
-        </Tooltip>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>{LL.organization.editTitle()}</DialogTitle>
-            <DialogDescription>{LL.organization.editDescription()}</DialogDescription>
-          </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              <Pencil className="h-4 w-4" />
+              <span className="sr-only">{LL.organization.edit()}</span>
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{LL.organization.edit()}</p>
+        </TooltipContent>
+      </Tooltip>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>{LL.organization.editTitle()}</DialogTitle>
+          <DialogDescription>{LL.organization.editDescription()}</DialogDescription>
+        </DialogHeader>
 
-          {error && (
-            <div className="flex items-start gap-3 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
-              <p>{error}</p>
-            </div>
-          )}
+        {error && (
+          <div className="flex items-start gap-3 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+            <p>{error}</p>
+          </div>
+        )}
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              form.handleSubmit();
-            }}
-            className="space-y-4"
-          >
-            <form.Field name="name">
-              {(field) => (
-                <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
-                  <FieldLabel htmlFor="orgName">{LL.organization.nameLabel()}</FieldLabel>
-                  <Input
-                    id="orgName"
-                    type="text"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                    placeholder={LL.organization.namePlaceholder()}
-                    disabled={isUpdating}
-                    aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
-                  />
-                  {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
-                </Field>
-              )}
-            </form.Field>
-
-            <form.Field name="slug">
-              {(field) => (
-                <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
-                  <FieldLabel htmlFor="orgSlug">{LL.organization.slugLabel()}</FieldLabel>
-                  <Input
-                    id="orgSlug"
-                    type="text"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(sanitizeSlug(e.target.value))}
-                    onBlur={field.handleBlur}
-                    placeholder={LL.organization.slugPlaceholder()}
-                    disabled={isUpdating}
-                    aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
-                  />
-                  <FieldDescription>{LL.organization.slugDescription()}</FieldDescription>
-                  {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
-                </Field>
-              )}
-            </form.Field>
-
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                variant="outline"
-                disabled={isUpdating}
-                className="flex-1"
-              >
-                {LL.common.cancel()}
-              </Button>
-              <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
-                {([canSubmit, isSubmitting]) => (
-                  <Button type="submit" disabled={!canSubmit || isSubmitting} className="flex-1">
-                    {isSubmitting ? LL.organization.updating() : LL.organization.saveChanges()}
-                  </Button>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
+          className="space-y-4"
+        >
+          <form.Field name="name">
+            {(field) => (
+              <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
+                <FieldLabel htmlFor="orgName">{LL.organization.nameLabel()}</FieldLabel>
+                <Input
+                  id="orgName"
+                  type="text"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  placeholder={LL.organization.namePlaceholder()}
+                  disabled={isUpdating}
+                  aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                />
+                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                  <FieldError errors={field.state.meta.errors} />
                 )}
-              </form.Subscribe>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </TooltipProvider>
+              </Field>
+            )}
+          </form.Field>
+
+          <form.Field name="slug">
+            {(field) => (
+              <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
+                <FieldLabel htmlFor="orgSlug">{LL.organization.slugLabel()}</FieldLabel>
+                <Input
+                  id="orgSlug"
+                  type="text"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(sanitizeSlug(e.target.value))}
+                  onBlur={field.handleBlur}
+                  placeholder={LL.organization.slugPlaceholder()}
+                  disabled={isUpdating}
+                  aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                />
+                <FieldDescription>{LL.organization.slugDescription()}</FieldDescription>
+                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                  <FieldError errors={field.state.meta.errors} />
+                )}
+              </Field>
+            )}
+          </form.Field>
+
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              variant="outline"
+              disabled={isUpdating}
+              className="flex-1"
+            >
+              {LL.common.cancel()}
+            </Button>
+            <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
+              {([canSubmit, isSubmitting]) => (
+                <Button type="submit" disabled={!canSubmit || isSubmitting} className="flex-1">
+                  {isSubmitting ? LL.organization.updating() : LL.organization.saveChanges()}
+                </Button>
+              )}
+            </form.Subscribe>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
