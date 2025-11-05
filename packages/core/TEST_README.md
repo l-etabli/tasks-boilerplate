@@ -148,32 +148,35 @@ describe("TaskRepository PostgreSQL integration", () => {
 
 ## Continuous Integration
 
-In CI environments, you should:
+This project uses GitHub Actions for continuous integration with three parallel jobs:
 
-1. Set up a test database
-2. Run migrations
-3. Run all tests
+### 1. Lint and Type Check Job
+- Runs code quality checks
+- Runs TypeScript type checking
+- Fast feedback on code standards
 
-Example GitHub Actions workflow:
+### 2. Unit Tests Job (No Database)
+- Runs only unit tests
+- No DATABASE_URL is set, so integration tests are automatically skipped
+- Fast execution without database setup
 
-```yaml
-- name: Set up PostgreSQL
-  run: |
-    docker run -d -p 5432:5432 \
-      -e POSTGRES_PASSWORD=test \
-      -e POSTGRES_DB=tasks_test \
-      postgres:16
+### 3. Integration Tests Job (PostgreSQL)
+- Uses GitHub Actions service container for PostgreSQL 16
+- Sets up DATABASE_URL automatically
+- Runs database migrations before tests
+- Executes all tests (unit + integration)
 
-- name: Run migrations
-  env:
-    DATABASE_URL: postgresql://postgres:test@localhost:5432/tasks_test
-  run: pnpm db:up
+**Configuration:** See `.github/workflows/ci.yml`
 
-- name: Run tests
-  env:
-    DATABASE_URL: postgresql://postgres:test@localhost:5432/tasks_test
-  run: pnpm test
-```
+The workflow runs on:
+- Every push to any branch
+- Every pull request to the `main` branch
+
+**Benefits:**
+- Parallel execution for faster CI runs
+- Unit tests provide quick feedback
+- Integration tests ensure database adapters work correctly
+- Isolated test environments prevent interference
 
 ## Coverage
 
