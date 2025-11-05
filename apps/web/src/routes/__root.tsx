@@ -12,6 +12,7 @@ import type { UserPreferences } from "@tasks/core";
 import { Toaster } from "@tasks/ui/components/sonner";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
+import { UnauthenticatedPreferencesFloat } from "@/components/UnauthenticatedPreferencesFloat";
 import { env } from "@/env";
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
@@ -267,6 +268,7 @@ function BodyContent({ error }: { error?: unknown }) {
   return (
     <>
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
+      <UnauthenticatedPreferencesFloat />
       <Toaster />
       {env.VITE_ENVIRONMENT === "local" && (
         <TanStackDevtools
