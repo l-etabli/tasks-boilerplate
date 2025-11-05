@@ -2,7 +2,7 @@ import type {
   UpdateUserPreferencesInput,
   User,
 } from "../../domain/entities/user-and-organization.js";
-import type { UserRepository } from "../../domain/ports/userRepository.js";
+import type { UserRepository } from "../../domain/ports/UserRepository.js";
 
 export const createInMemoryUserRepository = (userById: Record<string, User>) =>
   ({

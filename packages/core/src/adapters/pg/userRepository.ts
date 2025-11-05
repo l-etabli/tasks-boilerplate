@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { sql } from "kysely";
-import type { UserRepository } from "../../domain/ports/userRepository.js";
+import type { UserRepository } from "../../domain/ports/UserRepository.js";
 import type { Db } from "./database.js";
 
 export const createPgUserRepository = (trx: Kysely<Db>) =>

@@ -1,5 +1,5 @@
 import type { Organization } from "../../domain/entities/user-and-organization.js";
-import type { UserQueries } from "../../domain/ports/userQueries.js";
+import type { UserQueries } from "../../domain/ports/UserQueries.js";
 
 export const createInMemoryUserQueries = (
   organizationsById: Record<string, Organization>,

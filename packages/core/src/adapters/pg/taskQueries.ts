@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { jsonBuildObject } from "kysely/helpers/postgres";
-import type { TaskQueries } from "../../domain/ports/taskQueries.js";
+import type { TaskQueries } from "../../domain/ports/TaskQueries.js";
 import type { Db } from "./database.js";
 
 export const createPgTaskQueries = (db: Kysely<Db>): TaskQueries => ({

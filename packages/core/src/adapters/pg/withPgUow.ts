@@ -1,5 +1,5 @@
 import type { Kysely } from "kysely";
-import type { WithUow } from "../../domain/ports/uow.js";
+import type { WithUow } from "../../domain/ports/Uow.js";
 import type { Db } from "./database.js";
 import { createPgTaskRepository } from "./taskRepository.js";
 import { createPgUserRepository } from "./userRepository.js";

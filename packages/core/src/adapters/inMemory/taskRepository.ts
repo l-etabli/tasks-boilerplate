@@ -1,5 +1,5 @@
 import type { Task } from "../../domain/entities/task.js";
-import type { TaskRepository } from "../../domain/ports/taskRepository.js";
+import type { TaskRepository } from "../../domain/ports/TaskRepository.js";
 
 export const createInMemoryTaskRepository = (taskById: Record<string, Task>) =>
   ({

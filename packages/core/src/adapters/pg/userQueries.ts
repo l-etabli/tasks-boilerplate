@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
-import type { UserQueries } from "../../domain/ports/userQueries.js";
+import type { UserQueries } from "../../domain/ports/UserQueries.js";
 import type { Db } from "./database.js";
 
 export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
