@@ -34,5 +34,5 @@ export const updateOrganization = createAuthTransacUseCase
       updates.slug = sanitizeSlug(updates.slug);
     }
 
-    return uow.userRepository.updateOrganization(organizationId, updates);
+    await uow.userRepository.updateOrganization(organizationId, updates);
   });

@@ -1,4 +1,4 @@
-import type { Kysely } from "kysely";
+import { type Kysely, sql } from "kysely";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import type { UserQueries } from "../../domain/ports/UserQueries.js";
 import type { Db } from "./database.js";
@@ -64,6 +64,10 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
             .selectFrom("member")
             .innerJoin("user", "user.id", "member.userId")
             .whereRef("member.organizationId", "=", "organization.id")
+            .orderBy(
+              sql`CASE member.role WHEN 'owner' THEN 1 WHEN 'admin' THEN 2 WHEN 'member' THEN 3 END`,
+            )
+            .orderBy("user.name", "asc")
             .select([
               "member.id",
               "member.userId",
@@ -79,6 +83,10 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
             .innerJoin("user as inviter", "inviter.id", "invitation.inviterId")
             .whereRef("invitation.organizationId", "=", "organization.id")
             .where("invitation.status", "=", "pending")
+            .orderBy(
+              sql`CASE invitation.role WHEN 'owner' THEN 1 WHEN 'admin' THEN 2 WHEN 'member' THEN 3 END`,
+            )
+            .orderBy("invitation.email", "asc")
             .select([
               "invitation.id",
               "invitation.email",

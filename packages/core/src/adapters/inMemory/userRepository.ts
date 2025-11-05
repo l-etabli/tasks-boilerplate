@@ -39,6 +39,5 @@ export const createInMemoryUserRepository = (
       };
 
       organizationsById[organizationId] = updatedOrg;
-      return updatedOrg;
     },
   }) satisfies UserRepository;
