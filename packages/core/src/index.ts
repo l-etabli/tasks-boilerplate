@@ -12,6 +12,7 @@ import { updateUserPreferences } from "./domain/use-cases/updateUserPreferences.
 
 export * from "./domain/entities/task.js";
 export * from "./domain/entities/user-and-organization.js";
+export * from "./domain/ports/userQueries.js";
 
 type UowConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 

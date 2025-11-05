@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcceptInvitationInvitationIdRouteImport } from './routes/accept-invitation.$invitationId'
 import { Route as AuthenticatedTodosRouteImport } from './routes/_authenticated/todos'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
@@ -33,6 +34,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcceptInvitationInvitationIdRoute =
+  AcceptInvitationInvitationIdRouteImport.update({
+    id: '/accept-invitation/$invitationId',
+    path: '/accept-invitation/$invitationId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedTodosRoute = AuthenticatedTodosRouteImport.update({
   id: '/todos',
   path: '/todos',
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/todos': typeof AuthenticatedTodosRoute
+  '/accept-invitation/$invitationId': typeof AcceptInvitationInvitationIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/organizations': typeof AuthenticatedSettingsOrganizationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -81,6 +89,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/todos': typeof AuthenticatedTodosRoute
+  '/accept-invitation/$invitationId': typeof AcceptInvitationInvitationIdRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/organizations': typeof AuthenticatedSettingsOrganizationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -93,6 +102,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteWithChildren
   '/_authenticated/todos': typeof AuthenticatedTodosRoute
+  '/accept-invitation/$invitationId': typeof AcceptInvitationInvitationIdRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/organizations': typeof AuthenticatedSettingsOrganizationsRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/settings'
     | '/todos'
+    | '/accept-invitation/$invitationId'
     | '/settings/account'
     | '/settings/organizations'
     | '/api/auth/$'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/todos'
+    | '/accept-invitation/$invitationId'
     | '/settings/account'
     | '/settings/organizations'
     | '/api/auth/$'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/_authenticated/settings'
     | '/_authenticated/todos'
+    | '/accept-invitation/$invitationId'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/organizations'
     | '/api/auth/$'
@@ -135,6 +148,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
+  AcceptInvitationInvitationIdRoute: typeof AcceptInvitationInvitationIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -159,6 +173,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accept-invitation/$invitationId': {
+      id: '/accept-invitation/$invitationId'
+      path: '/accept-invitation/$invitationId'
+      fullPath: '/accept-invitation/$invitationId'
+      preLoaderRoute: typeof AcceptInvitationInvitationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/todos': {
@@ -242,6 +263,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
+  AcceptInvitationInvitationIdRoute: AcceptInvitationInvitationIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

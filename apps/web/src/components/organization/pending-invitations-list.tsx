@@ -12,8 +12,8 @@ import {
   AlertDialogTrigger,
 } from "@tasks/ui/components/alert-dialog";
 import { Button } from "@tasks/ui/components/button";
+import { toast } from "@tasks/ui/components/sonner";
 import { useState } from "react";
-import { toast } from "sonner";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 

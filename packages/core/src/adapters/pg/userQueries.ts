@@ -4,6 +4,25 @@ import type { UserQueries } from "../../domain/ports/userQueries.js";
 import type { Db } from "./database.js";
 
 export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
+  getInvitationById: async (invitationId) =>
+    db
+      .selectFrom("invitation")
+      .innerJoin("organization", "organization.id", "invitation.organizationId")
+      .innerJoin("user as inviter", "inviter.id", "invitation.inviterId")
+      .where("invitation.id", "=", invitationId)
+      .where("invitation.status", "=", "pending")
+      .select([
+        "invitation.id",
+        "invitation.email",
+        "invitation.role",
+        "invitation.status",
+        "invitation.expiresAt",
+        "organization.name as organizationName",
+        "inviter.name as inviterName",
+        "inviter.email as inviterEmail",
+      ])
+      .executeTakeFirst(),
+
   getCurrentUserOrganizations: async (userId) => {
     const organizations = await db
       .selectFrom("organization")

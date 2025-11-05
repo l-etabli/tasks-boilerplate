@@ -1,5 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
+import type { Organization } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import {
   Dialog,
@@ -17,9 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@tasks/ui/components/select";
+import { toast } from "@tasks/ui/components/sonner";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -27,7 +28,7 @@ import { useI18nContext } from "@/i18n/i18n-react";
 type InviteMemberDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  organizationId: string;
+  organization: Organization;
 };
 
 const inviteSchema = z.object({
@@ -35,14 +36,11 @@ const inviteSchema = z.object({
   role: z.enum(["member", "admin"]),
 });
 
-export function InviteMemberDialog({
-  open,
-  onOpenChange,
-  organizationId,
-}: InviteMemberDialogProps) {
+export function InviteMemberDialog({ open, onOpenChange, organization }: InviteMemberDialogProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { LL } = useI18nContext();
+  const { data: session } = authClient.useSession();
 
   const form = useForm({
     defaultValues: {
@@ -55,11 +53,45 @@ export function InviteMemberDialog({
     onSubmit: async ({ value }) => {
       setError(null);
 
+      // Validation: Check if inviting self
+      if (session?.user?.email && value.email.toLowerCase() === session.user.email.toLowerCase()) {
+        const errorMsg = LL.invitation.errorSelfInvitation();
+        setError(errorMsg);
+        toast.error(errorMsg);
+        return;
+      }
+
+      // Validation: Check if email is already a member
+      if (organization?.members) {
+        const isAlreadyMember = organization.members.some(
+          (member) => member.email.toLowerCase() === value.email.toLowerCase(),
+        );
+        if (isAlreadyMember) {
+          const errorMsg = LL.invitation.errorAlreadyMemberInvite({ email: value.email });
+          setError(errorMsg);
+          toast.error(errorMsg);
+          return;
+        }
+      }
+
+      // Validation: Check if email already has a pending invitation
+      if (organization?.invitations) {
+        const hasInvitation = organization.invitations.some(
+          (invitation) => invitation.email.toLowerCase() === value.email.toLowerCase(),
+        );
+        if (hasInvitation) {
+          const errorMsg = LL.invitation.errorAlreadyInvited({ email: value.email });
+          setError(errorMsg);
+          toast.error(errorMsg);
+          return;
+        }
+      }
+
       try {
         await authClient.organization.inviteMember({
           email: value.email,
           role: value.role,
-          organizationId,
+          organizationId: organization.id,
         });
 
         toast.success(LL.settings.organizations.inviteSuccess());

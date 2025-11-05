@@ -482,6 +482,140 @@ type RootTranslation = {
 		 */
 		createFailed: string
 	}
+	invitation: {
+		/**
+		 * A​c​c​e​p​t​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		pageTitle: string
+		/**
+		 * L​o​a​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n​.​.​.
+		 */
+		loading: string
+		/**
+		 * Y​o​u​'​v​e​ ​b​e​e​n​ ​i​n​v​i​t​e​d​ ​t​o​ ​j​o​i​n
+		 */
+		youveBeenInvited: string
+		/**
+		 * I​n​v​i​t​e​d​ ​b​y
+		 */
+		invitedBy: string
+		/**
+		 * a​s​ ​{​r​o​l​e​}
+		 * @param {unknown} role
+		 */
+		asRole: RequiredParams<'role'>
+		/**
+		 * E​x​p​i​r​e​s​ ​i​n​ ​{​h​o​u​r​s​}​ ​h​o​u​r​s
+		 * @param {unknown} hours
+		 */
+		expiresIn: RequiredParams<'hours'>
+		/**
+		 * I​n​v​i​t​a​t​i​o​n​ ​f​o​r​:​ ​{​e​m​a​i​l​}
+		 * @param {unknown} email
+		 */
+		invitationFor: RequiredParams<'email'>
+		/**
+		 * Y​o​u​ ​a​r​e​ ​s​i​g​n​e​d​ ​i​n​ ​w​i​t​h​ ​a​ ​d​i​f​f​e​r​e​n​t​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s
+		 */
+		wrongAccountWarning: string
+		/**
+		 * Y​o​u​ ​m​u​s​t​ ​s​i​g​n​ ​i​n​ ​t​o​ ​a​c​c​e​p​t​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n
+		 */
+		signInToAccept: string
+		/**
+		 * S​i​g​n​ ​O​u​t
+		 */
+		signOutButton: string
+		/**
+		 * A​c​c​e​p​t​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		acceptButton: string
+		/**
+		 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		rejectButton: string
+		/**
+		 * A​c​c​e​p​t​i​n​g​.​.​.
+		 */
+		accepting: string
+		/**
+		 * D​e​c​l​i​n​i​n​g​.​.​.
+		 */
+		rejecting: string
+		/**
+		 * I​n​v​i​t​a​t​i​o​n​ ​a​c​c​e​p​t​e​d​!​ ​R​e​d​i​r​e​c​t​i​n​g​.​.​.
+		 */
+		acceptSuccess: string
+		/**
+		 * I​n​v​i​t​a​t​i​o​n​ ​d​e​c​l​i​n​e​d
+		 */
+		rejectSuccess: string
+		/**
+		 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		rejectConfirmTitle: string
+		/**
+		 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​c​l​i​n​e​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​j​o​i​n​ ​{​o​r​g​N​a​m​e​}​?
+		 * @param {unknown} orgName
+		 */
+		rejectConfirmDescription: RequiredParams<'orgName'>
+		/**
+		 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		rejectConfirmButton: string
+		/**
+		 * K​e​e​p​ ​I​n​v​i​t​a​t​i​o​n
+		 */
+		rejectCancelButton: string
+		/**
+		 * I​n​v​i​t​a​t​i​o​n​ ​n​o​t​ ​f​o​u​n​d​ ​o​r​ ​h​a​s​ ​a​l​r​e​a​d​y​ ​b​e​e​n​ ​u​s​e​d
+		 */
+		errorNotFound: string
+		/**
+		 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​h​a​s​ ​e​x​p​i​r​e​d
+		 */
+		errorExpired: string
+		/**
+		 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​h​a​s​ ​a​l​r​e​a​d​y​ ​b​e​e​n​ ​a​c​c​e​p​t​e​d
+		 */
+		errorAlreadyAccepted: string
+		/**
+		 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​h​a​s​ ​a​l​r​e​a​d​y​ ​b​e​e​n​ ​d​e​c​l​i​n​e​d
+		 */
+		errorAlreadyRejected: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​a​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​ ​o​f​ ​t​h​i​s​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 */
+		errorAlreadyMember: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​s​i​g​n​e​d​ ​i​n​ ​a​s​ ​{​c​u​r​r​e​n​t​E​m​a​i​l​}​,​ ​b​u​t​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​i​s​ ​f​o​r​ ​{​i​n​v​i​t​e​d​E​m​a​i​l​}​.​ ​P​l​e​a​s​e​ ​s​i​g​n​ ​o​u​t​ ​a​n​d​ ​s​i​g​n​ ​i​n​ ​w​i​t​h​ ​t​h​e​ ​c​o​r​r​e​c​t​ ​a​c​c​o​u​n​t​.
+		 * @param {unknown} currentEmail
+		 * @param {unknown} invitedEmail
+		 */
+		errorEmailMismatch: RequiredParams<'currentEmail' | 'invitedEmail'>
+		/**
+		 * A​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d​ ​w​h​i​l​e​ ​p​r​o​c​e​s​s​i​n​g​ ​y​o​u​r​ ​i​n​v​i​t​a​t​i​o​n
+		 */
+		errorServerError: string
+		/**
+		 * A​n​ ​u​n​k​n​o​w​n​ ​e​r​r​o​r​ ​o​c​c​u​r​r​e​d
+		 */
+		errorUnknown: string
+		/**
+		 * Y​o​u​ ​c​a​n​n​o​t​ ​i​n​v​i​t​e​ ​y​o​u​r​s​e​l​f
+		 */
+		errorSelfInvitation: string
+		/**
+		 * {​e​m​a​i​l​}​ ​i​s​ ​a​l​r​e​a​d​y​ ​a​ ​m​e​m​b​e​r​ ​o​f​ ​t​h​i​s​ ​o​r​g​a​n​i​z​a​t​i​o​n
+		 * @param {unknown} email
+		 */
+		errorAlreadyMemberInvite: RequiredParams<'email'>
+		/**
+		 * {​e​m​a​i​l​}​ ​a​l​r​e​a​d​y​ ​h​a​s​ ​a​ ​p​e​n​d​i​n​g​ ​i​n​v​i​t​a​t​i​o​n
+		 * @param {unknown} email
+		 */
+		errorAlreadyInvited: RequiredParams<'email'>
+	}
 	errors: {
 		/**
 		 * S​o​m​e​t​h​i​n​g​ ​w​e​n​t​ ​w​r​o​n​g
@@ -960,6 +1094,132 @@ export type TranslationFunctions = {
 		 * Failed to create organization
 		 */
 		createFailed: () => LocalizedString
+	}
+	invitation: {
+		/**
+		 * Accept Invitation
+		 */
+		pageTitle: () => LocalizedString
+		/**
+		 * Loading invitation...
+		 */
+		loading: () => LocalizedString
+		/**
+		 * You've been invited to join
+		 */
+		youveBeenInvited: () => LocalizedString
+		/**
+		 * Invited by
+		 */
+		invitedBy: () => LocalizedString
+		/**
+		 * as {role}
+		 */
+		asRole: (arg: { role: unknown }) => LocalizedString
+		/**
+		 * Expires in {hours} hours
+		 */
+		expiresIn: (arg: { hours: unknown }) => LocalizedString
+		/**
+		 * Invitation for: {email}
+		 */
+		invitationFor: (arg: { email: unknown }) => LocalizedString
+		/**
+		 * You are signed in with a different email address
+		 */
+		wrongAccountWarning: () => LocalizedString
+		/**
+		 * You must sign in to accept this invitation
+		 */
+		signInToAccept: () => LocalizedString
+		/**
+		 * Sign Out
+		 */
+		signOutButton: () => LocalizedString
+		/**
+		 * Accept Invitation
+		 */
+		acceptButton: () => LocalizedString
+		/**
+		 * Decline Invitation
+		 */
+		rejectButton: () => LocalizedString
+		/**
+		 * Accepting...
+		 */
+		accepting: () => LocalizedString
+		/**
+		 * Declining...
+		 */
+		rejecting: () => LocalizedString
+		/**
+		 * Invitation accepted! Redirecting...
+		 */
+		acceptSuccess: () => LocalizedString
+		/**
+		 * Invitation declined
+		 */
+		rejectSuccess: () => LocalizedString
+		/**
+		 * Decline Invitation
+		 */
+		rejectConfirmTitle: () => LocalizedString
+		/**
+		 * Are you sure you want to decline this invitation to join {orgName}?
+		 */
+		rejectConfirmDescription: (arg: { orgName: unknown }) => LocalizedString
+		/**
+		 * Decline Invitation
+		 */
+		rejectConfirmButton: () => LocalizedString
+		/**
+		 * Keep Invitation
+		 */
+		rejectCancelButton: () => LocalizedString
+		/**
+		 * Invitation not found or has already been used
+		 */
+		errorNotFound: () => LocalizedString
+		/**
+		 * This invitation has expired
+		 */
+		errorExpired: () => LocalizedString
+		/**
+		 * This invitation has already been accepted
+		 */
+		errorAlreadyAccepted: () => LocalizedString
+		/**
+		 * This invitation has already been declined
+		 */
+		errorAlreadyRejected: () => LocalizedString
+		/**
+		 * You are already a member of this organization
+		 */
+		errorAlreadyMember: () => LocalizedString
+		/**
+		 * You are signed in as {currentEmail}, but this invitation is for {invitedEmail}. Please sign out and sign in with the correct account.
+		 */
+		errorEmailMismatch: (arg: { currentEmail: unknown, invitedEmail: unknown }) => LocalizedString
+		/**
+		 * An error occurred while processing your invitation
+		 */
+		errorServerError: () => LocalizedString
+		/**
+		 * An unknown error occurred
+		 */
+		errorUnknown: () => LocalizedString
+		/**
+		 * You cannot invite yourself
+		 */
+		errorSelfInvitation: () => LocalizedString
+		/**
+		 * {email} is already a member of this organization
+		 */
+		errorAlreadyMemberInvite: (arg: { email: unknown }) => LocalizedString
+		/**
+		 * {email} already has a pending invitation
+		 */
+		errorAlreadyInvited: (arg: { email: unknown }) => LocalizedString
 	}
 	errors: {
 		/**

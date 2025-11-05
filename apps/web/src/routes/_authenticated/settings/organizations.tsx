@@ -25,6 +25,10 @@ function OrganizationsSettings() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+
+  const selectedOrganization =
+    selectedOrgId && organizations.find((org) => org.id === selectedOrgId);
+
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
 
@@ -228,11 +232,11 @@ function OrganizationsSettings() {
       </div>
 
       {/* Invite Member Dialog */}
-      {selectedOrgId && (
+      {selectedOrganization && (
         <InviteMemberDialog
           open={inviteDialogOpen}
           onOpenChange={setInviteDialogOpen}
-          organizationId={selectedOrgId}
+          organization={selectedOrganization}
         />
       )}
     </div>
