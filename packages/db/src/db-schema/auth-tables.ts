@@ -59,7 +59,7 @@ interface Verification {
 interface Organization {
   id: string;
   name: string;
-  slug: string | null;
+  slug: string;
   logo: string | null;
   metadata: string | null;
   createdAt: Date;
