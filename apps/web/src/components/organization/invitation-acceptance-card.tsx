@@ -15,6 +15,7 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { AuthForm } from "@/components/auth/auth-form";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { translateRole } from "@/utils/translateRole";
 
 type InvitationAcceptanceCardProps = {
   invitation: InvitationDetails | null;
@@ -118,7 +119,7 @@ export function InvitationAcceptanceCard({
               <p className="text-2xl font-semibold">{invitation.organizationName}</p>
               {invitation.role && (
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {t.asRole({ role: invitation.role })}
+                  {t.asRole({ role: translateRole({ role: invitation.role, LL }) })}
                 </p>
               )}
             </div>

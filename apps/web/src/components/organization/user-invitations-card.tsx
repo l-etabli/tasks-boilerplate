@@ -16,6 +16,7 @@ import { toast } from "@tasks/ui/components/sonner";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { translateRole } from "@/utils/translateRole";
 
 type UserInvitationsCardProps = {
   invitations: InvitationDetails[];
@@ -87,7 +88,7 @@ export function UserInvitationsCard({ invitations }: UserInvitationsCardProps) {
                   </span>
                   {invitation.role && (
                     <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded capitalize">
-                      {invitation.role}
+                      {translateRole({ role: invitation.role, LL })}
                     </span>
                   )}
                 </div>

@@ -1,9 +1,9 @@
-import type { Organization } from "../entities/user-and-organization.js";
+import type { Organization, OrganizationRole } from "../entities/user-and-organization.js";
 
 export type InvitationDetails = {
   id: string;
   email: string;
-  role: string | null;
+  role: OrganizationRole | null;
   status: string;
   expiresAt: Date;
   organizationName: string;

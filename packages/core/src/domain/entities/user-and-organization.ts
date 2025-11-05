@@ -2,6 +2,8 @@ import { z } from "zod";
 
 export type UserPreferences = { locale?: "en" | "fr"; theme?: "light" | "dark" | "system" } | null;
 
+export type OrganizationRole = "member" | "admin" | "owner";
+
 export type User = {
   id: string;
   email: string;
@@ -18,7 +20,7 @@ export const updateUserPreferencesSchema = z.object({
 export type OrganizationMember = {
   id: string;
   userId: string;
-  role: string;
+  role: OrganizationRole;
   createdAt: Date;
   name: string | null;
   email: string;
@@ -27,7 +29,7 @@ export type OrganizationMember = {
 export type OrganizationInvitation = {
   id: string;
   email: string;
-  role: string | null;
+  role: OrganizationRole | null;
   status: string;
   expiresAt: Date;
   inviterName: string | null;
@@ -43,5 +45,4 @@ export type Organization = {
   createdAt: Date;
   members: OrganizationMember[];
   invitations: OrganizationInvitation[];
-  role: string | null;
 };

@@ -366,6 +366,18 @@ type RootTranslation = {
 			 */
 			inviteSubmit: string
 			/**
+			 * M​e​m​b​e​r
+			 */
+			roleMember: string
+			/**
+			 * A​d​m​i​n
+			 */
+			roleAdmin: string
+			/**
+			 * O​w​n​e​r
+			 */
+			roleOwner: string
+			/**
 			 * S​e​n​d​i​n​g​.​.​.
 			 */
 			inviteSending: string
@@ -1029,6 +1041,18 @@ export type TranslationFunctions = {
 			 * Send Invitation
 			 */
 			inviteSubmit: () => LocalizedString
+			/**
+			 * Member
+			 */
+			roleMember: () => LocalizedString
+			/**
+			 * Admin
+			 */
+			roleAdmin: () => LocalizedString
+			/**
+			 * Owner
+			 */
+			roleOwner: () => LocalizedString
 			/**
 			 * Sending...
 			 */

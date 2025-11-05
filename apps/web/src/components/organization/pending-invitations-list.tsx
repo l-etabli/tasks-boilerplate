@@ -1,5 +1,5 @@
 import { useRouter } from "@tanstack/react-router";
-import type { OrganizationInvitation } from "@tasks/core";
+import type { OrganizationInvitation, OrganizationRole } from "@tasks/core";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,10 +16,11 @@ import { toast } from "@tasks/ui/components/sonner";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { translateRole } from "@/utils/translateRole";
 
 type PendingInvitationsListProps = {
   invitations: OrganizationInvitation[];
-  userRole: string | null;
+  userRole: OrganizationRole | null;
 };
 
 export function PendingInvitationsList({ invitations, userRole }: PendingInvitationsListProps) {
@@ -70,7 +71,7 @@ export function PendingInvitationsList({ invitations, userRole }: PendingInvitat
                   <span className="text-gray-600 dark:text-gray-400">{invitation.email}</span>
                   {invitation.role && (
                     <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
-                      {invitation.role}
+                      {translateRole({ role: invitation.role, LL })}
                     </span>
                   )}
                 </div>

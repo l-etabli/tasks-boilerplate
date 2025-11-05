@@ -11,6 +11,7 @@ import { PendingInvitationsList } from "@/components/organization/pending-invita
 import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { getCurrentUserInvitations } from "@/server/functions/user";
+import { translateRole } from "@/utils/translateRole";
 
 const organizationSchema = z.object({
   name: z.string().min(1).max(100),
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/_authenticated/settings/organizations")({
 
 function OrganizationsSettings() {
   const router = useRouter();
-  const { organizations } = Route.useRouteContext();
+  const { organizations, currentUser } = Route.useRouteContext();
   const { userInvitations } = Route.useLoaderData();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -180,64 +181,81 @@ function OrganizationsSettings() {
         {organizations.length === 0 ? (
           <p className="text-gray-500 dark:text-gray-400">{t.none()}</p>
         ) : (
-          organizations.map((org) => (
-            <div
-              key={org.id}
-              className="border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg p-4"
-            >
-              <div className="flex-1">
-                <h3 className="font-semibold">{org.name}</h3>
-                <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  {org.slug && (
-                    <span>
-                      {t.slugLabel()} {org.slug}
+          organizations.map((org) => {
+            const currentUserRoleInOrg = org.members.find(
+              (member) => member.userId === currentUser.id,
+            )?.role;
+
+            if (!currentUserRoleInOrg)
+              throw new Error("Current user is not a member of the organization");
+
+            return (
+              <div
+                key={org.id}
+                className="border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 rounded-lg p-4"
+              >
+                <div className="flex-1">
+                  <h3 className="font-semibold">{org.name}</h3>
+                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {org.slug && (
+                      <span>
+                        {t.slugLabel()} {org.slug}
+                      </span>
+                    )}
+                    <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
+                      {t.roleLabel({ role: translateRole({ role: currentUserRoleInOrg, LL }) })}
                     </span>
-                  )}
-                  <span className="text-gray-700 dark:text-gray-300 font-medium capitalize">
-                    {t.roleLabel({ role: org.role ?? t.roleUnknown() })}
-                  </span>
-                </div>
-
-                {/* Members list */}
-                {org.members && org.members.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {t.membersHeading({ count: org.members.length })}
-                      </div>
-                      {(org.role === "owner" || org.role === "admin") && (
-                        <Button
-                          id={`btn-invite-member-${org.id}`}
-                          type="button"
-                          onClick={() => handleOpenInviteDialog(org.id)}
-                          variant="outline"
-                          size="sm"
-                          className="h-7 text-xs"
-                        >
-                          {t.inviteButton()}
-                        </Button>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      {org.members.map((member: any) => (
-                        <div key={member.id} className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">
-                            {member.name || member.email}
-                          </span>
-                          <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
-                            {member.role}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-                )}
 
-                {/* Pending Invitations list */}
-                <PendingInvitationsList invitations={org.invitations} userRole={org.role} />
+                  {/* Members list */}
+                  {org.members && org.members.length > 0 && (
+                    <div className="mt-3 pt-3 border-t border-gray-200 dark:border-slate-700">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          {t.membersHeading({ count: org.members.length })}
+                        </div>
+                        {["owner", "admin"].includes(currentUserRoleInOrg) && (
+                          <Button
+                            id={`btn-invite-member-${org.id}`}
+                            type="button"
+                            onClick={() => handleOpenInviteDialog(org.id)}
+                            variant="outline"
+                            size="sm"
+                            className="h-7 text-xs"
+                          >
+                            {t.inviteButton()}
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-1">
+                        {org.members.map((member: any) => (
+                          <div
+                            key={member.id}
+                            className="flex items-center justify-between text-sm"
+                          >
+                            <span className="text-gray-600 dark:text-gray-400">
+                              {member.name || member.email}
+                            </span>
+                            <span className="text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize">
+                              {translateRole({ role: member.role, LL })}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Pending Invitations list */}
+                  <PendingInvitationsList
+                    invitations={org.invitations}
+                    userRole={
+                      org.members.find((member) => member.userId === currentUser.id)?.role ?? null
+                    }
+                  />
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 

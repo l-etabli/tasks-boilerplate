@@ -65,11 +65,13 @@ interface Organization {
   createdAt: Date;
 }
 
+type OrganizationRole = "member" | "admin" | "owner";
+
 interface Member {
   id: string;
   organizationId: string;
   userId: string;
-  role: string;
+  role: OrganizationRole;
   createdAt: Date;
 }
 
@@ -77,7 +79,7 @@ interface Invitation {
   id: string;
   organizationId: string;
   email: string;
-  role: string | null;
+  role: OrganizationRole | null;
   status: string;
   expiresAt: Date;
   inviterId: string;
