@@ -57,6 +57,14 @@ The codebase follows **Clean Architecture** with clear separation of concerns:
 4. **Entity-First Design**: Most business logic should be in entities
 5. **Functional Programming**: Prefer pure functions and immutable data structures
 
+### Naming Conventions
+
+**Port Files**: Use PascalCase naming that matches the exported type/interface inside the file.
+- Example: `TaskRepository.ts` exports `TaskRepository` interface
+- Example: `UserQueries.ts` exports `UserQueries` interface
+- Example: `Uow.ts` exports `Uow` type
+- This ensures consistency and cross-platform compatibility with case-sensitive filesystems
+
 ### Repository Structure
 
 ```

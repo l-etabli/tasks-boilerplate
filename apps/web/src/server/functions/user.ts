@@ -36,6 +36,20 @@ export const getInvitationDetails = createServerFn({ method: "GET" })
     }
   });
 
+export const getCurrentUserInvitations = createServerFn({ method: "GET" })
+  .middleware([authenticated({ name: "getCurrentUserInvitations" })])
+  .handler(async (ctx): Promise<InvitationDetails[]> => {
+    const { currentUser } = ctx.context;
+
+    try {
+      const invitations = await useCases.queries.user.getCurrentUserInvitations(currentUser.email);
+      return invitations;
+    } catch (error) {
+      console.error("Error fetching user invitations:", error);
+      return [];
+    }
+  });
+
 export const updateUserPreferences = createServerFn({ method: "POST" })
   .middleware([authenticated({ name: "updateUserPreferences" })])
   .inputValidator(updateUserPreferencesSchema)

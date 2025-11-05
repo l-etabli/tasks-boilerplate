@@ -418,6 +418,56 @@ type RootTranslation = {
 			 * F​a​i​l​e​d​ ​t​o​ ​c​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
 			 */
 			cancelInviteError: string
+			/**
+			 * P​e​n​d​i​n​g​ ​I​n​v​i​t​a​t​i​o​n​s​ ​(​{​c​o​u​n​t​}​)
+			 * @param {unknown} count
+			 */
+			pendingInvitationsHeading: RequiredParams<'count'>
+			/**
+			 * A​c​c​e​p​t
+			 */
+			acceptInviteButton: string
+			/**
+			 * A​c​c​e​p​t​i​n​g​.​.​.
+			 */
+			acceptInviteAccepting: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​a​c​c​e​p​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			acceptInviteSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​a​c​c​e​p​t​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			acceptInviteError: string
+			/**
+			 * D​e​c​l​i​n​e
+			 */
+			rejectInviteButton: string
+			/**
+			 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			rejectInviteDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​c​l​i​n​e​ ​t​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​t​o​ ​j​o​i​n​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​N​a​m​e​}​?
+			 * @param {unknown} organizationName
+			 */
+			rejectInviteDialogDescription: RequiredParams<'organizationName'>
+			/**
+			 * D​e​c​l​i​n​e​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			rejectInviteConfirm: string
+			/**
+			 * K​e​e​p​ ​I​n​v​i​t​a​t​i​o​n
+			 */
+			rejectInviteCancel: string
+			/**
+			 * I​n​v​i​t​a​t​i​o​n​ ​d​e​c​l​i​n​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			rejectInviteSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​d​e​c​l​i​n​e​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			rejectInviteError: string
 		}
 	}
 	organization: {
@@ -1031,6 +1081,54 @@ export type TranslationFunctions = {
 			 * Failed to cancel invitation
 			 */
 			cancelInviteError: () => LocalizedString
+			/**
+			 * Pending Invitations ({count})
+			 */
+			pendingInvitationsHeading: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * Accept
+			 */
+			acceptInviteButton: () => LocalizedString
+			/**
+			 * Accepting...
+			 */
+			acceptInviteAccepting: () => LocalizedString
+			/**
+			 * Invitation accepted successfully
+			 */
+			acceptInviteSuccess: () => LocalizedString
+			/**
+			 * Failed to accept invitation
+			 */
+			acceptInviteError: () => LocalizedString
+			/**
+			 * Decline
+			 */
+			rejectInviteButton: () => LocalizedString
+			/**
+			 * Decline Invitation
+			 */
+			rejectInviteDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to decline this invitation to join {organizationName}?
+			 */
+			rejectInviteDialogDescription: (arg: { organizationName: unknown }) => LocalizedString
+			/**
+			 * Decline Invitation
+			 */
+			rejectInviteConfirm: () => LocalizedString
+			/**
+			 * Keep Invitation
+			 */
+			rejectInviteCancel: () => LocalizedString
+			/**
+			 * Invitation declined successfully
+			 */
+			rejectInviteSuccess: () => LocalizedString
+			/**
+			 * Failed to decline invitation
+			 */
+			rejectInviteError: () => LocalizedString
 		}
 	}
 	organization: {

@@ -8,7 +8,9 @@ import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { InviteMemberDialog } from "@/components/organization/invite-member-dialog";
 import { PendingInvitationsList } from "@/components/organization/pending-invitations-list";
+import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { getCurrentUserInvitations } from "@/server/functions/user";
 
 const organizationSchema = z.object({
   name: z.string().min(1).max(100),
@@ -16,11 +18,16 @@ const organizationSchema = z.object({
 
 export const Route = createFileRoute("/_authenticated/settings/organizations")({
   component: OrganizationsSettings,
+  loader: async () => {
+    const userInvitations = await getCurrentUserInvitations();
+    return { userInvitations };
+  },
 });
 
 function OrganizationsSettings() {
   const router = useRouter();
   const { organizations } = Route.useRouteContext();
+  const { userInvitations } = Route.useLoaderData();
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
@@ -88,6 +95,9 @@ function OrganizationsSettings() {
           </Button>
         )}
       </div>
+
+      {/* User Pending Invitations */}
+      <UserInvitationsCard invitations={userInvitations} />
 
       {message && (
         <div

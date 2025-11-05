@@ -23,6 +23,26 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
       ])
       .executeTakeFirst(),
 
+  getCurrentUserInvitations: async (userEmail) =>
+    db
+      .selectFrom("invitation")
+      .innerJoin("organization", "organization.id", "invitation.organizationId")
+      .innerJoin("user as inviter", "inviter.id", "invitation.inviterId")
+      .where("invitation.email", "=", userEmail)
+      .where("invitation.status", "=", "pending")
+      .where("invitation.expiresAt", ">", new Date())
+      .select([
+        "invitation.id",
+        "invitation.email",
+        "invitation.role",
+        "invitation.status",
+        "invitation.expiresAt",
+        "organization.name as organizationName",
+        "inviter.name as inviterName",
+        "inviter.email as inviterEmail",
+      ])
+      .execute(),
+
   getCurrentUserOrganizations: async (userId) => {
     const organizations = await db
       .selectFrom("organization")

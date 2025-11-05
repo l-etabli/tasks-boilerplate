@@ -33,4 +33,32 @@ export const createInMemoryUserQueries = (
     Object.values(organizationsById).filter((org) =>
       org.members.some((member) => member.userId === userId),
     ),
+
+  getCurrentUserInvitations: async (userEmail) => {
+    const now = new Date();
+    const invitations = [];
+
+    for (const org of Object.values(organizationsById)) {
+      for (const invitation of org.invitations) {
+        if (
+          invitation.email === userEmail &&
+          invitation.status === "pending" &&
+          invitation.expiresAt > now
+        ) {
+          invitations.push({
+            id: invitation.id,
+            email: invitation.email,
+            role: invitation.role,
+            status: invitation.status,
+            expiresAt: invitation.expiresAt,
+            organizationName: org.name,
+            inviterName: invitation.inviterName,
+            inviterEmail: invitation.inviterEmail,
+          });
+        }
+      }
+    }
+
+    return invitations;
+  },
 });
