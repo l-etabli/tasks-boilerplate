@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
-import type { User } from "@tasks/core";
+import { sanitizeSlug, type User } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import {
   Dialog,
@@ -44,10 +44,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
       setError(null);
 
       try {
-        const slug = value.name
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^a-z0-9-]/g, "");
+        const slug = sanitizeSlug(value.name);
         await authClient.organization.create({
           name: value.name,
           slug,

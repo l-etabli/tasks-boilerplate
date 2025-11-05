@@ -1,10 +1,14 @@
 import type {
+  Organization,
   UpdateUserPreferencesInput,
   User,
 } from "../../domain/entities/user-and-organization.js";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
 
-export const createInMemoryUserRepository = (userById: Record<string, User>) =>
+export const createInMemoryUserRepository = (
+  userById: Record<string, User>,
+  organizationsById: Record<string, Organization>,
+) =>
   ({
     updatePreferences: async (
       userId: string,
@@ -18,5 +22,23 @@ export const createInMemoryUserRepository = (userById: Record<string, User>) =>
       const updatedUser = { ...existingUser, ...preferences };
       userById[userId] = updatedUser;
       return updatedUser;
+    },
+
+    updateOrganization: async (organizationId, updates) => {
+      const existingOrg = organizationsById[organizationId];
+      if (!existingOrg) {
+        throw new Error(`Organization with id ${organizationId} not found`);
+      }
+
+      const updatedOrg = {
+        ...existingOrg,
+        ...(updates.name !== undefined && { name: updates.name }),
+        ...(updates.slug !== undefined && { slug: updates.slug }),
+        ...(updates.logo !== undefined && { logo: updates.logo }),
+        ...(updates.metadata !== undefined && { metadata: updates.metadata }),
+      };
+
+      organizationsById[organizationId] = updatedOrg;
+      return updatedOrg;
     },
   }) satisfies UserRepository;

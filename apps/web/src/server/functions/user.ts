@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import type { InvitationDetails } from "@tasks/core";
-import { updateUserPreferencesSchema } from "@tasks/core";
+import { updateOrganizationSchema, updateUserPreferencesSchema } from "@tasks/core";
 import { z } from "zod";
 import { authenticated } from "./auth";
 import { useCases } from "./bootstrap";
@@ -65,4 +65,26 @@ export const updateUserPreferences = createServerFn({ method: "POST" })
     });
 
     return result;
+  });
+
+export const updateOrganization = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "updateOrganization" })])
+  .inputValidator(updateOrganizationSchema)
+  .handler(async (ctx) => {
+    const {
+      data,
+      context: { currentUser },
+    } = ctx;
+
+    try {
+      const result = await useCases.mutations.updateOrganization({
+        currentUser,
+        input: data,
+      });
+
+      return result;
+    } catch (error) {
+      console.error("Error updating organization:", error);
+      throw error;
+    }
   });
