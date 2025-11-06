@@ -27,7 +27,6 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
       // Build update object with only provided fields
       const updateData: Record<string, any> = {};
       if (updates.name !== undefined) updateData.name = updates.name;
-      if (updates.slug !== undefined) updateData.slug = updates.slug;
       if (updates.logo !== undefined) updateData.logo = updates.logo;
       if (updates.metadata !== undefined) updateData.metadata = updates.metadata;
 

@@ -33,7 +33,6 @@ export const createInMemoryUserRepository = (
       const updatedOrg = {
         ...existingOrg,
         ...(updates.name !== undefined && { name: updates.name }),
-        ...(updates.slug !== undefined && { slug: updates.slug }),
         ...(updates.logo !== undefined && { logo: updates.logo }),
         ...(updates.metadata !== undefined && { metadata: updates.metadata }),
       };

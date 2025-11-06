@@ -1,8 +1,8 @@
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { sanitizeSlug } from "@tasks/core";
+import { generateUniqueSlug } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
+import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
 import { UserPlus } from "lucide-react";
@@ -54,7 +54,7 @@ function OrganizationsSettings() {
     onSubmit: async ({ value }) => {
       setMessage(null);
       try {
-        const slug = sanitizeSlug(value.name);
+        const slug = generateUniqueSlug(value.name);
         await authClient.organization.create({
           name: value.name,
           slug,
@@ -139,7 +139,6 @@ function OrganizationsSettings() {
                     placeholder={t.namePlaceholder()}
                     aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
                   />
-                  <FieldDescription>{t.slugHint()}</FieldDescription>
                   {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
                     <FieldError errors={field.state.meta.errors} />
                   )}

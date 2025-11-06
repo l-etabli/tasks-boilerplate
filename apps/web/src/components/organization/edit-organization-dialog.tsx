@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
-import { type Organization, sanitizeSlug } from "@tasks/core";
+import type { Organization } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import {
   Dialog,
@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@tasks/ui/components/dialog";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
+import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
 import { AlertCircle, Pencil } from "lucide-react";
@@ -25,11 +25,6 @@ type EditOrganizationDialogProps = {
 
 const organizationSchema = z.object({
   name: z.string().min(1).max(100),
-  slug: z
-    .string()
-    .min(1)
-    .max(100)
-    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens"),
 });
 
 export function EditOrganizationDialog({ organization }: EditOrganizationDialogProps) {
@@ -42,7 +37,6 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
   const form = useForm({
     defaultValues: {
       name: organization.name,
-      slug: organization.slug || "",
     },
     validators: {
       onChange: organizationSchema,
@@ -56,7 +50,6 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
           data: {
             organizationId: organization.id,
             name: value.name,
-            slug: value.slug,
           },
         });
 
@@ -120,28 +113,6 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
                   disabled={isUpdating}
                   aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
                 />
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
-            )}
-          </form.Field>
-
-          <form.Field name="slug">
-            {(field) => (
-              <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
-                <FieldLabel htmlFor="orgSlug">{LL.organization.slugLabel()}</FieldLabel>
-                <Input
-                  id="orgSlug"
-                  type="text"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(sanitizeSlug(e.target.value))}
-                  onBlur={field.handleBlur}
-                  placeholder={LL.organization.slugPlaceholder()}
-                  disabled={isUpdating}
-                  aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
-                />
-                <FieldDescription>{LL.organization.slugDescription()}</FieldDescription>
                 {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
                   <FieldError errors={field.state.meta.errors} />
                 )}

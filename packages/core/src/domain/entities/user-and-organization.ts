@@ -14,6 +14,17 @@ export function sanitizeSlug(input: string): string {
     .replace(/[^a-z0-9-]/g, "");
 }
 
+/**
+ * Generates a unique slug from a name by sanitizing it and appending a random string.
+ * Format: sanitized-name-{random-6-chars}
+ * Example: "Acme Corp" -> "acme-corp-x7k2p9"
+ */
+export function generateUniqueSlug(name: string): string {
+  const sanitized = sanitizeSlug(name);
+  const randomStr = Math.random().toString(36).substring(2, 8);
+  return `${sanitized}-${randomStr}`;
+}
+
 export type UserPreferences = { locale?: "en" | "fr"; theme?: "light" | "dark" | "system" } | null;
 
 export type OrganizationRole = "member" | "admin" | "owner";
@@ -53,7 +64,7 @@ export type OrganizationInvitation = {
 export type Organization = {
   id: string;
   name: string;
-  slug: string | null;
+  slug: string;
   logo: string | null;
   metadata: string | null;
   createdAt: Date;
@@ -65,11 +76,6 @@ export type UpdateOrganizationInput = z.infer<typeof updateOrganizationSchema>;
 export const updateOrganizationSchema = z.object({
   organizationId: z.string(),
   name: z.string().min(1).optional(),
-  slug: z
-    .string()
-    .min(1)
-    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
-    .optional(),
   logo: z.string().optional(),
   metadata: z.string().optional(),
 });

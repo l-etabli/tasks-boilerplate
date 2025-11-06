@@ -1,6 +1,6 @@
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "@tanstack/react-router";
-import { sanitizeSlug, type User } from "@tasks/core";
+import { generateUniqueSlug, type User } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
 import {
   Dialog,
@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@tasks/ui/components/dialog";
-import { Field, FieldDescription, FieldError, FieldLabel } from "@tasks/ui/components/field";
+import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
@@ -44,7 +44,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
       setError(null);
 
       try {
-        const slug = sanitizeSlug(value.name);
+        const slug = generateUniqueSlug(value.name);
         await authClient.organization.create({
           name: value.name,
           slug,
@@ -65,7 +65,7 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
 
     try {
       const name = user.email.split("@")[0];
-      const slug = `personal-${user.id.slice(0, 8)}`;
+      const slug = generateUniqueSlug(name);
 
       await authClient.organization.create({
         name,
@@ -120,7 +120,6 @@ export function CreateOrganizationModal({ currentUser: user }: CreateOrganizatio
                       disabled={isCreating}
                       aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
                     />
-                    <FieldDescription>{LL.organization.slugHint()}</FieldDescription>
                     {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
                       <FieldError errors={field.state.meta.errors} />
                     )}

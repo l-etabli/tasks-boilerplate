@@ -243,10 +243,6 @@ type RootTranslation = {
 			 */
 			namePlaceholder: string
 			/**
-			 * S​l​u​g​ ​w​i​l​l​ ​b​e​ ​a​u​t​o​-​g​e​n​e​r​a​t​e​d​ ​f​r​o​m​ ​t​h​e​ ​n​a​m​e
-			 */
-			slugHint: string
-			/**
 			 * C​a​n​c​e​l
 			 */
 			cancel: string
@@ -266,15 +262,6 @@ type RootTranslation = {
 			 * A​c​t​i​v​e
 			 */
 			activeBadge: string
-			/**
-			 * S​l​u​g​:
-			 */
-			slugLabel: string
-			/**
-			 * R​o​l​e​:​ ​{​r​o​l​e​}
-			 * @param {unknown} role
-			 */
-			roleLabel: RequiredParams<'role'>
 			/**
 			 * u​n​k​n​o​w​n
 			 */
@@ -558,22 +545,6 @@ type RootTranslation = {
 		 */
 		namePlaceholder: string
 		/**
-		 * S​l​u​g​ ​w​i​l​l​ ​b​e​ ​a​u​t​o​-​g​e​n​e​r​a​t​e​d​ ​f​r​o​m​ ​t​h​e​ ​n​a​m​e
-		 */
-		slugHint: string
-		/**
-		 * S​l​u​g
-		 */
-		slugLabel: string
-		/**
-		 * a​c​m​e​-​i​n​c
-		 */
-		slugPlaceholder: string
-		/**
-		 * U​n​i​q​u​e​ ​i​d​e​n​t​i​f​i​e​r​ ​f​o​r​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n
-		 */
-		slugDescription: string
-		/**
 		 * B​a​c​k
 		 */
 		back: string
@@ -598,7 +569,7 @@ type RootTranslation = {
 		 */
 		editTitle: string
 		/**
-		 * U​p​d​a​t​e​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n​'​s​ ​n​a​m​e​ ​a​n​d​ ​s​l​u​g
+		 * U​p​d​a​t​e​ ​y​o​u​r​ ​o​r​g​a​n​i​z​a​t​i​o​n​'​s​ ​n​a​m​e
 		 */
 		editDescription: string
 		/**
@@ -992,10 +963,6 @@ export type TranslationFunctions = {
 			 */
 			namePlaceholder: () => LocalizedString
 			/**
-			 * Slug will be auto-generated from the name
-			 */
-			slugHint: () => LocalizedString
-			/**
 			 * Cancel
 			 */
 			cancel: () => LocalizedString
@@ -1015,14 +982,6 @@ export type TranslationFunctions = {
 			 * Active
 			 */
 			activeBadge: () => LocalizedString
-			/**
-			 * Slug:
-			 */
-			slugLabel: () => LocalizedString
-			/**
-			 * Role: {role}
-			 */
-			roleLabel: (arg: { role: unknown }) => LocalizedString
 			/**
 			 * unknown
 			 */
@@ -1299,22 +1258,6 @@ export type TranslationFunctions = {
 		 */
 		namePlaceholder: () => LocalizedString
 		/**
-		 * Slug will be auto-generated from the name
-		 */
-		slugHint: () => LocalizedString
-		/**
-		 * Slug
-		 */
-		slugLabel: () => LocalizedString
-		/**
-		 * acme-inc
-		 */
-		slugPlaceholder: () => LocalizedString
-		/**
-		 * Unique identifier for your organization
-		 */
-		slugDescription: () => LocalizedString
-		/**
 		 * Back
 		 */
 		back: () => LocalizedString
@@ -1339,7 +1282,7 @@ export type TranslationFunctions = {
 		 */
 		editTitle: () => LocalizedString
 		/**
-		 * Update your organization's name and slug
+		 * Update your organization's name
 		 */
 		editDescription: () => LocalizedString
 		/**

@@ -1,9 +1,5 @@
 import { useCaseBuilder } from "@tasks/trousse";
-import {
-  sanitizeSlug,
-  type UpdateOrganizationInput,
-  type User,
-} from "../entities/user-and-organization.js";
+import type { UpdateOrganizationInput, User } from "../entities/user-and-organization.js";
 import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
@@ -28,11 +24,6 @@ export const updateOrganization = createAuthTransacUseCase
 
     // Extract the organizationId and pass the rest as updates
     const { organizationId, ...updates } = input;
-
-    // Sanitize slug if provided
-    if (updates.slug !== undefined) {
-      updates.slug = sanitizeSlug(updates.slug);
-    }
 
     await uow.userRepository.updateOrganization(organizationId, updates);
   });
