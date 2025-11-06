@@ -231,30 +231,6 @@ type RootTranslation = {
 			 */
 			createButton: string
 			/**
-			 * C​r​e​a​t​e​ ​N​e​w​ ​O​r​g​a​n​i​z​a​t​i​o​n
-			 */
-			createHeading: string
-			/**
-			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​n​a​m​e
-			 */
-			nameLabel: string
-			/**
-			 * M​y​ ​o​r​g​a​n​i​s​a​t​i​o​n
-			 */
-			namePlaceholder: string
-			/**
-			 * C​a​n​c​e​l
-			 */
-			cancel: string
-			/**
-			 * C​r​e​a​t​e
-			 */
-			create: string
-			/**
-			 * C​r​e​a​t​i​n​g​.​.​.
-			 */
-			creating: string
-			/**
 			 * N​o​ ​o​r​g​a​n​i​z​a​t​i​o​n​s​ ​y​e​t​.​ ​C​r​e​a​t​e​ ​o​n​e​ ​a​b​o​v​e​!
 			 */
 			none: string
@@ -296,14 +272,6 @@ type RootTranslation = {
 			 * S​w​i​t​c​h​i​n​g​.​.​.
 			 */
 			switching: string
-			/**
-			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
-			 */
-			successCreate: string
-			/**
-			 * F​a​i​l​e​d​ ​t​o​ ​c​r​e​a​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
-			 */
-			errorCreate: string
 			/**
 			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​s​w​i​t​c​h​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
 			 */
@@ -980,30 +948,6 @@ export type TranslationFunctions = {
 			 */
 			createButton: () => LocalizedString
 			/**
-			 * Create New Organization
-			 */
-			createHeading: () => LocalizedString
-			/**
-			 * Organization name
-			 */
-			nameLabel: () => LocalizedString
-			/**
-			 * My organisation
-			 */
-			namePlaceholder: () => LocalizedString
-			/**
-			 * Cancel
-			 */
-			cancel: () => LocalizedString
-			/**
-			 * Create
-			 */
-			create: () => LocalizedString
-			/**
-			 * Creating...
-			 */
-			creating: () => LocalizedString
-			/**
 			 * No organizations yet. Create one above!
 			 */
 			none: () => LocalizedString
@@ -1043,14 +987,6 @@ export type TranslationFunctions = {
 			 * Switching...
 			 */
 			switching: () => LocalizedString
-			/**
-			 * Organization created successfully
-			 */
-			successCreate: () => LocalizedString
-			/**
-			 * Failed to create organization
-			 */
-			errorCreate: () => LocalizedString
 			/**
 			 * Organization switched successfully
 			 */

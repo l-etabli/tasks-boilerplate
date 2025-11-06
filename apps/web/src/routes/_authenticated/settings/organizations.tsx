@@ -1,6 +1,4 @@
-import { useForm } from "@tanstack/react-form";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { generateUniqueSlug } from "@tasks/core";
+import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@tasks/ui/components/button";
 import {
   DropdownMenu,
@@ -8,13 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@tasks/ui/components/dropdown-menu";
-import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
-import { Input } from "@tasks/ui/components/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
 import { MoreVertical, Pencil, Trash2, UserPlus } from "lucide-react";
 import { useState } from "react";
-import { z } from "zod";
-import { authClient } from "@/auth-client";
+import { CreateOrganizationModal } from "@/components/organization/create-organization-modal";
 import { DeleteOrganizationDialog } from "@/components/organization/delete-organization-dialog";
 import { EditOrganizationDialog } from "@/components/organization/edit-organization-dialog";
 import { InviteMemberDialog } from "@/components/organization/invite-member-dialog";
@@ -23,10 +18,6 @@ import { PendingInvitationsList } from "@/components/organization/pending-invita
 import { UserInvitationsCard } from "@/components/organization/user-invitations-card";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { getCurrentUserInvitations } from "@/server/functions/user";
-
-const organizationSchema = z.object({
-  name: z.string().min(1).max(100),
-});
 
 export const Route = createFileRoute("/_authenticated/settings/organizations")({
   component: OrganizationsSettings,
@@ -37,11 +28,9 @@ export const Route = createFileRoute("/_authenticated/settings/organizations")({
 });
 
 function OrganizationsSettings() {
-  const router = useRouter();
   const { organizations, currentUser } = Route.useRouteContext();
   const { userInvitations } = Route.useLoaderData();
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -57,35 +46,6 @@ function OrganizationsSettings() {
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
 
-  const form = useForm({
-    defaultValues: {
-      name: "",
-    },
-    validators: {
-      onChange: organizationSchema,
-    },
-    onSubmit: async ({ value }) => {
-      setMessage(null);
-      try {
-        const slug = generateUniqueSlug(value.name);
-        await authClient.organization.create({
-          name: value.name,
-          slug,
-        });
-
-        setMessage({ type: "success", text: t.successCreate() });
-        setShowCreateForm(false);
-        form.reset();
-        router.invalidate();
-      } catch (err) {
-        setMessage({
-          type: "error",
-          text: err instanceof Error ? err.message : t.errorCreate(),
-        });
-      }
-    },
-  });
-
   const handleOpenInviteDialog = (orgId: string) => {
     setSelectedOrgId(orgId);
     setInviteDialogOpen(true);
@@ -100,94 +60,17 @@ function OrganizationsSettings() {
             {t.count({ count: organizations.length })}
           </p>
         </div>
-        {!showCreateForm && (
-          <Button
-            id="btn-show-create-org-form"
-            type="button"
-            onClick={() => setShowCreateForm(true)}
-          >
-            {t.createButton()}
-          </Button>
-        )}
+        <Button
+          id="btn-show-create-org-form"
+          type="button"
+          onClick={() => setCreateModalOpen(true)}
+        >
+          {t.createButton()}
+        </Button>
       </div>
 
       {/* User Pending Invitations */}
       <UserInvitationsCard invitations={userInvitations} />
-
-      {message && (
-        <div
-          className={`p-3 rounded ${
-            message.type === "success"
-              ? "bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
-              : "bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400"
-          }`}
-        >
-          {message.text}
-        </div>
-      )}
-
-      {/* Create Organization Form */}
-      {showCreateForm && (
-        <div className="border border-gray-200 dark:border-slate-800 rounded-lg p-4 bg-gray-50 dark:bg-slate-900">
-          <h3 className="font-semibold mb-3">{t.createHeading()}</h3>
-          <form
-            id="form-create-organization"
-            onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              form.handleSubmit();
-            }}
-            className="space-y-3"
-          >
-            <form.Field name="name">
-              {(field) => (
-                <Field data-invalid={field.state.meta.isTouched && !field.state.meta.isValid}>
-                  <FieldLabel htmlFor="orgName">{t.nameLabel()}</FieldLabel>
-                  <Input
-                    id="orgName"
-                    type="text"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    onBlur={field.handleBlur}
-                    placeholder={t.namePlaceholder()}
-                    aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
-                  />
-                  {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                    <FieldError errors={field.state.meta.errors} />
-                  )}
-                </Field>
-              )}
-            </form.Field>
-
-            <div className="flex gap-2 pt-2">
-              <Button
-                id="btn-cancel-create-org"
-                type="button"
-                onClick={() => {
-                  setShowCreateForm(false);
-                  form.reset();
-                }}
-                variant="outline"
-                className="flex-1"
-              >
-                {t.cancel()}
-              </Button>
-              <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
-                {([canSubmit, isSubmitting]) => (
-                  <Button
-                    id="btn-submit-create-org"
-                    type="submit"
-                    disabled={!canSubmit || isSubmitting}
-                    className="flex-1"
-                  >
-                    {isSubmitting ? t.creating() : t.create()}
-                  </Button>
-                )}
-              </form.Subscribe>
-            </div>
-          </form>
-        </div>
-      )}
 
       {/* Organizations List */}
       <div className="space-y-3">
@@ -308,6 +191,9 @@ function OrganizationsSettings() {
           organization={organizationForAction}
         />
       )}
+
+      {/* Create Organization Modal */}
+      <CreateOrganizationModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
     </div>
   );
 }

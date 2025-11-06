@@ -12,7 +12,7 @@ import {
 import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -21,7 +21,15 @@ const organizationSchema = z.object({
   name: z.string().min(1).max(100),
 });
 
-export function CreateOrganizationModal() {
+type CreateOrganizationModalProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+export function CreateOrganizationModal({
+  open = true,
+  onOpenChange,
+}: CreateOrganizationModalProps) {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +54,7 @@ export function CreateOrganizationModal() {
         });
 
         router.invalidate();
+        onOpenChange?.(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : LL.organization.createFailed());
       } finally {
@@ -54,8 +63,15 @@ export function CreateOrganizationModal() {
     },
   });
 
+  useEffect(() => {
+    if (!open) {
+      form.reset();
+      setError(null);
+    }
+  }, [open, form]);
+
   return (
-    <Dialog open={true}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{LL.organization.modalTitle()}</DialogTitle>
