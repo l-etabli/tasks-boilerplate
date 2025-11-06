@@ -1,4 +1,5 @@
 import type { InvitationDetails } from "@tasks/core";
+import { Alert, AlertDescription, AlertTitle } from "@tasks/ui/components/alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@tasks/ui/components/alert-dialog";
 import { Button } from "@tasks/ui/components/button";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, AlertTriangle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { AuthForm } from "@/components/auth/auth-form";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -26,8 +27,11 @@ type InvitationAcceptanceCardProps = {
   onAccept: () => Promise<void>;
   onReject: () => Promise<void>;
   onSignOut: () => void;
+  onAcceptAnyway: () => Promise<void>;
   successMessage?: string;
   currentUserEmail?: string;
+  showMismatchConfirmation: boolean;
+  emailsMatch?: boolean;
 };
 
 export function InvitationAcceptanceCard({
@@ -39,25 +43,29 @@ export function InvitationAcceptanceCard({
   onAccept,
   onReject,
   onSignOut,
+  onAcceptAnyway,
   successMessage,
   currentUserEmail,
+  showMismatchConfirmation,
 }: InvitationAcceptanceCardProps) {
   const { LL } = useI18nContext();
   const t = LL.invitation;
   const [isAccepting, setIsAccepting] = useState(false);
   const [isRejecting, setIsRejecting] = useState(false);
 
-  // Check if authenticated with wrong email
-  const isWrongEmail =
-    isAuthenticated &&
-    currentUserEmail &&
-    invitation?.email &&
-    currentUserEmail !== invitation.email;
-
   const handleAccept = async () => {
     setIsAccepting(true);
     try {
       await onAccept();
+    } finally {
+      setIsAccepting(false);
+    }
+  };
+
+  const handleAcceptAnyway = async () => {
+    setIsAccepting(true);
+    try {
+      await onAcceptAnyway();
     } finally {
       setIsAccepting(false);
     }
@@ -151,27 +159,42 @@ export function InvitationAcceptanceCard({
                 </p>
                 <AuthForm callbackURL={`/accept-invitation/${invitationId}`} />
               </div>
-            ) : isWrongEmail ? (
-              // Authenticated with wrong email - show sign out button
-              <div className="space-y-3">
-                <p className="text-sm text-center text-gray-600 dark:text-gray-400">
-                  {t.errorEmailMismatch({
-                    currentEmail: currentUserEmail || "",
-                    invitedEmail: invitation.email,
-                  })}
-                </p>
-                <Button
-                  id="btn-sign-out"
-                  onClick={onSignOut}
-                  variant="outline"
-                  className="w-full"
-                  size="lg"
-                >
-                  {t.signOutButton()}
-                </Button>
+            ) : showMismatchConfirmation ? (
+              // Show email mismatch confirmation dialog
+              <div className="space-y-4">
+                <Alert variant="warning">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>{t.emailMismatchTitle()}</AlertTitle>
+                  <AlertDescription>
+                    {t.emailMismatchDescription({
+                      invitedEmail: invitation.email,
+                      currentEmail: currentUserEmail || "",
+                    })}
+                  </AlertDescription>
+                </Alert>
+                <div className="space-y-2">
+                  <Button
+                    id="btn-accept-anyway"
+                    onClick={handleAcceptAnyway}
+                    disabled={isAccepting || isRejecting}
+                    className="w-full"
+                    size="lg"
+                  >
+                    {isAccepting ? t.accepting() : t.acceptAnyway()}
+                  </Button>
+                  <Button
+                    id="btn-sign-out-mismatch"
+                    onClick={onSignOut}
+                    variant="outline"
+                    className="w-full"
+                    size="lg"
+                  >
+                    {t.signOutAndRetry()}
+                  </Button>
+                </div>
               </div>
             ) : (
-              // Authenticated with correct email - show accept/reject buttons
+              // Authenticated - show accept/reject buttons
               <div className="space-y-2">
                 <Button
                   id="btn-accept-invitation"

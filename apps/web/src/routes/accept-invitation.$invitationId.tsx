@@ -1,10 +1,11 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { toast } from "@tasks/ui/components/sonner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/auth-client";
 import { InvitationAcceptanceCard } from "@/components/organization/invitation-acceptance-card";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { getInvitationDetails } from "@/server/functions/user";
+import { authSessionStorage } from "@/utils/auth-session-storage";
 
 export const Route = createFileRoute("/accept-invitation/$invitationId")({
   loader: async ({ params }) => {
@@ -24,8 +25,29 @@ function AcceptInvitationPage() {
 
   const [actionError, setActionError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showMismatchConfirmation, setShowMismatchConfirmation] = useState(false);
 
   const isAuthenticated = !!session?.user;
+
+  // Check if emails match
+  const invitedEmail = loaderData.invitation?.email;
+  const currentEmail = session?.user?.email;
+  const emailsMatch =
+    invitedEmail && currentEmail && invitedEmail.toLowerCase() === currentEmail.toLowerCase();
+
+  // Pre-fill email in auth form when not authenticated
+  useEffect(() => {
+    if (!isAuthenticated && loaderData.invitation?.email) {
+      authSessionStorage.saveAuthEmail(loaderData.invitation.email);
+    }
+  }, [isAuthenticated, loaderData.invitation?.email]);
+
+  // Show mismatch confirmation if authenticated with different email
+  useEffect(() => {
+    if (isAuthenticated && !emailsMatch && invitedEmail && currentEmail) {
+      setShowMismatchConfirmation(true);
+    }
+  }, [isAuthenticated, emailsMatch, invitedEmail, currentEmail]);
 
   // Determine error message from loader data or action error
   const getErrorMessage = () => {
@@ -46,11 +68,23 @@ function AcceptInvitationPage() {
 
   const handleSignOut = async () => {
     await authClient.signOut();
+    setShowMismatchConfirmation(false);
     // After sign out, user will see the "Sign In to Accept" button
   };
 
-  const handleAccept = async () => {
+  const handleAcceptAnyway = async () => {
+    setShowMismatchConfirmation(false);
+    await handleAccept(true); // Skip mismatch check since user confirmed
+  };
+
+  const handleAccept = async (skipMismatchCheck = false) => {
     setActionError(null);
+
+    // If emails don't match and user hasn't confirmed, show confirmation dialog
+    if (!emailsMatch && !skipMismatchCheck) {
+      setShowMismatchConfirmation(true);
+      return;
+    }
 
     try {
       const { error } = await authClient.organization.acceptInvitation({
@@ -153,8 +187,11 @@ function AcceptInvitationPage() {
       onAccept={handleAccept}
       onReject={handleReject}
       onSignOut={handleSignOut}
+      onAcceptAnyway={handleAcceptAnyway}
       successMessage={successMessage || undefined}
       currentUserEmail={session?.user?.email}
+      showMismatchConfirmation={showMismatchConfirmation}
+      emailsMatch={emailsMatch || false}
     />
   );
 }

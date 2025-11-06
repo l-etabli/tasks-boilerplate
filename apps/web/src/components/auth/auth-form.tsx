@@ -16,17 +16,6 @@ type AuthFormProps = {
 
 type AuthMode = "signIn" | "signUp";
 
-const signInSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
-const signUpSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
-
 export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
   const { LL } = useI18nContext();
   const navigate = useNavigate();
@@ -34,6 +23,18 @@ export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
   const [apiError, setApiError] = useState<string>("");
   const [verificationSent, setVerificationSent] = useState(false);
   const [showResendVerification, setShowResendVerification] = useState(false);
+
+  // Create schemas inside component to use Zod's locale configuration
+  const signInSchema = z.object({
+    email: z.email(),
+    password: z.string().min(8),
+  });
+
+  const signUpSchema = z.object({
+    name: z.string().min(1),
+    email: z.email(),
+    password: z.string().min(8),
+  });
 
   const form = useForm({
     defaultValues: {
@@ -62,24 +63,21 @@ export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
       // Better Auth returns { data, error } instead of throwing
       let result: { data?: any; error?: any };
       if (mode === "signUp") {
+        // For invitation flows, don't change the callback - let better-auth handle it
+        // But store the invitation callback so we can redirect after auto-signin
+        const isInvitationFlow = callbackURL?.includes("/accept-invitation/");
+        if (isInvitationFlow) {
+          authSessionStorage.saveInvitationCallback(callbackURL);
+          // Clear email/name from sessionStorage so invitation email is used on return
+          authSessionStorage.clearAuthFormData();
+        }
+
         result = await authClient.signUp.email({
           email: value.email,
           password: value.password,
           name: value.name,
           callbackURL,
         });
-
-        // If signup succeeded, send verification email
-        if (!result.error && result.data) {
-          try {
-            await authClient.sendVerificationEmail({
-              email: value.email,
-              callbackURL: "/verify-email",
-            });
-          } catch (_emailError) {
-            // Don't fail the signup if email sending fails
-          }
-        }
       } else {
         result = await authClient.signIn.email({
           email: value.email,

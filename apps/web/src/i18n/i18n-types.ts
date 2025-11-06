@@ -96,10 +96,6 @@ type RootTranslation = {
 		 */
 		forgotPassword: string
 		/**
-		 * N​e​e​d​ ​a​n​ ​a​c​c​o​u​n​t​?​ ​S​i​g​n​ ​u​p
-		 */
-		needAccount: string
-		/**
 		 * A​l​r​e​a​d​y​ ​h​a​v​e​ ​a​n​ ​a​c​c​o​u​n​t​?​ ​S​i​g​n​ ​i​n
 		 */
 		alreadyHaveAccount: string
@@ -784,6 +780,24 @@ type RootTranslation = {
 		 */
 		rejectCancelButton: string
 		/**
+		 * E​m​a​i​l​ ​a​d​d​r​e​s​s​ ​m​i​s​m​a​t​c​h
+		 */
+		emailMismatchTitle: string
+		/**
+		 * T​h​i​s​ ​i​n​v​i​t​a​t​i​o​n​ ​w​a​s​ ​s​e​n​t​ ​t​o​ ​{​i​n​v​i​t​e​d​E​m​a​i​l​}​,​ ​b​u​t​ ​y​o​u​'​r​e​ ​s​i​g​n​e​d​ ​i​n​ ​a​s​ ​{​c​u​r​r​e​n​t​E​m​a​i​l​}​.
+		 * @param {unknown} currentEmail
+		 * @param {unknown} invitedEmail
+		 */
+		emailMismatchDescription: RequiredParams<'currentEmail' | 'invitedEmail'>
+		/**
+		 * S​i​g​n​ ​o​u​t​ ​a​n​d​ ​t​r​y​ ​a​g​a​i​n
+		 */
+		signOutAndRetry: string
+		/**
+		 * A​c​c​e​p​t​ ​a​n​y​w​a​y
+		 */
+		acceptAnyway: string
+		/**
 		 * I​n​v​i​t​a​t​i​o​n​ ​n​o​t​ ​f​o​u​n​d​ ​o​r​ ​h​a​s​ ​a​l​r​e​a​d​y​ ​b​e​e​n​ ​u​s​e​d
 		 */
 		errorNotFound: string
@@ -930,10 +944,6 @@ export type TranslationFunctions = {
 		 * Forgot password?
 		 */
 		forgotPassword: () => LocalizedString
-		/**
-		 * Need an account? Sign up
-		 */
-		needAccount: () => LocalizedString
 		/**
 		 * Already have an account? Sign in
 		 */
@@ -1604,6 +1614,22 @@ export type TranslationFunctions = {
 		 * Keep Invitation
 		 */
 		rejectCancelButton: () => LocalizedString
+		/**
+		 * Email address mismatch
+		 */
+		emailMismatchTitle: () => LocalizedString
+		/**
+		 * This invitation was sent to {invitedEmail}, but you're signed in as {currentEmail}.
+		 */
+		emailMismatchDescription: (arg: { currentEmail: unknown, invitedEmail: unknown }) => LocalizedString
+		/**
+		 * Sign out and try again
+		 */
+		signOutAndRetry: () => LocalizedString
+		/**
+		 * Accept anyway
+		 */
+		acceptAnyway: () => LocalizedString
 		/**
 		 * Invitation not found or has already been used
 		 */
