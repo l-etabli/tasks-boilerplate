@@ -72,9 +72,125 @@ type RootTranslation = {
 		 */
 		signIn: string
 		/**
+		 * S​i​g​n​ ​U​p
+		 */
+		signUp: string
+		/**
 		 * S​i​g​n​ ​O​u​t
 		 */
 		signOut: string
+		/**
+		 * N​a​m​e
+		 */
+		name: string
+		/**
+		 * E​m​a​i​l
+		 */
+		email: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * F​o​r​g​o​t​ ​p​a​s​s​w​o​r​d​?
+		 */
+		forgotPassword: string
+		/**
+		 * N​e​e​d​ ​a​n​ ​a​c​c​o​u​n​t​?​ ​S​i​g​n​ ​u​p
+		 */
+		needAccount: string
+		/**
+		 * A​l​r​e​a​d​y​ ​h​a​v​e​ ​a​n​ ​a​c​c​o​u​n​t​?​ ​S​i​g​n​ ​i​n
+		 */
+		alreadyHaveAccount: string
+		/**
+		 * O​r​ ​c​o​n​t​i​n​u​e​ ​w​i​t​h
+		 */
+		orContinueWith: string
+		/**
+		 * P​l​e​a​s​e​ ​c​h​e​c​k​ ​y​o​u​r​ ​e​m​a​i​l​ ​t​o​ ​v​e​r​i​f​y​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​b​e​f​o​r​e​ ​s​i​g​n​i​n​g​ ​i​n
+		 */
+		verificationEmailSent: string
+		/**
+		 * A​u​t​h​e​n​t​i​c​a​t​i​o​n​ ​f​a​i​l​e​d​.​ ​P​l​e​a​s​e​ ​t​r​y​ ​a​g​a​i​n​.
+		 */
+		authenticationFailed: string
+		/**
+		 * R​e​s​e​t​ ​p​a​s​s​w​o​r​d
+		 */
+		resetPassword: string
+		/**
+		 * R​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d
+		 */
+		resetPasswordTitle: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​t​o​ ​r​e​c​e​i​v​e​ ​a​ ​p​a​s​s​w​o​r​d​ ​r​e​s​e​t​ ​l​i​n​k
+		 */
+		resetPasswordDescription: string
+		/**
+		 * S​e​n​d​ ​r​e​s​e​t​ ​l​i​n​k
+		 */
+		sendResetLink: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​r​e​s​e​t​ ​l​i​n​k​ ​s​e​n​t​!​ ​C​h​e​c​k​ ​y​o​u​r​ ​e​m​a​i​l​.
+		 */
+		resetLinkSent: string
+		/**
+		 * N​e​w​ ​p​a​s​s​w​o​r​d
+		 */
+		newPassword: string
+		/**
+		 * C​o​n​f​i​r​m​ ​p​a​s​s​w​o​r​d
+		 */
+		confirmPassword: string
+		/**
+		 * U​p​d​a​t​e​ ​p​a​s​s​w​o​r​d
+		 */
+		updatePassword: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​u​p​d​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y​!​ ​Y​o​u​ ​c​a​n​ ​n​o​w​ ​s​i​g​n​ ​i​n​.
+		 */
+		passwordUpdated: string
+		/**
+		 * I​n​v​a​l​i​d​ ​o​r​ ​e​x​p​i​r​e​d​ ​r​e​s​e​t​ ​l​i​n​k
+		 */
+		invalidToken: string
+		/**
+		 * P​a​s​s​w​o​r​d​s​ ​d​o​ ​n​o​t​ ​m​a​t​c​h
+		 */
+		passwordMismatch: string
+		/**
+		 * V​e​r​i​f​y​ ​y​o​u​r​ ​e​m​a​i​l
+		 */
+		verifyEmailTitle: string
+		/**
+		 * E​m​a​i​l​ ​v​e​r​i​f​i​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y​!​ ​Y​o​u​ ​c​a​n​ ​n​o​w​ ​s​i​g​n​ ​i​n​.
+		 */
+		emailVerified: string
+		/**
+		 * V​e​r​i​f​i​c​a​t​i​o​n​ ​f​a​i​l​e​d​.​ ​T​h​e​ ​l​i​n​k​ ​m​a​y​ ​b​e​ ​i​n​v​a​l​i​d​ ​o​r​ ​e​x​p​i​r​e​d​.
+		 */
+		verificationFailed: string
+		/**
+		 * P​l​e​a​s​e​ ​v​e​r​i​f​y​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s​ ​b​e​f​o​r​e​ ​s​i​g​n​i​n​g​ ​i​n​.​ ​C​h​e​c​k​ ​y​o​u​r​ ​i​n​b​o​x​ ​f​o​r​ ​t​h​e​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​l​i​n​k​.
+		 */
+		emailNotVerified: string
+		/**
+		 * R​e​s​e​n​d​ ​v​e​r​i​f​i​c​a​t​i​o​n​ ​e​m​a​i​l
+		 */
+		resendVerification: string
+		/**
+		 * V​e​r​i​f​i​c​a​t​i​o​n​ ​e​m​a​i​l​ ​s​e​n​t​!​ ​P​l​e​a​s​e​ ​c​h​e​c​k​ ​y​o​u​r​ ​i​n​b​o​x​.
+		 */
+		verificationResent: string
+		/**
+		 * A​n​ ​a​c​c​o​u​n​t​ ​w​i​t​h​ ​t​h​i​s​ ​e​m​a​i​l​ ​a​l​r​e​a​d​y​ ​e​x​i​s​t​s
+		 */
+		emailAlreadyExists: string
+		/**
+		 * I​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d
+		 */
+		invalidCredentials: string
 	}
 	header: {
 		/**
@@ -791,9 +907,125 @@ export type TranslationFunctions = {
 		 */
 		signIn: () => LocalizedString
 		/**
+		 * Sign Up
+		 */
+		signUp: () => LocalizedString
+		/**
 		 * Sign Out
 		 */
 		signOut: () => LocalizedString
+		/**
+		 * Name
+		 */
+		name: () => LocalizedString
+		/**
+		 * Email
+		 */
+		email: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Forgot password?
+		 */
+		forgotPassword: () => LocalizedString
+		/**
+		 * Need an account? Sign up
+		 */
+		needAccount: () => LocalizedString
+		/**
+		 * Already have an account? Sign in
+		 */
+		alreadyHaveAccount: () => LocalizedString
+		/**
+		 * Or continue with
+		 */
+		orContinueWith: () => LocalizedString
+		/**
+		 * Please check your email to verify your account before signing in
+		 */
+		verificationEmailSent: () => LocalizedString
+		/**
+		 * Authentication failed. Please try again.
+		 */
+		authenticationFailed: () => LocalizedString
+		/**
+		 * Reset password
+		 */
+		resetPassword: () => LocalizedString
+		/**
+		 * Reset your password
+		 */
+		resetPasswordTitle: () => LocalizedString
+		/**
+		 * Enter your email to receive a password reset link
+		 */
+		resetPasswordDescription: () => LocalizedString
+		/**
+		 * Send reset link
+		 */
+		sendResetLink: () => LocalizedString
+		/**
+		 * Password reset link sent! Check your email.
+		 */
+		resetLinkSent: () => LocalizedString
+		/**
+		 * New password
+		 */
+		newPassword: () => LocalizedString
+		/**
+		 * Confirm password
+		 */
+		confirmPassword: () => LocalizedString
+		/**
+		 * Update password
+		 */
+		updatePassword: () => LocalizedString
+		/**
+		 * Password updated successfully! You can now sign in.
+		 */
+		passwordUpdated: () => LocalizedString
+		/**
+		 * Invalid or expired reset link
+		 */
+		invalidToken: () => LocalizedString
+		/**
+		 * Passwords do not match
+		 */
+		passwordMismatch: () => LocalizedString
+		/**
+		 * Verify your email
+		 */
+		verifyEmailTitle: () => LocalizedString
+		/**
+		 * Email verified successfully! You can now sign in.
+		 */
+		emailVerified: () => LocalizedString
+		/**
+		 * Verification failed. The link may be invalid or expired.
+		 */
+		verificationFailed: () => LocalizedString
+		/**
+		 * Please verify your email address before signing in. Check your inbox for the verification link.
+		 */
+		emailNotVerified: () => LocalizedString
+		/**
+		 * Resend verification email
+		 */
+		resendVerification: () => LocalizedString
+		/**
+		 * Verification email sent! Please check your inbox.
+		 */
+		verificationResent: () => LocalizedString
+		/**
+		 * An account with this email already exists
+		 */
+		emailAlreadyExists: () => LocalizedString
+		/**
+		 * Invalid email or password
+		 */
+		invalidCredentials: () => LocalizedString
 	}
 	header: {
 		/**

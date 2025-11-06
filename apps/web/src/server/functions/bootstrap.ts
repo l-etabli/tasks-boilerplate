@@ -14,7 +14,6 @@ const getGatewayConfig = (): GatewaysConfig => {
       defaultEmailFrom,
     };
   }
-
   return {
     kind: "inMemory",
     defaultEmailFrom,
