@@ -13,9 +13,21 @@
       "outputs": ["dist/**"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["i18n", "^typecheck"]
     },
-    "typesafe-i18n": {},
+    "i18n": {
+      "inputs": [
+        "src/i18n/*/index.ts",
+        "src/i18n/formatters.ts",
+        ".typesafe-i18n.json"
+      ],
+      "outputs": [
+        "src/i18n/i18n-types.ts",
+        "src/i18n/i18n-util.ts",
+        "src/i18n/i18n-util.*.ts",
+        "src/i18n/i18n-react.tsx"
+      ]
+    },
     "dev": {
       "cache": false,
       "persistent": true

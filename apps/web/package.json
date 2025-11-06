@@ -14,7 +14,8 @@
     "typecheck": "tsc --noEmit",
     "check:fix": "pnpm -w check:fix",
     "fullcheck": "pnpm -w fullcheck",
-    "typesafe-i18n": "typesafe-i18n"
+    "typesafe-i18n": "typesafe-i18n",
+    "i18n": "pnpm typesafe-i18n --no-watch"
   },
   "dependencies": {
     "@sentry/tanstackstart-react": "^10.22.0",
