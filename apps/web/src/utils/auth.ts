@@ -1,5 +1,9 @@
 import * as Sentry from "@sentry/tanstackstart-react";
-import { buildInvitationEmail } from "@tasks/core/emails";
+import {
+  buildInvitationEmail,
+  buildPasswordResetEmail,
+  buildVerificationEmail,
+} from "@tasks/core/emails";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
@@ -29,6 +33,39 @@ export const auth = betterAuth({
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
+  },
+
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+    async sendResetPassword({ user, url }: { user: { email: string; name: string }; url: string }) {
+      const resetUrl = url;
+
+      const email = buildPasswordResetEmail({
+        to: [{ email: user.email, name: user.name }],
+        params: {
+          userName: user.name,
+          resetUrl,
+        },
+      });
+
+      await gateways.email.send(email);
+    },
+  },
+
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url }) => {
+      const email = buildVerificationEmail({
+        to: [{ email: user.email, name: user.name }],
+        params: {
+          userName: user.name,
+          verificationUrl: url,
+        },
+      });
+
+      await gateways.email.send(email);
     },
   },
 
