@@ -10,6 +10,7 @@ import { createPgTaskQueries } from "./adapters/pg/taskQueries.js";
 import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
 import { addTask } from "./domain/use-cases/addTask.js";
+import { deleteOrganization } from "./domain/use-cases/deleteOrganization.js";
 import { deleteTask } from "./domain/use-cases/deleteTask.js";
 import { updateOrganization } from "./domain/use-cases/updateOrganization.js";
 import { updateUserPreferences } from "./domain/use-cases/updateUserPreferences.js";
@@ -101,6 +102,7 @@ export const bootstrapUseCases = ({
       deleteTask: deleteTask({ withUow }),
       updateUserPreferences: updateUserPreferences({ withUow }),
       updateOrganization: updateOrganization({ withUow }),
+      deleteOrganization: deleteOrganization({ withUow }),
     },
     gateways,
   };

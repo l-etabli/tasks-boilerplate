@@ -81,3 +81,22 @@ export const updateOrganization = createServerFn({ method: "POST" })
       input: data,
     });
   });
+
+const deleteOrganizationSchema = z.object({
+  organizationId: z.string(),
+});
+
+export const deleteOrganization = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "deleteOrganization" })])
+  .inputValidator(deleteOrganizationSchema)
+  .handler(async (ctx) => {
+    const {
+      data,
+      context: { currentUser },
+    } = ctx;
+
+    await useCases.mutations.deleteOrganization({
+      currentUser,
+      input: data,
+    });
+  });

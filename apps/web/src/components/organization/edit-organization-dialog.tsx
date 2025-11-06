@@ -8,12 +8,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@tasks/ui/components/dialog";
 import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
-import { AlertCircle, Pencil } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -21,15 +19,20 @@ import { updateOrganization } from "@/server/functions/user";
 
 type EditOrganizationDialogProps = {
   organization: Organization;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 };
 
 const organizationSchema = z.object({
   name: z.string().min(1).max(100),
 });
 
-export function EditOrganizationDialog({ organization }: EditOrganizationDialogProps) {
+export function EditOrganizationDialog({
+  organization,
+  open,
+  onOpenChange,
+}: EditOrganizationDialogProps) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { LL } = useI18nContext();
@@ -53,7 +56,7 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
           },
         });
 
-        setIsOpen(false);
+        onOpenChange(false);
         router.invalidate();
       } catch (err) {
         setError(err instanceof Error ? err.message : LL.organization.updateFailed());
@@ -64,20 +67,7 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
   });
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <Pencil className="h-4 w-4" />
-              <span className="sr-only">{LL.organization.edit()}</span>
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{LL.organization.edit()}</p>
-        </TooltipContent>
-      </Tooltip>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{LL.organization.editTitle()}</DialogTitle>
@@ -123,7 +113,7 @@ export function EditOrganizationDialog({ organization }: EditOrganizationDialogP
           <div className="flex gap-2">
             <Button
               type="button"
-              onClick={() => setIsOpen(false)}
+              onClick={() => onOpenChange(false)}
               variant="outline"
               disabled={isUpdating}
               className="flex-1"

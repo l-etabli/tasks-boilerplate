@@ -145,6 +145,14 @@ const fr = {
       removeMemberRemoving: "Suppression...",
       removeMemberSuccess: "Membre supprimé avec succès",
       removeMemberError: "Échec de la suppression du membre",
+      organizationActions: "Actions de l'organisation",
+      editOrganization: "Modifier l'organisation",
+      deleteOrganization: "Supprimer l'organisation",
+      deleteOrganizationDialogTitle: "Supprimer l'organisation",
+      deleteOrganizationDialogDescription:
+        "Êtes-vous sûr de vouloir supprimer {organizationName} ? Cette action est irréversible et supprimera tous les membres et données.",
+      organizationDeleted: "Organisation supprimée avec succès",
+      organizationDeleteError: "Échec de la suppression de l'organisation",
     },
   },
 

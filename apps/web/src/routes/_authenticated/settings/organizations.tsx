@@ -2,13 +2,20 @@ import { useForm } from "@tanstack/react-form";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { generateUniqueSlug } from "@tasks/core";
 import { Button } from "@tasks/ui/components/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@tasks/ui/components/dropdown-menu";
 import { Field, FieldError, FieldLabel } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
-import { UserPlus } from "lucide-react";
+import { MoreVertical, Pencil, Trash2, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
+import { DeleteOrganizationDialog } from "@/components/organization/delete-organization-dialog";
 import { EditOrganizationDialog } from "@/components/organization/edit-organization-dialog";
 import { InviteMemberDialog } from "@/components/organization/invite-member-dialog";
 import { OrganizationMembersList } from "@/components/organization/organization-members-list";
@@ -37,9 +44,15 @@ function OrganizationsSettings() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedOrgForAction, setSelectedOrgForAction] = useState<string | null>(null);
 
   const selectedOrganization =
     selectedOrgId && organizations.find((org) => org.id === selectedOrgId);
+
+  const organizationForAction =
+    selectedOrgForAction && organizations.find((org) => org.id === selectedOrgForAction);
 
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
@@ -217,7 +230,35 @@ function OrganizationsSettings() {
                         </Tooltip>
                       )}
                       {currentUserRoleInOrg === "owner" && (
-                        <EditOrganizationDialog organization={org} />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <MoreVertical className="h-4 w-4" />
+                              <span className="sr-only">{t.organizationActions()}</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedOrgForAction(org.id);
+                                setEditDialogOpen(true);
+                              }}
+                            >
+                              <Pencil className="mr-2 h-4 w-4" />
+                              {t.editOrganization()}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => {
+                                setSelectedOrgForAction(org.id);
+                                setDeleteDialogOpen(true);
+                              }}
+                              className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              {t.deleteOrganization()}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       )}
                     </div>
                   </div>
@@ -247,6 +288,24 @@ function OrganizationsSettings() {
           open={inviteDialogOpen}
           onOpenChange={setInviteDialogOpen}
           organization={selectedOrganization}
+        />
+      )}
+
+      {/* Edit Organization Dialog */}
+      {organizationForAction && (
+        <EditOrganizationDialog
+          open={editDialogOpen}
+          onOpenChange={setEditDialogOpen}
+          organization={organizationForAction}
+        />
+      )}
+
+      {/* Delete Organization Dialog */}
+      {organizationForAction && (
+        <DeleteOrganizationDialog
+          open={deleteDialogOpen}
+          onOpenChange={setDeleteDialogOpen}
+          organization={organizationForAction}
         />
       )}
     </div>

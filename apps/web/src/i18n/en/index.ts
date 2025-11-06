@@ -143,6 +143,14 @@ const en = {
       removeMemberRemoving: "Removing...",
       removeMemberSuccess: "Member removed successfully",
       removeMemberError: "Failed to remove member",
+      organizationActions: "Organization actions",
+      editOrganization: "Edit organization",
+      deleteOrganization: "Delete organization",
+      deleteOrganizationDialogTitle: "Delete Organization",
+      deleteOrganizationDialogDescription:
+        "Are you sure you want to delete {organizationName}? This action cannot be undone and will remove all members and data.",
+      organizationDeleted: "Organization deleted successfully",
+      organizationDeleteError: "Failed to delete organization",
     },
   },
 

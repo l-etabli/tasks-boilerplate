@@ -37,4 +37,11 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
         .where("id", "=", organizationId)
         .executeTakeFirstOrThrow();
     },
+
+    deleteOrganization: async (organizationId) => {
+      await trx
+        .deleteFrom("organization")
+        .where("id", "=", organizationId)
+        .executeTakeFirstOrThrow();
+    },
   }) satisfies UserRepository;

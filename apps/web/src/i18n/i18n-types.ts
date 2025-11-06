@@ -501,6 +501,35 @@ type RootTranslation = {
 			 * F​a​i​l​e​d​ ​t​o​ ​r​e​m​o​v​e​ ​m​e​m​b​e​r
 			 */
 			removeMemberError: string
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​a​c​t​i​o​n​s
+			 */
+			organizationActions: string
+			/**
+			 * E​d​i​t​ ​o​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			editOrganization: string
+			/**
+			 * D​e​l​e​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			deleteOrganization: string
+			/**
+			 * D​e​l​e​t​e​ ​O​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			deleteOrganizationDialogTitle: string
+			/**
+			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​l​e​t​e​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​N​a​m​e​}​?​ ​T​h​i​s​ ​a​c​t​i​o​n​ ​c​a​n​n​o​t​ ​b​e​ ​u​n​d​o​n​e​ ​a​n​d​ ​w​i​l​l​ ​r​e​m​o​v​e​ ​a​l​l​ ​m​e​m​b​e​r​s​ ​a​n​d​ ​d​a​t​a​.
+			 * @param {unknown} organizationName
+			 */
+			deleteOrganizationDialogDescription: RequiredParams<'organizationName'>
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n​ ​d​e​l​e​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			organizationDeleted: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​d​e​l​e​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			organizationDeleteError: string
 		}
 	}
 	organization: {
@@ -1214,6 +1243,34 @@ export type TranslationFunctions = {
 			 * Failed to remove member
 			 */
 			removeMemberError: () => LocalizedString
+			/**
+			 * Organization actions
+			 */
+			organizationActions: () => LocalizedString
+			/**
+			 * Edit organization
+			 */
+			editOrganization: () => LocalizedString
+			/**
+			 * Delete organization
+			 */
+			deleteOrganization: () => LocalizedString
+			/**
+			 * Delete Organization
+			 */
+			deleteOrganizationDialogTitle: () => LocalizedString
+			/**
+			 * Are you sure you want to delete {organizationName}? This action cannot be undone and will remove all members and data.
+			 */
+			deleteOrganizationDialogDescription: (arg: { organizationName: unknown }) => LocalizedString
+			/**
+			 * Organization deleted successfully
+			 */
+			organizationDeleted: () => LocalizedString
+			/**
+			 * Failed to delete organization
+			 */
+			organizationDeleteError: () => LocalizedString
 		}
 	}
 	organization: {

@@ -39,4 +39,11 @@ export const createInMemoryUserRepository = (
 
       organizationsById[organizationId] = updatedOrg;
     },
+
+    deleteOrganization: async (organizationId) => {
+      if (!organizationsById[organizationId]) {
+        throw new Error(`Organization with id ${organizationId} not found`);
+      }
+      delete organizationsById[organizationId];
+    },
   }) satisfies UserRepository;

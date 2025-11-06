@@ -10,4 +10,5 @@ export type UserRepository = {
     organizationId: string,
     updates: Omit<UpdateOrganizationInput, "organizationId">,
   ) => Promise<void>;
+  deleteOrganization: (organizationId: string) => Promise<void>;
 };
