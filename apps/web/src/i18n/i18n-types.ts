@@ -239,7 +239,7 @@ type RootTranslation = {
 			 */
 			nameLabel: string
 			/**
-			 * A​c​m​e​ ​I​n​c
+			 * M​y​ ​o​r​g​a​n​i​s​a​t​i​o​n
 			 */
 			namePlaceholder: string
 			/**
@@ -554,7 +554,7 @@ type RootTranslation = {
 		 */
 		nameLabel: string
 		/**
-		 * A​c​m​e​ ​I​n​c
+		 * M​y​ ​o​r​g​a​n​i​s​a​t​i​o​n
 		 */
 		namePlaceholder: string
 		/**
@@ -988,7 +988,7 @@ export type TranslationFunctions = {
 			 */
 			nameLabel: () => LocalizedString
 			/**
-			 * Acme Inc
+			 * My organisation
 			 */
 			namePlaceholder: () => LocalizedString
 			/**
@@ -1295,7 +1295,7 @@ export type TranslationFunctions = {
 		 */
 		nameLabel: () => LocalizedString
 		/**
-		 * Acme Inc
+		 * My organisation
 		 */
 		namePlaceholder: () => LocalizedString
 		/**
