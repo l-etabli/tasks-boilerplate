@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useLocation } from "@tanstack/react-router";
 import Header from "@/components/Header";
 import { CreateOrganizationModal } from "@/components/organization/create-organization-modal";
 import { getAuthContextFn } from "@/server/functions/auth";
@@ -21,9 +21,13 @@ export const Route = createFileRoute("/_authenticated")({
 
 function AuthenticatedLayout() {
   const { organizations, activeOrganizationId } = Route.useRouteContext();
+  const location = useLocation();
   const needsOrganization = organizations.length === 0;
 
-  if (needsOrganization) {
+  // Don't show org creation modal on invitation acceptance page
+  const isInvitationPage = location.pathname.includes("/accept-invitation/");
+
+  if (needsOrganization && !isInvitationPage) {
     return <CreateOrganizationModal />;
   }
 

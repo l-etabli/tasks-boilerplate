@@ -85,3 +85,4 @@ packages/
 
 ### Deployment
 - This project is deployed with @.github/workflows/docker.yml on a coolify instance
+- using zod for schemas, do not add custom messages, as we want the default messages transalations with locale configured.

@@ -10,9 +10,20 @@ import { createAuthMiddleware } from "better-auth/api";
 import { organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "@/env";
+import type { Locales } from "@/i18n/i18n-types";
 import { gateways } from "@/server/functions/bootstrap";
-import { setPreferencesCookie } from "./preferences";
+import { fallbackLocale } from "@/utils/localeUtils";
+import { getPreferencesCookie, setPreferencesCookie } from "./preferences";
 import { buildUrl } from "./url-builder";
+
+/**
+ * Extract locale from request cookies with fallback
+ */
+function getLocaleFromRequest(request?: Request): Locales {
+  const cookieHeader = request?.headers.get("cookie") ?? undefined;
+  const preferences = getPreferencesCookie(cookieHeader);
+  return preferences?.locale || fallbackLocale;
+}
 
 export const auth = betterAuth({
   database: {
@@ -39,14 +50,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
-    async sendResetPassword({ user, url }: { user: { email: string; name: string }; url: string }) {
-      const resetUrl = url;
-
+    async sendResetPassword({ user, url }, request) {
       const email = buildPasswordResetEmail({
         to: [{ email: user.email, name: user.name }],
+        locale: getLocaleFromRequest(request),
         params: {
           userName: user.name,
-          resetUrl,
+          resetUrl: url,
         },
       });
 
@@ -56,9 +66,11 @@ export const auth = betterAuth({
 
   emailVerification: {
     autoSignInAfterVerification: true,
-    sendVerificationEmail: async ({ user, url }) => {
+    sendOnSignUp: true,
+    sendVerificationEmail: async ({ user, url }, request) => {
       const email = buildVerificationEmail({
         to: [{ email: user.email, name: user.name }],
+        locale: getLocaleFromRequest(request),
         params: {
           userName: user.name,
           verificationUrl: url,
@@ -107,8 +119,12 @@ export const auth = betterAuth({
       // Invitation expires after 48 hours
       invitationExpiresIn: 60 * 60 * 48,
 
+      // Require email verification to accept invitations
+      // Users must verify their email before accepting invitations
+      requireEmailVerificationOnInvitation: true,
+
       // Send invitation emails via email gateway
-      async sendInvitationEmail(data) {
+      async sendInvitationEmail(data, request) {
         const pathname = buildUrl("/accept-invitation/$invitationId", {
           invitationId: data.id,
         });
@@ -116,6 +132,7 @@ export const auth = betterAuth({
 
         const email = buildInvitationEmail({
           to: [{ email: data.email }],
+          locale: getLocaleFromRequest(request),
           params: {
             inviterName: data.inviter.user.name,
             organizationName: data.organization.name,

@@ -220,6 +220,11 @@ const en = {
     rejectConfirmDescription: "Are you sure you want to decline this invitation to join {orgName}?",
     rejectConfirmButton: "Decline Invitation",
     rejectCancelButton: "Keep Invitation",
+    emailMismatchTitle: "Email address mismatch",
+    emailMismatchDescription:
+      "This invitation was sent to {invitedEmail}, but you're signed in as {currentEmail}.",
+    signOutAndRetry: "Sign out and try again",
+    acceptAnyway: "Accept anyway",
     errorNotFound: "Invitation not found or has already been used",
     errorExpired: "This invitation has expired",
     errorAlreadyAccepted: "This invitation has already been accepted",

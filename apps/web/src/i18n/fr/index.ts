@@ -201,6 +201,11 @@ const fr = {
       "Êtes-vous sûr de vouloir refuser cette invitation à rejoindre {orgName} ?",
     rejectConfirmButton: "Refuser l'invitation",
     rejectCancelButton: "Conserver l'invitation",
+    emailMismatchTitle: "Adresses e-mail différentes",
+    emailMismatchDescription:
+      "Cette invitation a été envoyée à {invitedEmail}, mais vous êtes connecté en tant que {currentEmail}.",
+    signOutAndRetry: "Se déconnecter et réessayer",
+    acceptAnyway: "Accepter quand même",
     errorNotFound: "Invitation introuvable ou déjà utilisée",
     errorExpired: "Cette invitation a expiré",
     errorAlreadyAccepted: "Cette invitation a déjà été acceptée",

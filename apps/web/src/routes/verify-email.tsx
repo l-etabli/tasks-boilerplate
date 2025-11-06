@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@tasks/ui/components/button";
+import { useEffect } from "react";
 import { z } from "zod";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { authSessionStorage } from "@/utils/auth-session-storage";
 
 const verifyEmailSearchSchema = z.object({
   error: z.string().optional(),
@@ -20,6 +22,22 @@ function VerifyEmailPage() {
   // If there's an error param, show error. Otherwise, verification succeeded
   const isError = !!errorParam;
   const errorMessage = isError ? LL.auth.verificationFailed() : "";
+
+  // Redirect to invitation page if user came from invitation signup
+  useEffect(() => {
+    if (!isError) {
+      const invitationCallback = authSessionStorage.getInvitationCallback();
+      if (invitationCallback) {
+        // Clear stored data
+        authSessionStorage.clearAuthData();
+
+        // Redirect to invitation page after brief delay
+        setTimeout(() => {
+          window.location.href = invitationCallback;
+        }, 1500);
+      }
+    }
+  }, [isError]);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
