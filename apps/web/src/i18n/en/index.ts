@@ -156,15 +156,16 @@ const en = {
 
   organization: {
     modalTitle: "Create your organization",
-    modalDescription: "Choose how you'll use this workspace",
+    modalDescription: "Choose a name for your workspace - it can be personal, family, or business",
     personalOptionTitle: "Personal workspace",
     personalOptionDescription: "Quick setup for individual use",
     customOptionTitle: "Custom organization",
     customOptionDescription: "Set up with custom name and settings",
     customFormTitle: "Create organization",
-    customFormDescription: "Set up your workspace with a custom name",
+    customFormDescription:
+      "Choose a name for your workspace - it can be personal, family, or business",
     nameLabel: "Organization name",
-    namePlaceholder: "My organisation",
+    namePlaceholder: "Personal, Smith Family, My Company...",
     back: "Back",
     create: "Create",
     creating: "Creating...",

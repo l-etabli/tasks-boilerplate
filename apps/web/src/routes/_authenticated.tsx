@@ -20,11 +20,11 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthenticatedLayout() {
-  const { currentUser, organizations, activeOrganizationId } = Route.useRouteContext();
+  const { organizations, activeOrganizationId } = Route.useRouteContext();
   const needsOrganization = organizations.length === 0;
 
   if (needsOrganization) {
-    return <CreateOrganizationModal currentUser={currentUser} />;
+    return <CreateOrganizationModal />;
   }
 
   return (

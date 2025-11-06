@@ -538,7 +538,7 @@ type RootTranslation = {
 		 */
 		modalTitle: string
 		/**
-		 * C​h​o​o​s​e​ ​h​o​w​ ​y​o​u​'​l​l​ ​u​s​e​ ​t​h​i​s​ ​w​o​r​k​s​p​a​c​e
+		 * C​h​o​o​s​e​ ​a​ ​n​a​m​e​ ​f​o​r​ ​y​o​u​r​ ​w​o​r​k​s​p​a​c​e​ ​-​ ​i​t​ ​c​a​n​ ​b​e​ ​p​e​r​s​o​n​a​l​,​ ​f​a​m​i​l​y​,​ ​o​r​ ​b​u​s​i​n​e​s​s
 		 */
 		modalDescription: string
 		/**
@@ -562,7 +562,7 @@ type RootTranslation = {
 		 */
 		customFormTitle: string
 		/**
-		 * S​e​t​ ​u​p​ ​y​o​u​r​ ​w​o​r​k​s​p​a​c​e​ ​w​i​t​h​ ​a​ ​c​u​s​t​o​m​ ​n​a​m​e
+		 * C​h​o​o​s​e​ ​a​ ​n​a​m​e​ ​f​o​r​ ​y​o​u​r​ ​w​o​r​k​s​p​a​c​e​ ​-​ ​i​t​ ​c​a​n​ ​b​e​ ​p​e​r​s​o​n​a​l​,​ ​f​a​m​i​l​y​,​ ​o​r​ ​b​u​s​i​n​e​s​s
 		 */
 		customFormDescription: string
 		/**
@@ -570,7 +570,7 @@ type RootTranslation = {
 		 */
 		nameLabel: string
 		/**
-		 * M​y​ ​o​r​g​a​n​i​s​a​t​i​o​n
+		 * P​e​r​s​o​n​a​l​,​ ​S​m​i​t​h​ ​F​a​m​i​l​y​,​ ​M​y​ ​C​o​m​p​a​n​y​.​.​.
 		 */
 		namePlaceholder: string
 		/**
@@ -1279,7 +1279,7 @@ export type TranslationFunctions = {
 		 */
 		modalTitle: () => LocalizedString
 		/**
-		 * Choose how you'll use this workspace
+		 * Choose a name for your workspace - it can be personal, family, or business
 		 */
 		modalDescription: () => LocalizedString
 		/**
@@ -1303,7 +1303,7 @@ export type TranslationFunctions = {
 		 */
 		customFormTitle: () => LocalizedString
 		/**
-		 * Set up your workspace with a custom name
+		 * Choose a name for your workspace - it can be personal, family, or business
 		 */
 		customFormDescription: () => LocalizedString
 		/**
@@ -1311,7 +1311,7 @@ export type TranslationFunctions = {
 		 */
 		nameLabel: () => LocalizedString
 		/**
-		 * My organisation
+		 * Personal, Smith Family, My Company...
 		 */
 		namePlaceholder: () => LocalizedString
 		/**

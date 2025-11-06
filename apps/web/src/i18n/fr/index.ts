@@ -194,15 +194,17 @@ const fr = {
 
   organization: {
     modalTitle: "Créez votre organisation",
-    modalDescription: "Choisissez comment vous utiliserez cet espace de travail",
+    modalDescription:
+      "Choisissez un nom pour votre espace de travail - il peut être personnel, familial ou professionnel",
     personalOptionTitle: "Espace personnel",
     personalOptionDescription: "Configuration rapide pour un usage individuel",
     customOptionTitle: "Organisation personnalisée",
     customOptionDescription: "Configurez avec un nom et des paramètres personnalisés",
     customFormTitle: "Créer une organisation",
-    customFormDescription: "Configurez votre espace de travail avec un nom personnalisé",
+    customFormDescription:
+      "Choisissez un nom pour votre espace de travail - il peut être personnel, familial ou professionnel",
     nameLabel: "Nom de l'organisation",
-    namePlaceholder: "Mon organisation",
+    namePlaceholder: "Personne Physique, Famille Dupont, SCI Martin...",
     back: "Retour",
     create: "Créer",
     creating: "Création...",
