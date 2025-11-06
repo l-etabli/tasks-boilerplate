@@ -6,9 +6,9 @@ import { createAuthMiddleware } from "better-auth/api";
 import { organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "@/env";
-import { getRouter } from "@/router";
 import { gateways } from "@/server/functions/bootstrap";
 import { setPreferencesCookie } from "./preferences";
+import { buildUrl } from "./url-builder";
 
 export const auth = betterAuth({
   database: {
@@ -72,12 +72,10 @@ export const auth = betterAuth({
 
       // Send invitation emails via email gateway
       async sendInvitationEmail(data) {
-        const router = getRouter();
-        const location = router.buildLocation({
-          to: "/accept-invitation/$invitationId",
-          params: { invitationId: data.id },
+        const pathname = buildUrl("/accept-invitation/$invitationId", {
+          invitationId: data.id,
         });
-        const acceptInvitationUrl = `${env.BETTER_AUTH_URL}${location.pathname}`;
+        const acceptInvitationUrl = `${env.BETTER_AUTH_URL}${pathname}`;
 
         const email = buildInvitationEmail({
           to: [{ email: data.email }],
