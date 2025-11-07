@@ -13,10 +13,13 @@ import {
 } from "@tasks/ui/components/alert-dialog";
 import { Button } from "@tasks/ui/components/button";
 import { toast } from "@tasks/ui/components/sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
+import { Check, Copy, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { translateRole } from "@/utils/translateRole";
+import { buildUrl } from "@/utils/url-builder";
 
 type PendingInvitationsListProps = {
   invitations: OrganizationInvitation[];
@@ -28,6 +31,7 @@ export function PendingInvitationsList({ invitations, userRole }: PendingInvitat
   const { LL } = useI18nContext();
   const t = LL.settings.organizations;
   const [cancelingInvitationId, setCancelingInvitationId] = useState<string | null>(null);
+  const [copiedInvitationId, setCopiedInvitationId] = useState<string | null>(null);
 
   const canCancelInvitations = userRole === "owner" || userRole === "admin";
 
@@ -43,6 +47,25 @@ export function PendingInvitationsList({ invitations, userRole }: PendingInvitat
       toast.error(errorMessage);
     } finally {
       setCancelingInvitationId(null);
+    }
+  };
+
+  const handleCopyInvitationLink = async (invitationId: string) => {
+    try {
+      const pathname = buildUrl("/accept-invitation/$invitationId", {
+        invitationId,
+      });
+      const invitationUrl = `${window.location.origin}${pathname}`;
+
+      await navigator.clipboard.writeText(invitationUrl);
+      setCopiedInvitationId(invitationId);
+
+      setTimeout(() => {
+        setCopiedInvitationId(null);
+      }, 2000);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t.copyInviteLinkError();
+      toast.error(errorMessage);
     }
   };
 
@@ -74,40 +97,72 @@ export function PendingInvitationsList({ invitations, userRole }: PendingInvitat
                 )}
                 <span className="flex-1 text-gray-600 dark:text-gray-400">{invitation.email}</span>
                 {canCancelInvitations && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        id={`btn-cancel-invitation-${invitation.id}`}
-                        variant="ghost"
-                        size="sm"
-                        disabled={cancelingInvitationId === invitation.id}
-                        className="h-auto py-1 px-2 text-xs"
-                      >
-                        {cancelingInvitationId === invitation.id
-                          ? t.cancelInviteCanceling()
-                          : t.cancelInviteButton()}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>{t.cancelInviteDialogTitle()}</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t.cancelInviteDialogDescription({ email: invitation.email })}
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel id={`btn-keep-invitation-${invitation.id}`}>
-                          {t.cancelInviteCancel()}
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          id={`btn-confirm-cancel-invitation-${invitation.id}`}
-                          onClick={() => handleCancelInvitation(invitation.id)}
-                        >
-                          {t.cancelInviteConfirm()}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <div className="flex items-center gap-2">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        {copiedInvitationId === invitation.id ? (
+                          <div className="flex items-center justify-center h-8 w-8 p-0">
+                            <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                            <span className="sr-only">{t.copyInviteLinkTooltip()}</span>
+                          </div>
+                        ) : (
+                          <Button
+                            id={`btn-copy-invitation-link-${invitation.id}`}
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleCopyInvitationLink(invitation.id)}
+                          >
+                            <Copy className="h-4 w-4" />
+                            <span className="sr-only">{t.copyInviteLinkTooltip()}</span>
+                          </Button>
+                        )}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t.copyInviteLinkTooltip()}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <AlertDialog>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              id={`btn-cancel-invitation-${invitation.id}`}
+                              variant="ghost"
+                              size="sm"
+                              disabled={cancelingInvitationId === invitation.id}
+                              className="h-auto py-1 px-2"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                              <span className="sr-only">{t.cancelInviteTooltip()}</span>
+                            </Button>
+                          </AlertDialogTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{t.cancelInviteTooltip()}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{t.cancelInviteDialogTitle()}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {t.cancelInviteDialogDescription({ email: invitation.email })}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel id={`btn-keep-invitation-${invitation.id}`}>
+                            {t.cancelInviteCancel()}
+                          </AlertDialogCancel>
+                          <AlertDialogAction
+                            id={`btn-confirm-cancel-invitation-${invitation.id}`}
+                            onClick={() => handleCancelInvitation(invitation.id)}
+                          >
+                            {t.cancelInviteConfirm()}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 )}
               </div>
               <div className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">

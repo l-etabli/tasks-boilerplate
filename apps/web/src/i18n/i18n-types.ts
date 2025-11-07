@@ -498,6 +498,18 @@ type RootTranslation = {
 			 */
 			cancelInviteError: string
 			/**
+			 * C​a​n​c​e​l​ ​i​n​v​i​t​a​t​i​o​n
+			 */
+			cancelInviteTooltip: string
+			/**
+			 * C​o​p​y​ ​l​i​n​k
+			 */
+			copyInviteLinkTooltip: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​c​o​p​y​ ​l​i​n​k
+			 */
+			copyInviteLinkError: string
+			/**
 			 * P​e​n​d​i​n​g​ ​I​n​v​i​t​a​t​i​o​n​s​ ​(​{​c​o​u​n​t​}​)
 			 * @param {unknown} count
 			 */
@@ -1399,6 +1411,18 @@ export type TranslationFunctions = {
 			 * Failed to cancel invitation
 			 */
 			cancelInviteError: () => LocalizedString
+			/**
+			 * Cancel invitation
+			 */
+			cancelInviteTooltip: () => LocalizedString
+			/**
+			 * Copy link
+			 */
+			copyInviteLinkTooltip: () => LocalizedString
+			/**
+			 * Failed to copy link
+			 */
+			copyInviteLinkError: () => LocalizedString
 			/**
 			 * Pending Invitations ({count})
 			 */
