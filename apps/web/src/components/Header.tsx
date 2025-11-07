@@ -119,6 +119,44 @@ export default function Header({
                     </DropdownMenuContent>
                   </DropdownMenu>
                 )}
+                {/* Mobile user menu - icon only */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      id="btn-user-menu-mobile"
+                      variant="outline"
+                      size="icon"
+                      className="sm:hidden"
+                      aria-label={displayName}
+                    >
+                      <User className="h-[1.2rem] w-[1.2rem]" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem id="menu-item-account-mobile" asChild>
+                      <Link to="/settings/account" className="flex items-center gap-2">
+                        <Settings className="h-4 w-4" />
+                        <span>{LL.nav.account()}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem id="menu-item-organizations-mobile" asChild>
+                      <Link to="/settings/organizations" className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4" />
+                        <span>{LL.nav.organizations()}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      id="menu-item-sign-out-mobile"
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 text-red-600 dark:text-red-400"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>{LL.auth.signOut()}</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                {/* Desktop user menu - full button with name */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
