@@ -32,6 +32,7 @@ type InvitationAcceptanceCardProps = {
   currentUserEmail?: string;
   showMismatchConfirmation: boolean;
   emailsMatch?: boolean;
+  authMode?: "signIn" | "signUp";
 };
 
 export function InvitationAcceptanceCard({
@@ -47,6 +48,7 @@ export function InvitationAcceptanceCard({
   successMessage,
   currentUserEmail,
   showMismatchConfirmation,
+  authMode,
 }: InvitationAcceptanceCardProps) {
   const { LL } = useI18nContext();
   const t = LL.invitation;
@@ -157,7 +159,7 @@ export function InvitationAcceptanceCard({
                 <p className="text-sm text-center text-gray-600 dark:text-gray-400">
                   {t.signInToAccept()}
                 </p>
-                <AuthForm callbackURL={`/accept-invitation/${invitationId}`} />
+                <AuthForm callbackURL={`/accept-invitation/${invitationId}`} mode={authMode} />
               </div>
             ) : showMismatchConfirmation ? (
               // Show email mismatch confirmation dialog

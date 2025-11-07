@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 import { AuthForm } from "@/components/auth/auth-form";
 import { useI18nContext } from "@/i18n/i18n-react";
 
 export const Route = createFileRoute("/login")({
-  validateSearch: (search: Record<string, unknown>): { redirect?: string } => ({
-    redirect: search.redirect as string | undefined,
+  validateSearch: z.object({
+    redirect: z.string().optional(),
+    mode: z.enum(["signIn", "signUp"]).optional(),
   }),
   component: LoginPage,
 });
 
 function LoginPage() {
-  const { redirect } = Route.useSearch();
+  const search = Route.useSearch();
   const { LL } = useI18nContext();
 
   return (
@@ -20,7 +22,7 @@ function LoginPage() {
           <h1 className="text-3xl font-bold">{LL.auth.signInTitle()}</h1>
           <p className="mt-2 text-gray-600">{LL.auth.signInSubtitle()}</p>
         </div>
-        <AuthForm callbackURL={redirect || "/"} />
+        <AuthForm callbackURL={search.redirect || "/"} mode={search.mode} />
       </div>
     </div>
   );

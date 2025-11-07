@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@tasks/ui/components/button";
 import { Field, FieldError, FieldLabel, FieldSeparator } from "@tasks/ui/components/field";
 import { Input } from "@tasks/ui/components/input";
@@ -12,14 +12,11 @@ import { authSessionStorage } from "@/utils/auth-session-storage";
 type AuthFormProps = {
   callbackURL?: string;
   className?: string;
+  mode?: "signIn" | "signUp";
 };
 
-type AuthMode = "signIn" | "signUp";
-
-export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
+export function AuthForm({ callbackURL = "/", className, mode = "signIn" }: AuthFormProps) {
   const { LL } = useI18nContext();
-  const navigate = useNavigate();
-  const [mode, setMode] = useState<AuthMode>("signIn");
   const [apiError, setApiError] = useState<string>("");
   const [verificationSent, setVerificationSent] = useState(false);
   const [showResendVerification, setShowResendVerification] = useState(false);
@@ -169,21 +166,9 @@ export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
     });
   };
 
-  const toggleMode = () => {
-    const currentEmail = form.getFieldValue("email");
-    const currentName = form.getFieldValue("name");
-    setMode(mode === "signIn" ? "signUp" : "signIn");
+  const handleToggleClick = () => {
     setApiError("");
     setShowResendVerification(false);
-    form.reset();
-
-    // Preserve email and name when switching between sign-in and sign-up
-    if (currentEmail) {
-      form.setFieldValue("email", currentEmail);
-    }
-    if (currentName) {
-      form.setFieldValue("name", currentName);
-    }
   };
 
   if (verificationSent) {
@@ -195,16 +180,11 @@ export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
               {LL.auth.verificationEmailSent()}
             </p>
           </div>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              setVerificationSent(false);
-              setMode("signIn");
-            }}
-          >
-            {LL.common.back()}
-          </Button>
+          <Link to="." search={{ mode: "signIn" }} replace>
+            <Button variant="outline" className="w-full" onClick={() => setVerificationSent(false)}>
+              {LL.common.back()}
+            </Button>
+          </Link>
         </div>
       </div>
     );
@@ -338,45 +318,33 @@ export function AuthForm({ callbackURL = "/", className }: AuthFormProps) {
 
         {mode === "signIn" && (
           <div className="flex items-center justify-between text-sm">
-            <Button
-              type="button"
-              variant="link"
-              className="p-0 h-auto"
-              onMouseDown={(e) => {
-                e.preventDefault();
-              }}
-              onClick={() => {
-                navigate({ to: "/forgot-password" });
-              }}
-            >
+            <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline">
               {LL.auth.forgotPassword()}
-            </Button>
-            <Button
-              type="button"
-              variant="link"
-              className="p-0 h-auto"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                toggleMode();
-              }}
+            </Link>
+            <Link
+              to="."
+              search={{ mode: "signUp" }}
+              replace
+              className="text-sm text-blue-600 hover:underline"
+              onClick={handleToggleClick}
             >
               {LL.auth.signUp()}
-            </Button>
+            </Link>
           </div>
         )}
 
         {mode === "signUp" && (
-          <Button
-            type="button"
-            variant="ghost"
-            className="w-full"
-            onMouseDown={(e) => {
-              e.preventDefault();
-              toggleMode();
-            }}
-          >
-            {LL.auth.alreadyHaveAccount()}
-          </Button>
+          <div className="text-center text-sm">
+            <Link
+              to="."
+              search={{ mode: "signIn" }}
+              replace
+              className="text-blue-600 hover:underline"
+              onClick={handleToggleClick}
+            >
+              {LL.auth.alreadyHaveAccount()}
+            </Link>
+          </div>
         )}
 
         <FieldSeparator className="mt-4">{LL.auth.orContinueWith()}</FieldSeparator>

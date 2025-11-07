@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { toast } from "@tasks/ui/components/sonner";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { InvitationAcceptanceCard } from "@/components/organization/invitation-acceptance-card";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -8,6 +9,9 @@ import { getInvitationDetails } from "@/server/functions/user";
 import { authSessionStorage } from "@/utils/auth-session-storage";
 
 export const Route = createFileRoute("/accept-invitation/$invitationId")({
+  validateSearch: z.object({
+    mode: z.enum(["signIn", "signUp"]).optional(),
+  }),
   loader: async ({ params }) => {
     const result = await getInvitationDetails({ data: { invitationId: params.invitationId } });
     return result;
@@ -18,6 +22,8 @@ export const Route = createFileRoute("/accept-invitation/$invitationId")({
 function AcceptInvitationPage() {
   const { invitationId } = Route.useParams();
   const loaderData = Route.useLoaderData();
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const { LL } = useI18nContext();
@@ -28,6 +34,16 @@ function AcceptInvitationPage() {
   const [showMismatchConfirmation, setShowMismatchConfirmation] = useState(false);
 
   const isAuthenticated = !!session?.user;
+
+  // Set mode=signUp in URL when not authenticated (for new users)
+  useEffect(() => {
+    if (!isAuthenticated && !search.mode) {
+      navigate({
+        search: { mode: "signUp" },
+        replace: true,
+      });
+    }
+  }, [isAuthenticated, search.mode, navigate]);
 
   // Check if emails match
   const invitedEmail = loaderData.invitation?.email;
@@ -192,6 +208,7 @@ function AcceptInvitationPage() {
       currentUserEmail={session?.user?.email}
       showMismatchConfirmation={showMismatchConfirmation}
       emailsMatch={emailsMatch || false}
+      authMode={search.mode}
     />
   );
 }
