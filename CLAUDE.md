@@ -2,12 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Try to avoid type "any" and try to avoid type casting as much as possible. 
+
 ## Key Development Commands
 
 - **Development**: `pnpm dev` - Start development server
 - **Build**: `pnpm build` - Build all packages and apps
 - **Lint & Format**: `pnpm check:fix` - Fix linting and formatting issues
-- **Type Check**: `pnpm typecheck` - Run TypeScript type checking
+- **Type Check**: `pnpm typecheck` - Run TypeScript type checking (when ran from root, also includes i18n generation)
 - **Full Check**: `pnpm fullcheck` - Run all checks including tests
 - **Database Migration**: `pnpm db:up` - Run database migrations
 - **Database Creation**: `pnpm db:create` - Create new database migration
@@ -57,6 +59,11 @@ The codebase follows **Clean Architecture** with clear separation of concerns:
 4. **Entity-First Design**: Most business logic should be in entities
 5. **Functional Programming**: Prefer pure functions and immutable data structures
 
+### UI
+
+- use shadcn/ui for all UI. You can always go fetch new compentents, here is the list : https://ui.shadcn.com/docs/components. We use tanstack-form for all for related compontents.
+- when using zod for schemas, do NOT add custom messages, as we want the default messages transalations with locale configured.
+
 ### Naming Conventions
 
 **Port Files**: Use PascalCase naming that matches the exported type/interface inside the file.
@@ -85,4 +92,3 @@ packages/
 
 ### Deployment
 - This project is deployed with @.github/workflows/docker.yml on a coolify instance
-- using zod for schemas, do not add custom messages, as we want the default messages transalations with locale configured.

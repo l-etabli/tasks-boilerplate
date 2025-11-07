@@ -610,6 +610,64 @@ type RootTranslation = {
 			 * F​a​i​l​e​d​ ​t​o​ ​d​e​l​e​t​e​ ​o​r​g​a​n​i​z​a​t​i​o​n
 			 */
 			organizationDeleteError: string
+			/**
+			 * E​d​i​t​ ​r​o​l​e
+			 */
+			editRole: string
+			/**
+			 * R​e​m​o​v​e​ ​m​e​m​b​e​r
+			 */
+			removeMember: string
+			/**
+			 * C​h​a​n​g​e​ ​M​e​m​b​e​r​ ​R​o​l​e
+			 */
+			changeRoleDialogTitle: string
+			/**
+			 * C​h​a​n​g​e​ ​t​h​e​ ​r​o​l​e​ ​f​o​r​ ​{​m​e​m​b​e​r​N​a​m​e​}​ ​i​n​ ​{​o​r​g​a​n​i​z​a​t​i​o​n​N​a​m​e​}
+			 * @param {unknown} memberName
+			 * @param {unknown} organizationName
+			 */
+			changeRoleDialogDescription: RequiredParams<'memberName' | 'organizationName'>
+			/**
+			 * M​e​m​b​e​r
+			 */
+			memberLabel: string
+			/**
+			 * O​r​g​a​n​i​z​a​t​i​o​n
+			 */
+			organizationLabel: string
+			/**
+			 * C​u​r​r​e​n​t​ ​r​o​l​e
+			 */
+			currentRole: string
+			/**
+			 * N​e​w​ ​r​o​l​e
+			 */
+			newRole: string
+			/**
+			 * C​h​a​n​g​e​ ​R​o​l​e
+			 */
+			changeRole: string
+			/**
+			 * C​h​a​n​g​i​n​g​.​.​.
+			 */
+			changingRole: string
+			/**
+			 * M​e​m​b​e​r​ ​r​o​l​e​ ​u​p​d​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			changeRoleSuccess: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​u​p​d​a​t​e​ ​m​e​m​b​e​r​ ​r​o​l​e
+			 */
+			changeRoleError: string
+			/**
+			 * C​a​n​n​o​t​ ​d​e​m​o​t​e​ ​t​h​e​ ​l​a​s​t​ ​o​w​n​e​r
+			 */
+			cannotDemoteLastOwner: string
+			/**
+			 * Y​o​u​ ​c​a​n​n​o​t​ ​c​h​a​n​g​e​ ​y​o​u​r​ ​o​w​n​ ​r​o​l​e
+			 */
+			cannotChangeOwnRole: string
 		}
 	}
 	organization: {
@@ -1449,6 +1507,62 @@ export type TranslationFunctions = {
 			 * Failed to delete organization
 			 */
 			organizationDeleteError: () => LocalizedString
+			/**
+			 * Edit role
+			 */
+			editRole: () => LocalizedString
+			/**
+			 * Remove member
+			 */
+			removeMember: () => LocalizedString
+			/**
+			 * Change Member Role
+			 */
+			changeRoleDialogTitle: () => LocalizedString
+			/**
+			 * Change the role for {memberName} in {organizationName}
+			 */
+			changeRoleDialogDescription: (arg: { memberName: unknown, organizationName: unknown }) => LocalizedString
+			/**
+			 * Member
+			 */
+			memberLabel: () => LocalizedString
+			/**
+			 * Organization
+			 */
+			organizationLabel: () => LocalizedString
+			/**
+			 * Current role
+			 */
+			currentRole: () => LocalizedString
+			/**
+			 * New role
+			 */
+			newRole: () => LocalizedString
+			/**
+			 * Change Role
+			 */
+			changeRole: () => LocalizedString
+			/**
+			 * Changing...
+			 */
+			changingRole: () => LocalizedString
+			/**
+			 * Member role updated successfully
+			 */
+			changeRoleSuccess: () => LocalizedString
+			/**
+			 * Failed to update member role
+			 */
+			changeRoleError: () => LocalizedString
+			/**
+			 * Cannot demote the last owner
+			 */
+			cannotDemoteLastOwner: () => LocalizedString
+			/**
+			 * You cannot change your own role
+			 */
+			cannotChangeOwnRole: () => LocalizedString
 		}
 	}
 	organization: {

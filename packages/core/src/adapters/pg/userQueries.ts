@@ -83,10 +83,7 @@ export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
             .innerJoin("user as inviter", "inviter.id", "invitation.inviterId")
             .whereRef("invitation.organizationId", "=", "organization.id")
             .where("invitation.status", "=", "pending")
-            .orderBy(
-              sql`CASE invitation.role WHEN 'owner' THEN 1 WHEN 'admin' THEN 2 WHEN 'member' THEN 3 END`,
-            )
-            .orderBy("invitation.email", "asc")
+            .orderBy("invitation.expiresAt", "desc")
             .select([
               "invitation.id",
               "invitation.email",

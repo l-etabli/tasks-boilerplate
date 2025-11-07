@@ -7,7 +7,8 @@ import {
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
-import { organization } from "better-auth/plugins";
+import type { User } from "better-auth/db";
+import { type Member, type Organization, organization } from "better-auth/plugins";
 import { reactStartCookies } from "better-auth/react-start";
 import { env } from "@/env";
 import type { Locales } from "@/i18n/i18n-types";
@@ -25,9 +26,11 @@ function getLocaleFromRequest(request?: Request): Locales {
   return preferences?.locale || fallbackLocale;
 }
 
+const db = getKyselyDb(Sentry);
+
 export const auth = betterAuth({
   database: {
-    db: getKyselyDb(Sentry),
+    db,
     type: "postgres",
   },
 
@@ -141,6 +144,60 @@ export const auth = betterAuth({
         });
 
         await gateways.email.send(email);
+      },
+
+      // Server-side validation for role changes
+      async beforeUpdateMemberRole(data: {
+        member: Member & Record<string, any>;
+        newRole: string;
+        user: User & Record<string, any>;
+        organization: Organization & Record<string, any>;
+      }) {
+        const { member, newRole, user, organization } = data;
+
+        // Prevent users from changing their own role
+        if (user.id === member.userId) {
+          throw new Error("You cannot change your own role");
+        }
+
+        // Get current user's role in the organization
+        const currentUserMember = await db
+          .selectFrom("member")
+          .select(["role"])
+          .where("organizationId", "=", organization.id)
+          .where("userId", "=", user.id)
+          .executeTakeFirst();
+
+        if (!currentUserMember) {
+          throw new Error("You are not a member of this organization");
+        }
+
+        const currentUserRole = currentUserMember.role;
+
+        // Only owners can promote to owner or demote from owner
+        if ((newRole === "owner" || member.role === "owner") && currentUserRole !== "owner") {
+          throw new Error("Only owners can change owner roles");
+        }
+
+        // Prevent demoting the last owner
+        if (member.role === "owner" && newRole !== "owner") {
+          const ownerCount = await db
+            .selectFrom("member")
+            .select(db.fn.count<number>("id").as("count"))
+            .where("organizationId", "=", organization.id)
+            .where("role", "=", "owner")
+            .executeTakeFirst();
+
+          if (ownerCount && ownerCount.count <= 1) {
+            throw new Error("Cannot demote the last owner");
+          }
+        }
+
+        return {
+          data: {
+            role: newRole,
+          },
+        };
       },
     }),
   ],
