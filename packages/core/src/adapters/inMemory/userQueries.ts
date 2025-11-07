@@ -4,6 +4,8 @@ import type { UserQueries } from "../../domain/ports/UserQueries.js";
 export const createInMemoryUserQueries = (
   organizationsById: Record<string, Organization>,
 ): UserQueries => ({
+  getUserPreferences: async (_userId) => null,
+
   getInvitationById: async (invitationId) => {
     const organization = Object.values(organizationsById).find((org) =>
       org.invitations.some((invitation) => invitation.id === invitationId),

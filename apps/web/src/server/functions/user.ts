@@ -1,9 +1,16 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { InvitationDetails } from "@tasks/core";
+import type { InvitationDetails, UserPreferences } from "@tasks/core";
 import { updateOrganizationSchema, updateUserPreferencesSchema } from "@tasks/core";
 import { z } from "zod";
 import { authenticated } from "./auth";
 import { useCases } from "./bootstrap";
+
+export const getUserPreferences = createServerFn({ method: "GET" })
+  .middleware([authenticated({ name: "getUserPreferences" })])
+  .handler(
+    async ({ context: { currentUser } }): Promise<UserPreferences> =>
+      useCases.queries.user.getUserPreferences(currentUser.id),
+  );
 
 const getInvitationDetailsSchema = z.object({
   invitationId: z.string(),

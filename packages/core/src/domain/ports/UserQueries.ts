@@ -1,4 +1,8 @@
-import type { Organization, OrganizationRole } from "../entities/user-and-organization.js";
+import type {
+  Organization,
+  OrganizationRole,
+  UserPreferences,
+} from "../entities/user-and-organization.js";
 
 export type InvitationDetails = {
   id: string;
@@ -15,4 +19,5 @@ export type UserQueries = {
   getCurrentUserOrganizations: (userId: string) => Promise<Organization[]>;
   getInvitationById: (invitationId: string) => Promise<InvitationDetails | undefined>;
   getCurrentUserInvitations: (userEmail: string) => Promise<InvitationDetails[]>;
+  getUserPreferences: (userId: string) => Promise<UserPreferences>;
 };

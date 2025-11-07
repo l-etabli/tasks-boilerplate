@@ -8,6 +8,7 @@ import { z } from "zod";
 import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { authSessionStorage } from "@/utils/auth-session-storage";
+import { syncDbPreferencesToCookie } from "@/utils/preferences";
 
 type AuthFormProps = {
   callbackURL?: string;
@@ -125,6 +126,7 @@ export function AuthForm({ callbackURL = "/", className, mode = "signIn" }: Auth
       } else {
         // Success for sign-in - clear sessionStorage before redirect
         authSessionStorage.clearAuthData();
+        await syncDbPreferencesToCookie();
       }
       // Success for sign-in - redirects automatically
     },

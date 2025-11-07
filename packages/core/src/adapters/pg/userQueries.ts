@@ -4,6 +4,15 @@ import type { UserQueries } from "../../domain/ports/UserQueries.js";
 import type { Db } from "./database.js";
 
 export const createPgUserQueries = (db: Kysely<Db>): UserQueries => ({
+  getUserPreferences: async (userId) => {
+    const user = await db
+      .selectFrom("user")
+      .where("id", "=", userId)
+      .select("preferences")
+      .executeTakeFirst();
+    return user?.preferences ?? null;
+  },
+
   getInvitationById: async (invitationId) =>
     db
       .selectFrom("invitation")

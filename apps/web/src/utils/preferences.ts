@@ -47,6 +47,12 @@ export const setClientPreferences = (updates: Partial<UserPreferences>): void =>
   document.cookie = setPreferencesCookie(merged);
 };
 
+export const syncDbPreferencesToCookie = async (): Promise<void> => {
+  const { getUserPreferences } = await import("@/server/functions/user");
+  const preferences = await getUserPreferences();
+  if (preferences) setClientPreferences(preferences);
+};
+
 export const mergePreferences = (
   current: UserPreferences,
   updates: Partial<UserPreferences>,

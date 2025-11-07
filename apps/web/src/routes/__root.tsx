@@ -22,7 +22,11 @@ import { SessionProvider, useCurrentUser } from "@/providers/SessionProvider";
 import { getAuthContextFn } from "@/server/functions/auth";
 import { updateUserPreferences } from "@/server/functions/user";
 import appCss from "@/styles.css?url";
-import { getClientPreferences, setClientPreferences } from "@/utils/preferences";
+import {
+  getClientPreferences,
+  setClientPreferences,
+  syncDbPreferencesToCookie,
+} from "@/utils/preferences";
 
 type SessionData = ReturnType<typeof authClient.useSession>["data"];
 
@@ -117,6 +121,7 @@ function SessionAwareI18n({ error }: { error?: unknown }) {
       await updateUserPreferences({
         data: { locale },
       });
+      await syncDbPreferencesToCookie();
     } catch (error) {
       console.error("Failed to persist locale preference:", error);
     }
@@ -157,6 +162,7 @@ function SessionAwareTheme({ error }: { error?: unknown }) {
       await updateUserPreferences({
         data: { theme: theme as "light" | "dark" | "system" },
       });
+      await syncDbPreferencesToCookie();
     } catch (error) {
       console.error("Failed to persist theme preference:", error);
     }
