@@ -2,6 +2,11 @@ name: Build and Push Docker Images
 
 on:
   workflow_call:
+    inputs:
+      version:
+        description: 'Version to tag (without v prefix)'
+        required: true
+        type: string
 
 env:
   DOCKER_REGISTRY: ghcr.io
@@ -31,9 +36,10 @@ jobs:
       with:
         images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_BASE_NAME }}-web
         tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=sha
+          type=semver,pattern={{version}},value=v${{ inputs.version }}
+          type=semver,pattern={{major}}.{{minor}},value=v${{ inputs.version }}
+          type=semver,pattern={{major}},value=v${{ inputs.version }}
+          type=raw,value=latest
 
     - name: Build and push web image
       uses: docker/build-push-action@v5
