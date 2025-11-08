@@ -9,7 +9,7 @@ on:
       - "main"
 
 jobs:
-  validations:
+  fullcheck:
     name: Run Fullcheck
     runs-on: ubuntu-latest
 
@@ -39,4 +39,26 @@ jobs:
 
       - name: Run Fullcheck
         run: pnpm turbo check typecheck test
+
+  build:
+    name: Build and Push Docker Image
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit
+    permissions:
+      contents: read
+      packages: write
+
+  deploy:
+    name: Deploy to Coolify
+    if: github.ref == 'refs/heads/main'
+    needs: [fullcheck, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Coolify deployment
+        run: |
+          curl -X GET "${{ vars.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+            -H "Content-Type: application/json"
 
