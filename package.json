@@ -21,6 +21,7 @@
     "core": "pnpm --dir packages/core",
     "db": "pnpm --dir packages/db",
     "db:up": "pnpm --dir packages/db db:up",
+    "db:up:prod": "pnpm --dir packages/db db:up:prod",
     "db:create": "pnpm --dir packages/db db:create"
   },
   "devDependencies": {
