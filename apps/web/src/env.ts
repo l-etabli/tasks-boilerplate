@@ -17,16 +17,13 @@ export const env = createEnv({
     EMAIL_RESEND_API_KEY: z.string().optional(),
     EMAIL_FROM: z.email().optional(),
     SENTRY_DSN: z.url().optional(),
+    UMAMI_WEBSITE_ID: z.string().optional(),
+    UMAMI_SCRIPT_URL: z.url().optional(),
   },
 
   clientPrefix: "VITE_",
 
-  client: {
-    VITE_BETTER_AUTH_URL: z.url().optional(),
-    VITE_ENVIRONMENT: environmentSchema,
-    VITE_UMAMI_WEBSITE_ID: z.string().optional(),
-    VITE_UMAMI_SCRIPT_URL: z.url().optional(),
-  },
+  client: {},
 
   runtimeEnv: typeof window === "undefined" ? process.env : import.meta.env,
 

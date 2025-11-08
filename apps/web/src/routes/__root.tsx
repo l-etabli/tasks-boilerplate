@@ -13,13 +13,13 @@ import { Toaster } from "@tasks/ui/components/sonner";
 import { ThemeProvider } from "@tasks/ui/components/theme-provider";
 import type { authClient } from "@/auth-client";
 import { UnauthenticatedPreferencesFloat } from "@/components/UnauthenticatedPreferencesFloat";
-import { env } from "@/env";
 import { useI18nContext } from "@/i18n/i18n-react";
 import type { Locales } from "@/i18n/i18n-types";
 import { useGlobalTracking } from "@/lib/useGlobalTracking";
 import { I18nProvider } from "@/providers/I18nProvider";
 import { SessionProvider, useCurrentUser } from "@/providers/SessionProvider";
 import { getAuthContextFn } from "@/server/functions/auth";
+import { getRuntimeConfig, type RuntimeConfig } from "@/server/functions/config";
 import { updateUserPreferences } from "@/server/functions/user";
 import appCss from "@/styles.css?url";
 import {
@@ -33,23 +33,30 @@ type SessionData = ReturnType<typeof authClient.useSession>["data"];
 export type RootRouteContext = {
   preferences: UserPreferences;
   session: SessionData | null;
+  config: RuntimeConfig;
 };
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
     try {
-      const authContext = await getAuthContextFn();
+      const [authContext, config] = await Promise.all([getAuthContextFn(), getRuntimeConfig()]);
       const preferences = authContext?.preferences ?? null; // comming from db or cookies
       const session = authContext?.session ?? null;
       return {
         preferences,
         session,
+        config,
       };
     } catch {
-      // Error fetching auth
+      // Error fetching initial data
       return {
         preferences: null,
         session: null,
+        config: {
+          environment: "local" as const,
+          umamiWebsiteId: null,
+          umamiScriptUrl: null,
+        },
       };
     }
   },
@@ -84,13 +91,13 @@ function RootComponent({ error }: { error?: unknown }) {
 }
 
 function RootApp({ error }: { error?: unknown }) {
-  const routeContext = useRouteContext({
+  const { session } = useRouteContext({
     from: "__root__",
     select: (ctx: RootRouteContext) => ctx,
   });
 
   return (
-    <SessionProvider initialSession={routeContext?.session ?? null}>
+    <SessionProvider initialSession={session ?? null}>
       <SessionAwareI18n error={error} />
     </SessionProvider>
   );
@@ -183,18 +190,17 @@ function SessionAwareTheme({ error }: { error?: unknown }) {
 
 function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
   const { locale } = useI18nContext();
-  const routeContext = useRouteContext({
+  const { config, preferences } = useRouteContext({
     from: "__root__",
     select: (ctx: RootRouteContext) => ctx,
   });
-  const serverPreferences = routeContext?.preferences ?? null;
 
   // Calculate initial theme class to prevent hydration mismatch
   // This must match what the inline script does
   const getInitialThemeClass = () => {
     if (typeof window === "undefined") {
       // Server-side: use server preferences, default to 'light' for SSR
-      const theme = serverPreferences?.theme ?? "system";
+      const theme = preferences?.theme ?? "system";
       // On server, we can't detect system preference, so default to 'light' for 'system'
       return theme === "dark" ? "dark" : "light";
     }
@@ -210,7 +216,7 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: We expose server preferences for inline script.
           dangerouslySetInnerHTML={{
-            __html: `window.__serverPreferences = ${JSON.stringify(serverPreferences)};`,
+            __html: `window.__serverPreferences = ${JSON.stringify(preferences)};`,
           }}
         />
         <script
@@ -251,12 +257,8 @@ function LocaleAwareDocument({ children }: { children: React.ReactNode }) {
             `,
           }}
         />
-        {env.VITE_UMAMI_WEBSITE_ID && env.VITE_UMAMI_SCRIPT_URL && (
-          <script
-            defer
-            src={env.VITE_UMAMI_SCRIPT_URL}
-            data-website-id={env.VITE_UMAMI_WEBSITE_ID}
-          />
+        {config?.umamiWebsiteId && config?.umamiScriptUrl && (
+          <script defer src={config.umamiScriptUrl} data-website-id={config.umamiWebsiteId} />
         )}
         <HeadContent />
       </head>
@@ -276,7 +278,7 @@ function BodyContent({ error }: { error?: unknown }) {
       {error ? <ErrorBoundaryContent error={error} /> : <AppLayout />}
       <UnauthenticatedPreferencesFloat />
       <Toaster />
-      {env.VITE_ENVIRONMENT === "local" && (
+      {import.meta.env.DEV && (
         <TanStackDevtools
           config={{
             position: "bottom-right",
