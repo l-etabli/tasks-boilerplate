@@ -9,7 +9,8 @@
         "./emails": "./src/emails/index.ts"
     },
     "scripts": {
-        "typecheck": "tsc --noEmit"
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run"
     },
     "dependencies": {
         "@tasks/db": "workspace:*",
@@ -20,6 +21,8 @@
         "zod": "4.1.12"
     },
     "devDependencies": {
-        "typescript": "^5.9.3"
+        "@tasks/test": "workspace:*",
+        "typescript": "^5.9.3",
+        "vitest": "^4.0.8"
     }
 }

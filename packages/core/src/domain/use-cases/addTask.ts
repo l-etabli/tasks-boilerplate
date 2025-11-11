@@ -5,7 +5,7 @@ import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
-export const addTask = createAuthTransacUseCase
+export const addTaskUseCase = createAuthTransacUseCase
   .withInput<AddTaskInput>()
   .build(({ input, currentUser, uow }) => {
     return uow.taskRepository.save({

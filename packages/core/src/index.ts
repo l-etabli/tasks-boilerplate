@@ -9,7 +9,7 @@ import type { Db } from "./adapters/pg/database.js";
 import { createPgTaskQueries } from "./adapters/pg/taskQueries.js";
 import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
-import { addTask } from "./domain/use-cases/addTask.js";
+import { addTaskUseCase } from "./domain/use-cases/addTask.js";
 import { deleteOrganization } from "./domain/use-cases/deleteOrganization.js";
 import { deleteTask } from "./domain/use-cases/deleteTask.js";
 import { updateOrganization } from "./domain/use-cases/updateOrganization.js";
@@ -35,14 +35,12 @@ export type GatewaysConfig =
 const getDbAdapters = (config: DbAdaptersConfig) => {
   switch (config.kind) {
     case "inMemory": {
-      const taskById: Record<string, any> = {};
-      const userById: Record<string, any> = {};
-      const organizationsById: Record<string, any> = {};
+      const { withUow, helpers } = createWithInMemoryUnitOfWork();
       return {
-        withUow: createWithInMemoryUnitOfWork(taskById, userById, organizationsById),
+        withUow,
         queries: {
-          task: createInMemoryTaskQueries(taskById),
-          user: createInMemoryUserQueries(organizationsById),
+          task: createInMemoryTaskQueries(helpers.task),
+          user: createInMemoryUserQueries(helpers.user),
         },
       };
     }
@@ -98,7 +96,7 @@ export const bootstrapUseCases = ({
   return {
     queries,
     mutations: {
-      addTask: addTask({ withUow }),
+      addTask: addTaskUseCase({ withUow }),
       deleteTask: deleteTask({ withUow }),
       updateUserPreferences: updateUserPreferences({ withUow }),
       updateOrganization: updateOrganization({ withUow }),

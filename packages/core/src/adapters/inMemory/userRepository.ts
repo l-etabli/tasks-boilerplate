@@ -5,45 +5,64 @@ import type {
 } from "../../domain/entities/user-and-organization.js";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
 
-export const createInMemoryUserRepository = (
-  userById: Record<string, User>,
-  organizationsById: Record<string, Organization>,
-) =>
-  ({
-    updatePreferences: async (
-      userId: string,
-      preferences: UpdateUserPreferencesInput,
-    ): Promise<User> => {
-      const existingUser = userById[userId];
-      if (!existingUser) {
-        throw new Error(`User with id ${userId} not found`);
-      }
+export type UserRepositoryHelpers = {
+  userById: Record<string, User>;
+  organizationsById: Record<string, Organization>;
+};
 
-      const updatedUser = { ...existingUser, ...preferences };
-      userById[userId] = updatedUser;
-      return updatedUser;
+export const createInMemoryUserRepository = (): {
+  userRepository: UserRepository;
+  helpers: UserRepositoryHelpers;
+} => {
+  const userById: Record<string, User> = {};
+  const organizationsById: Record<string, Organization> = {};
+
+  return {
+    helpers: {
+      userById,
+      organizationsById,
     },
+    userRepository: {
+      getUserOrganizations: async (userId) =>
+        Object.values(organizationsById).filter((org) =>
+          org.members.some((member) => member.userId === userId),
+        ),
+      updatePreferences: async (
+        userId: string,
+        preferences: UpdateUserPreferencesInput,
+      ): Promise<User> => {
+        const existingUser = userById[userId];
+        if (!existingUser) {
+          throw new Error(`User with id ${userId} not found`);
+        }
 
-    updateOrganization: async (organizationId, updates) => {
-      const existingOrg = organizationsById[organizationId];
-      if (!existingOrg) {
-        throw new Error(`Organization with id ${organizationId} not found`);
-      }
+        const updatedUser = { ...existingUser, ...preferences };
+        userById[userId] = updatedUser;
+        return updatedUser;
+      },
 
-      const updatedOrg = {
-        ...existingOrg,
-        ...(updates.name !== undefined && { name: updates.name }),
-        ...(updates.logo !== undefined && { logo: updates.logo }),
-        ...(updates.metadata !== undefined && { metadata: updates.metadata }),
-      };
+      updateOrganization: async (organizationId, updates) => {
+        const existingOrg = organizationsById[organizationId];
+        if (!existingOrg) {
+          throw new Error(`Organization with id ${organizationId} not found`);
+        }
 
-      organizationsById[organizationId] = updatedOrg;
+        const updatedOrg = {
+          ...existingOrg,
+          ...(updates.name !== undefined && { name: updates.name }),
+          ...(updates.logo !== undefined && { logo: updates.logo }),
+          ...(updates.metadata !== undefined && { metadata: updates.metadata }),
+        };
+
+        organizationsById[organizationId] = updatedOrg;
+      },
+
+      deleteOrganization: async (organizationId) => {
+        if (!organizationsById[organizationId]) {
+          throw new Error(`Organization with id ${organizationId} not found`);
+        }
+        delete organizationsById[organizationId];
+      },
     },
-
-    deleteOrganization: async (organizationId) => {
-      if (!organizationsById[organizationId]) {
-        throw new Error(`Organization with id ${organizationId} not found`);
-      }
-      delete organizationsById[organizationId];
-    },
-  }) satisfies UserRepository;
+  };
+};

@@ -7,7 +7,7 @@ const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser
 export const deleteOrganization = createAuthTransacUseCase
   .withInput<{ organizationId: string }>()
   .build(async ({ input, currentUser, uow }) => {
-    const userOrganizations = await uow.userQueries.getCurrentUserOrganizations(currentUser.id);
+    const userOrganizations = await uow.userRepository.getUserOrganizations(currentUser.id);
 
     const userOrg = userOrganizations.find((org) => org.id === input.organizationId);
 

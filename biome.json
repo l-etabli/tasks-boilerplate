@@ -56,5 +56,17 @@
       "!apps/web/src/i18n/i18n-util.sync.ts",
       "!apps/web/src/i18n/i18n-util.async.ts"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ]
 }

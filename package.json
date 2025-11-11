@@ -15,6 +15,7 @@
     "check": "biome check .",
     "check:fix": "biome check --write .",
     "typecheck": "turbo typecheck",
+    "test": "turbo test",
     "i18n": "turbo i18n",
     "fullcheck": "turbo check:fix typecheck test",
     "web": "pnpm --dir apps/web",

@@ -1,19 +1,23 @@
-import type { Task } from "../../domain/entities/task.js";
-import type { Organization, User } from "../../domain/entities/user-and-organization.js";
-import type { WithUow } from "../../domain/ports/Uow.js";
-import { createInMemoryTaskRepository } from "./taskRepository.js";
-import { createInMemoryUserQueries } from "./userQueries.js";
-import { createInMemoryUserRepository } from "./userRepository.js";
+import type { Uow, WithUow } from "../../domain/ports/Uow.js";
+import { createInMemoryTaskRepository, type TaskRepositoryHelpers } from "./taskRepository.js";
+import { createInMemoryUserRepository, type UserRepositoryHelpers } from "./userRepository.js";
 
-export const createWithInMemoryUnitOfWork = (
-  taskById: Record<string, Task>,
-  userById: Record<string, User>,
-  organizationsById: Record<string, Organization>,
-): WithUow => {
+export type InMemoryHelpers = {
+  task: TaskRepositoryHelpers;
+  user: UserRepositoryHelpers;
+};
+
+export const createWithInMemoryUnitOfWork = (): {
+  withUow: WithUow;
+  uow: Uow;
+  helpers: InMemoryHelpers;
+} => {
+  const { taskRepository, helpers: taskHelpers } = createInMemoryTaskRepository();
+  const { userRepository, helpers: userHelpers } = createInMemoryUserRepository();
+
   const uow = {
-    taskRepository: createInMemoryTaskRepository(taskById),
-    userRepository: createInMemoryUserRepository(userById, organizationsById),
-    userQueries: createInMemoryUserQueries(organizationsById),
+    taskRepository,
+    userRepository,
   };
-  return (cb) => cb(uow);
+  return { withUow: (cb) => cb(uow), uow, helpers: { task: taskHelpers, user: userHelpers } };
 };
