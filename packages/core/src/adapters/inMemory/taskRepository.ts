@@ -12,6 +12,7 @@ export const createInMemoryTaskRepository = (): {
   const taskById: Record<string, Task> = {};
   return {
     taskRepository: {
+      getTaskById: async (taskId) => taskById[taskId],
       save: async (task) => {
         taskById[task.id] = task;
       },

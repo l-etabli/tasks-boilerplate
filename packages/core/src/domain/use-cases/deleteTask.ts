@@ -5,8 +5,11 @@ import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
-export const deleteTask = createAuthTransacUseCase
+export const deleteTaskUseCase = createAuthTransacUseCase
   .withInput<DeleteTaskInput>()
-  .build(({ input, uow }) => {
+  .build(async ({ input, uow, currentUser }) => {
+    const task = await uow.taskRepository.getTaskById(input.id);
+    if (!task) throw new Error("Task not found");
+    if (task.owner.id !== currentUser.id) throw new Error("Not your task");
     return uow.taskRepository.delete(input.id);
   });

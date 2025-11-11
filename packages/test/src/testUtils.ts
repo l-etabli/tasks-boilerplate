@@ -4,6 +4,9 @@ export const expectToEqual = <T>(actual: T, expected: T): void => {
   expect(actual).toEqual(expected);
 };
 
-export const expectToThrow = <T>(callback: () => Promise<T>, message: string): void => {
-  expect(callback).rejects.toThrow(message);
+export const expectPromiseToFailWith = async <T>(
+  promise: Promise<T>,
+  message: string,
+): Promise<void> => {
+  await expect(promise).rejects.toThrow(message);
 };
