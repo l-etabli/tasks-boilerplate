@@ -9,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@tasks/ui/components/dropdown-menu";
-import { ModeToggle } from "@tasks/ui/components/mode-toggle";
 import {
   Building2,
   ChevronDown,
@@ -24,6 +23,7 @@ import {
 import { useState } from "react";
 import { authClient } from "@/auth-client";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useI18nContext } from "@/i18n/i18n-react";
 import { useCurrentUser } from "@/providers/SessionProvider";
 
@@ -84,7 +84,7 @@ export default function Header({
 
           <div className="flex items-center gap-2">
             <LocaleSwitcher />
-            <ModeToggle />
+            <ThemeToggle />
             {currentUser ? (
               <>
                 {organizations && organizations.length > 0 && activeOrg && (

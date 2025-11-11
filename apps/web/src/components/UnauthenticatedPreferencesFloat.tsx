@@ -1,5 +1,5 @@
-import { ModeToggle } from "@tasks/ui/components/mode-toggle";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useCurrentUser } from "@/providers/SessionProvider";
 
 /**
@@ -18,7 +18,7 @@ export function UnauthenticatedPreferencesFloat() {
   return (
     <div className="fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg border border-gray-200 bg-white/95 p-2 shadow-md backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
       <LocaleSwitcher />
-      <ModeToggle />
+      <ThemeToggle />
     </div>
   );
 }

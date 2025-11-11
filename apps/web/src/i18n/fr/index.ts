@@ -66,6 +66,13 @@ const fr = {
     fr: "Français",
   },
 
+  theme: {
+    toggle: "Changer le thème",
+    light: "Clair",
+    dark: "Sombre",
+    system: "Système",
+  },
+
   nav: {
     todos: "Tâches",
     settings: "Paramètres",

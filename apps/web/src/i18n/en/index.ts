@@ -64,6 +64,13 @@ const en = {
     fr: "Français",
   },
 
+  theme: {
+    toggle: "Toggle theme",
+    light: "Light",
+    dark: "Dark",
+    system: "System",
+  },
+
   nav: {
     todos: "Todos",
     settings: "Settings",

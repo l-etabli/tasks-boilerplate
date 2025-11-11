@@ -212,6 +212,24 @@ type RootTranslation = {
 		 */
 		fr: string
 	}
+	theme: {
+		/**
+		 * T​o​g​g​l​e​ ​t​h​e​m​e
+		 */
+		toggle: string
+		/**
+		 * L​i​g​h​t
+		 */
+		light: string
+		/**
+		 * D​a​r​k
+		 */
+		dark: string
+		/**
+		 * S​y​s​t​e​m
+		 */
+		system: string
+	}
 	nav: {
 		/**
 		 * T​o​d​o​s
@@ -1138,6 +1156,24 @@ export type TranslationFunctions = {
 		 * Français
 		 */
 		fr: () => LocalizedString
+	}
+	theme: {
+		/**
+		 * Toggle theme
+		 */
+		toggle: () => LocalizedString
+		/**
+		 * Light
+		 */
+		light: () => LocalizedString
+		/**
+		 * Dark
+		 */
+		dark: () => LocalizedString
+		/**
+		 * System
+		 */
+		system: () => LocalizedString
 	}
 	nav: {
 		/**
