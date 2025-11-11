@@ -52,11 +52,7 @@ describe("taskRepository (PostgreSQL)", () => {
 
       const retrievedTask = await taskRepository.getTaskById(task.id);
 
-      expectToEqual(retrievedTask?.id, task.id);
-      expectToEqual(retrievedTask?.description, task.description);
-      expectToEqual(retrievedTask?.owner.id, defaultUser.id);
-      expectToEqual(retrievedTask?.owner.email, defaultUser.email);
-      expectToEqual(retrievedTask?.owner.name, defaultUser.name);
+      expectToEqual(retrievedTask, task);
     });
 
     it("should return undefined for non-existent task", async () => {

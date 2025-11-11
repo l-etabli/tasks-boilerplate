@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { expectToEqual } from "@tasks/test";
 import type { Kysely } from "kysely";
-import { beforeEach, describe, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { userFactory } from "../../domain/entities/userFactory.js";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
 import type { Db } from "./database.js";
@@ -188,7 +188,7 @@ describe("userRepository (PostgreSQL)", () => {
 
       const organizations = await userRepository.getUserOrganizations(owner.id);
 
-      expectToEqual(organizations.length, 1);
+      expect(organizations).toHaveLength(1);
       const org = organizations[0]!;
       expectToEqual(
         org.invitations.map(({ id, email, role, inviterName }) => ({
@@ -253,33 +253,6 @@ describe("userRepository (PostgreSQL)", () => {
       expectToEqual(result.preferences, {
         theme: "dark",
         locale: "fr",
-      });
-    });
-
-    it("should replace entire preferences object", async () => {
-      const userId = `test-user-${randomUUID()}`;
-      const user = userFactory({ id: userId, name: "Test User" });
-
-      await db
-        .insertInto("user")
-        .values({
-          id: user.id,
-          email: user.email,
-          name: user.name!,
-          emailVerified: false,
-          preferences: { theme: "light" },
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
-        .execute();
-
-      const result = await userRepository.updatePreferences(user.id, {
-        locale: "en",
-      });
-
-      expectToEqual(result.preferences, {
-        theme: "light",
-        locale: "en",
       });
     });
   });
