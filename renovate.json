@@ -4,6 +4,7 @@
   "baseBranches": ["main"],
   "prCreation": "immediate",
   "rangeStrategy": "bump",
+  "dependencyDashboard": false,
   "dependencyDashboardApproval": false,
   "packageRules": [
     {
