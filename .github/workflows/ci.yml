@@ -20,7 +20,7 @@ jobs:
       pull-requests: write
 
     env:
-      NODE_VERSION: 22
+      NODE_VERSION: 22.21.1
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
       TURBO_REMOTE_CACHE_SIGNATURE: true
