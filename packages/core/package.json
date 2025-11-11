@@ -23,7 +23,7 @@
         "zod": "4.1.12"
     },
     "devDependencies": {
-        "@testcontainers/postgresql": "^11.0.0",
+        "@testcontainers/postgresql": "^11.8.1",
         "@tasks/test": "workspace:*",
         "@types/pg": "^8.11.10",
         "typescript": "^5.9.3",
