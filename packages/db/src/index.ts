@@ -1,3 +1,4 @@
+export { runMigrations } from "../scripts/migrate.js";
 export {
   createPgPool,
   getKyselyDb,

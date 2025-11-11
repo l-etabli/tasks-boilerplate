@@ -4,6 +4,8 @@ pre-commit:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
       run: pnpm check:fix {staged_files}
       stage_fixed: true
+    db-migrations:
+      run: pnpm --filter=@tasks/db db:generate-index && git add packages/db/src/migrations/index.ts
 
 commit-msg:
   commands:
@@ -14,3 +16,5 @@ pre-push:
   commands:
     fullcheck:
       run: pnpm fullcheck
+    db-check:
+      run: pnpm --filter=@tasks/db db:check-index

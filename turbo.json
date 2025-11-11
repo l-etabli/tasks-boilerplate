@@ -35,6 +35,12 @@
     "test": {
       "dependsOn": ["typecheck"]
     },
+    "test:unit": {
+      "dependsOn": ["typecheck"]
+    },
+    "test:integration": {
+      "dependsOn": ["typecheck"]
+    },
     "//#check": {},
     "//#check:fix": {
       "cache": false

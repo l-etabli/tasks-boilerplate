@@ -5,8 +5,6 @@ export default defineConfig({
     name: "core",
     globals: false,
     environment: "node",
-    testTimeout: 10000,
-    exclude: ["**/node_modules/**"],
-    globalSetup: ["./src/adapters/pg/test-utils/vitest.globalSetup.ts"],
+    exclude: ["**/*.integration.test.ts", "**/node_modules/**"],
   },
 });

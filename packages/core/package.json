@@ -10,7 +10,9 @@
     },
     "scripts": {
         "typecheck": "tsc --noEmit",
-        "test": "vitest run"
+        "test": "vitest run",
+        "test:unit": "vitest run --config vitest.unit.config.ts",
+        "test:integration": "vitest run --config vitest.integration.config.ts"
     },
     "dependencies": {
         "@tasks/db": "workspace:*",
@@ -21,7 +23,9 @@
         "zod": "4.1.12"
     },
     "devDependencies": {
+        "@testcontainers/postgresql": "^11.0.0",
         "@tasks/test": "workspace:*",
+        "@types/pg": "^8.11.10",
         "typescript": "^5.9.3",
         "vitest": "^4.0.8"
     }
