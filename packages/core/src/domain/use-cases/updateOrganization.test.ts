@@ -37,6 +37,41 @@ describe("updateOrganization", () => {
     expectToEqual(helpers.user.organizationsById[org.id]?.name, "New Organization Name");
   });
 
+  it("should trim whitespace from organization name", async () => {
+    const org = organizationFactory({
+      id: "org-1",
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.organizationsById[org.id] = org;
+
+    await updateOrganization({
+      input: { organizationId: org.id, name: "  Trimmed Name  " },
+      currentUser,
+    });
+
+    expectToEqual(helpers.user.organizationsById[org.id]?.name, "Trimmed Name");
+  });
+
+  it("should reject organization name with only whitespace", async () => {
+    const org = organizationFactory({
+      id: "org-1",
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.organizationsById[org.id] = org;
+
+    try {
+      await updateOrganization({
+        input: { organizationId: org.id, name: "   " },
+        currentUser,
+      });
+      throw new Error("Expected validation to fail");
+    } catch (error) {
+      // Validation should fail for whitespace-only name
+      expectToEqual(error instanceof Error, true);
+      expectToEqual((error as Error).message.includes("too_small"), true);
+    }
+  });
+
   it("should allow owner to update organization logo", async () => {
     const org = organizationFactory({
       id: "org-1",

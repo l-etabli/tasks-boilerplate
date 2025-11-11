@@ -18,7 +18,7 @@ import { authClient } from "@/auth-client";
 import { useI18nContext } from "@/i18n/i18n-react";
 
 const organizationSchema = z.object({
-  name: z.string().min(1).max(100),
+  name: z.string().trim().min(1).max(100),
 });
 
 type CreateOrganizationModalProps = {

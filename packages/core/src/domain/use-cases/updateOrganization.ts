@@ -1,11 +1,11 @@
 import { useCaseBuilder } from "@tasks/trousse";
-import type { UpdateOrganizationInput, User } from "../entities/user-and-organization.js";
+import { type User, updateOrganizationSchema } from "../entities/user-and-organization.js";
 import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
 export const updateOrganizationUseCase = createAuthTransacUseCase
-  .withInput<UpdateOrganizationInput>()
+  .withInput(updateOrganizationSchema)
   .build(async ({ input, currentUser, uow }) => {
     // Get all user's organizations to check their role
     const userOrganizations = await uow.userRepository.getUserOrganizations(currentUser.id);

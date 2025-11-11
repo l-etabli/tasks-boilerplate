@@ -75,7 +75,7 @@ export type Organization = {
 export type UpdateOrganizationInput = z.infer<typeof updateOrganizationSchema>;
 export const updateOrganizationSchema = z.object({
   organizationId: z.string(),
-  name: z.string().min(1).optional(),
+  name: z.string().trim().min(1).optional(),
   logo: z.string().optional(),
   metadata: z.string().optional(),
 });
