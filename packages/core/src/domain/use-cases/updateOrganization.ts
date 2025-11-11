@@ -4,7 +4,7 @@ import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
-export const updateOrganization = createAuthTransacUseCase
+export const updateOrganizationUseCase = createAuthTransacUseCase
   .withInput<UpdateOrganizationInput>()
   .build(async ({ input, currentUser, uow }) => {
     // Get all user's organizations to check their role

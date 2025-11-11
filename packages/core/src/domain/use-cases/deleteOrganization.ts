@@ -4,7 +4,7 @@ import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
-export const deleteOrganization = createAuthTransacUseCase
+export const deleteOrganizationUseCase = createAuthTransacUseCase
   .withInput<{ organizationId: string }>()
   .build(async ({ input, currentUser, uow }) => {
     const userOrganizations = await uow.userRepository.getUserOrganizations(currentUser.id);

@@ -4,7 +4,7 @@ import type { Uow } from "../ports/Uow.js";
 
 const createAuthTransacUseCase = useCaseBuilder().withUow<Uow>().withCurrentUser<User>();
 
-export const updateUserPreferences = createAuthTransacUseCase
+export const updateUserPreferencesUseCase = createAuthTransacUseCase
   .withInput<UpdateUserPreferencesInput>()
   .build(({ input, currentUser, uow }) => {
     return uow.userRepository.updatePreferences(currentUser.id, input);

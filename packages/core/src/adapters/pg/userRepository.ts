@@ -32,7 +32,6 @@ export const createPgUserRepository = (trx: Kysely<Db>) =>
       if (updates.logo !== undefined) updateData.logo = updates.logo;
       if (updates.metadata !== undefined) updateData.metadata = updates.metadata;
 
-      // Update the organization
       await trx
         .updateTable("organization")
         .set(updateData)

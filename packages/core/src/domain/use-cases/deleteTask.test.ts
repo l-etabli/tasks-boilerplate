@@ -1,5 +1,5 @@
 import { expectToEqual } from "@tasks/test";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, it } from "vitest";
 import { expectPromiseToFailWith } from "../../../../test/src/testUtils.js";
 import {
   createWithInMemoryUnitOfWork,

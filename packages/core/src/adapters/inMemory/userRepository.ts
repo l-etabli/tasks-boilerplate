@@ -36,7 +36,10 @@ export const createInMemoryUserRepository = (): {
           throw new Error(`User with id ${userId} not found`);
         }
 
-        const updatedUser = { ...existingUser, ...preferences };
+        const updatedUser = {
+          ...existingUser,
+          preferences: { ...existingUser.preferences, ...preferences },
+        };
         userById[userId] = updatedUser;
         return updatedUser;
       },
