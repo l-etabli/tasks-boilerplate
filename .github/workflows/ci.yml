@@ -47,6 +47,12 @@ jobs:
       - name: Run Fullcheck
         run: pnpm turbo check typecheck test
 
+      - name: Get version before semantic-release
+        if: github.ref == 'refs/heads/main'
+        id: version-before
+        run: |
+          echo "version=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")" >> $GITHUB_OUTPUT
+
       - name: Run semantic-release
         if: github.ref == 'refs/heads/main'
         id: semantic-release
@@ -58,12 +64,15 @@ jobs:
         if: github.ref == 'refs/heads/main'
         id: version
         run: |
-          VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          if [ -n "$VERSION" ]; then
-            echo "✅ New version created: $VERSION"
+          VERSION_BEFORE="${{ steps.version-before.outputs.version }}"
+          VERSION_AFTER=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")
+
+          if [ -n "$VERSION_AFTER" ] && [ "$VERSION_AFTER" != "$VERSION_BEFORE" ]; then
+            echo "version=$VERSION_AFTER" >> $GITHUB_OUTPUT
+            echo "✅ New version created: $VERSION_AFTER"
             echo "📦 Build and deploy will proceed"
           else
+            echo "version=" >> $GITHUB_OUTPUT
             echo "ℹ️  No version bump - skipping build and deploy"
           fi
 
