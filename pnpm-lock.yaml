@@ -142,7 +142,7 @@ importers:
         specifier: ^27.1.0
         version: 27.1.0
       typescript:
-        specifier: ^5.7.2
+        specifier: ^5.9.3
         version: 5.9.3
       vite:
         specifier: ^7.2.2
@@ -198,8 +198,8 @@ importers:
         version: 8.16.3
     devDependencies:
       '@types/pg':
-        specifier: ^8.15.5
-        version: 8.15.5
+        specifier: ^8.15.6
+        version: 8.15.6
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
@@ -2589,6 +2589,9 @@ packages:
 
   '@types/pg@8.15.5':
     resolution: {integrity: sha512-LF7lF6zWEKxuT3/OR8wAZGzkg4ENGXFNyiV/JeOt9z5B+0ZVwbql9McqX5c/WStFq1GaGso7H1AzP/qSzmlCKQ==}
+
+  '@types/pg@8.15.6':
+    resolution: {integrity: sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ==}
 
   '@types/react-dom@19.2.2':
     resolution: {integrity: sha512-9KQPoO6mZCi7jcIStSnlOWn2nEF3mNmyr3rIAsGnAbQKYbRLyqmeSc39EVgtxXVia+LMT8j3knZLAZAh+xLmrw==}
@@ -9272,6 +9275,12 @@ snapshots:
       '@types/pg': 8.15.5
 
   '@types/pg@8.15.5':
+    dependencies:
+      '@types/node': 24.10.0
+      pg-protocol: 1.10.3
+      pg-types: 2.2.0
+
+  '@types/pg@8.15.6':
     dependencies:
       '@types/node': 24.10.0
       pg-protocol: 1.10.3
