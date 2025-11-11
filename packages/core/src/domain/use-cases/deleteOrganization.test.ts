@@ -27,7 +27,7 @@ describe("deleteOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await deleteOrganization({
       input: { organizationId: org.id },
@@ -53,7 +53,7 @@ describe("deleteOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: otherUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       deleteOrganization({
@@ -69,7 +69,7 @@ describe("deleteOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "member" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       deleteOrganization({
@@ -85,7 +85,7 @@ describe("deleteOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "admin" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       deleteOrganization({

@@ -27,7 +27,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await updateOrganization({
       input: { organizationId: org.id, name: "New Organization Name" },
@@ -42,7 +42,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await updateOrganization({
       input: { organizationId: org.id, name: "  Trimmed Name  " },
@@ -57,7 +57,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     try {
       await updateOrganization({
@@ -77,7 +77,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await updateOrganization({
       input: { organizationId: org.id, logo: "https://example.com/logo.png" },
@@ -92,7 +92,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await updateOrganization({
       input: { organizationId: org.id, metadata: '{"key": "value"}' },
@@ -109,7 +109,7 @@ describe("updateOrganization", () => {
       logo: null,
       members: [memberFactory({ user: currentUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await updateOrganization({
       input: {
@@ -143,7 +143,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: otherUser, role: "owner" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       updateOrganization({
@@ -159,7 +159,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "member" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       updateOrganization({
@@ -175,7 +175,7 @@ describe("updateOrganization", () => {
       id: "org-1",
       members: [memberFactory({ user: currentUser, role: "admin" })],
     });
-    helpers.user.organizationsById[org.id] = org;
+    helpers.user.setOrganizations([org]);
 
     await expectPromiseToFailWith(
       updateOrganization({

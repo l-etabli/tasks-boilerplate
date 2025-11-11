@@ -22,7 +22,7 @@ describe("updateUserPreferences", () => {
   });
 
   it("should update user locale preference", async () => {
-    helpers.user.userById[currentUser.id] = currentUser;
+    helpers.user.setUsers([currentUser]);
 
     const result = await updateUserPreferences({
       input: { locale: "fr" },
@@ -34,7 +34,7 @@ describe("updateUserPreferences", () => {
   });
 
   it("should update user theme preference", async () => {
-    helpers.user.userById[currentUser.id] = currentUser;
+    helpers.user.setUsers([currentUser]);
 
     const result = await updateUserPreferences({
       input: { theme: "dark" },
@@ -46,7 +46,7 @@ describe("updateUserPreferences", () => {
   });
 
   it("should update both locale and theme preferences", async () => {
-    helpers.user.userById[currentUser.id] = currentUser;
+    helpers.user.setUsers([currentUser]);
 
     const result = await updateUserPreferences({
       input: { locale: "en", theme: "light" },
@@ -63,7 +63,7 @@ describe("updateUserPreferences", () => {
     const userWithPreferences = userFactory({
       preferences: { locale: "fr", theme: "dark" },
     });
-    helpers.user.userById[userWithPreferences.id] = userWithPreferences;
+    helpers.user.setUsers([userWithPreferences]);
 
     const result = await updateUserPreferences({
       input: { locale: "en" },

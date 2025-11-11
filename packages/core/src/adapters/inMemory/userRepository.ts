@@ -4,10 +4,13 @@ import type {
   User,
 } from "../../domain/entities/user-and-organization.js";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
+import { clearAndAssign } from "@tasks/test";
 
 export type UserRepositoryHelpers = {
   userById: Record<string, User>;
   organizationsById: Record<string, Organization>;
+  setUsers: (users: User[]) => void;
+  setOrganizations: (organizations: Organization[]) => void;
 };
 
 export const createInMemoryUserRepository = (): {
@@ -21,6 +24,12 @@ export const createInMemoryUserRepository = (): {
     helpers: {
       userById,
       organizationsById,
+      setUsers: (users) => {
+        clearAndAssign(userById, users, (user: User) => user.id);
+      },
+      setOrganizations: (organizations) => {
+        clearAndAssign(organizationsById, organizations, (organization: Organization) => organization.id);
+      },
     },
     userRepository: {
       getUserOrganizations: async (userId) =>
