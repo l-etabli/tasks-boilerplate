@@ -13,7 +13,7 @@ import {
 } from "@tasks/ui/components/alert-dialog";
 import { Button } from "@tasks/ui/components/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@tasks/ui/components/tooltip";
-import { Pencil, Trash2 } from "lucide-react";
+import { Check, Copy, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/auth-client";
@@ -39,6 +39,7 @@ export function OrganizationMembersList({
   const t = LL.settings.organizations;
   const [removingMemberId, setRemovingMemberId] = useState<string | null>(null);
   const [changeRoleMember, setChangeRoleMember] = useState<OrganizationMember | null>(null);
+  const [copiedMemberId, setCopiedMemberId] = useState<string | null>(null);
 
   const currentUserRole = organization.members.find(
     (member) => member.userId === currentUser.id,
@@ -62,6 +63,20 @@ export function OrganizationMembersList({
       toast.error(errorMessage);
     } finally {
       setRemovingMemberId(null);
+    }
+  };
+
+  const handleCopyEmail = async (memberId: string, email: string) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopiedMemberId(memberId);
+
+      setTimeout(() => {
+        setCopiedMemberId(null);
+      }, 2000);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : t.copyEmailError();
+      toast.error(errorMessage);
     }
   };
 
@@ -112,15 +127,43 @@ export function OrganizationMembersList({
           })();
 
           return (
-            <div key={member.id} className="flex items-center gap-3 text-sm">
+            <div
+              key={member.id}
+              className="group flex items-center gap-3 text-sm px-2 -mx-2 rounded-md hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors"
+            >
               <span className="w-24 text-xs bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 px-2 py-0.5 rounded capitalize text-center">
                 {translateRole({ role: member.role, LL })}
               </span>
-              <span className="flex-1 text-gray-600 dark:text-gray-400">
-                {member.name || member.email}
-                {isSelf && <span className="text-gray-500 dark:text-gray-500"> (vous)</span>}
-              </span>
-              <div className="flex items-center gap-1">
+              <div className="flex-1 flex items-center gap-2">
+                <span className="text-gray-600 dark:text-gray-400">
+                  {member.name || member.email}
+                  {isSelf && <span className="text-gray-500 dark:text-gray-500"> (vous)</span>}
+                </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {copiedMemberId === member.id ? (
+                      <div className="flex items-center justify-center h-6 w-6 p-0">
+                        <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                        <span className="sr-only">{t.copyEmailTooltip()}</span>
+                      </div>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => handleCopyEmail(member.id, member.email)}
+                      >
+                        <Copy className="h-3 w-3" />
+                        <span className="sr-only">{t.copyEmailTooltip()}</span>
+                      </Button>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{member.email}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div className="flex items-center gap-1 min-h-8">
                 {canChangeRole && (
                   <Tooltip>
                     <TooltipTrigger asChild>

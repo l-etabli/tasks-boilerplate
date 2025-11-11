@@ -193,6 +193,8 @@ const fr = {
       changeRoleError: "Échec de la mise à jour du rôle",
       cannotDemoteLastOwner: "Impossible de rétrograder le dernier propriétaire",
       cannotChangeOwnRole: "Vous ne pouvez pas modifier votre propre rôle",
+      copyEmailTooltip: "Copier l'e-mail",
+      copyEmailError: "Échec de la copie de l'e-mail",
     },
   },
 

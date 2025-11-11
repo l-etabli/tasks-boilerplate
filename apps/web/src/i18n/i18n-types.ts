@@ -680,6 +680,14 @@ type RootTranslation = {
 			 * Y​o​u​ ​c​a​n​n​o​t​ ​c​h​a​n​g​e​ ​y​o​u​r​ ​o​w​n​ ​r​o​l​e
 			 */
 			cannotChangeOwnRole: string
+			/**
+			 * C​o​p​y​ ​e​m​a​i​l
+			 */
+			copyEmailTooltip: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​c​o​p​y​ ​e​m​a​i​l
+			 */
+			copyEmailError: string
 		}
 	}
 	organization: {
@@ -1587,6 +1595,14 @@ export type TranslationFunctions = {
 			 * You cannot change your own role
 			 */
 			cannotChangeOwnRole: () => LocalizedString
+			/**
+			 * Copy email
+			 */
+			copyEmailTooltip: () => LocalizedString
+			/**
+			 * Failed to copy email
+			 */
+			copyEmailError: () => LocalizedString
 		}
 	}
 	organization: {

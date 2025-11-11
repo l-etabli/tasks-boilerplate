@@ -189,6 +189,8 @@ const en = {
       changeRoleError: "Failed to update member role",
       cannotDemoteLastOwner: "Cannot demote the last owner",
       cannotChangeOwnRole: "You cannot change your own role",
+      copyEmailTooltip: "Copy email",
+      copyEmailError: "Failed to copy email",
     },
   },
 
