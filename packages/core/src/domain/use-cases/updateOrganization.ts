@@ -8,7 +8,7 @@ export const updateOrganization = createAuthTransacUseCase
   .withInput<UpdateOrganizationInput>()
   .build(async ({ input, currentUser, uow }) => {
     // Get all user's organizations to check their role
-    const userOrganizations = await uow.userQueries.getCurrentUserOrganizations(currentUser.id);
+    const userOrganizations = await uow.userRepository.getUserOrganizations(currentUser.id);
 
     const userOrg = userOrganizations.find((org) => org.id === input.organizationId);
 

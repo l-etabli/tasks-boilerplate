@@ -100,7 +100,7 @@ export const getAuthContextFn = createServerFn({ method: "GET" }).handler(async 
     mergedPreferences = { ...currentUser.preferences, ...cookiePrefs };
   }
 
-  const organizations = await useCases.queries.user.getCurrentUserOrganizations(currentUser.id);
+  const organizations = await useCases.queries.user.getUserOrganizations(currentUser.id);
 
   const activeOrganizationId =
     session.session.activeOrganizationId ??

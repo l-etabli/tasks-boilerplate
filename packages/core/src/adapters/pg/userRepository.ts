@@ -2,9 +2,11 @@ import type { Kysely } from "kysely";
 import { sql } from "kysely";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
 import type { Db } from "./database.js";
+import { makeGetUserOrganizations } from "./userSql.js";
 
 export const createPgUserRepository = (trx: Kysely<Db>) =>
   ({
+    getUserOrganizations: makeGetUserOrganizations(trx),
     updatePreferences: async (userId: string, preferences) => {
       const result = await trx
         .updateTable("user")

@@ -16,7 +16,7 @@ export type InvitationDetails = {
 };
 
 export type UserQueries = {
-  getCurrentUserOrganizations: (userId: string) => Promise<Organization[]>;
+  getUserOrganizations: (userId: string) => Promise<Organization[]>;
   getInvitationById: (invitationId: string) => Promise<InvitationDetails | undefined>;
   getCurrentUserInvitations: (userEmail: string) => Promise<InvitationDetails[]>;
   getUserPreferences: (userId: string) => Promise<UserPreferences>;

@@ -31,7 +31,7 @@ export const createInMemoryUserQueries = (helpers: UserRepositoryHelpers): UserQ
       };
     },
 
-    getCurrentUserOrganizations: async (userId) =>
+    getUserOrganizations: async (userId) =>
       Object.values(organizationsById).filter((org) =>
         org.members.some((member) => member.userId === userId),
       ),

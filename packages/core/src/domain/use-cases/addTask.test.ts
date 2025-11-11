@@ -4,17 +4,12 @@ import {
   createWithInMemoryUnitOfWork,
   type InMemoryHelpers,
 } from "../../adapters/inMemory/withInMemoryUow.js";
-import type { User } from "../entities/user-and-organization.js";
+import { userFactory } from "../entities/userFactory.js";
 import { addTaskUseCase } from "./addTask.js";
 
 describe("addTask", () => {
   let addTask: ReturnType<typeof addTaskUseCase>;
-  const currentUser: User = {
-    id: "user-1",
-    email: "test@example.com",
-    name: "Test User",
-    preferences: null,
-  };
+  const currentUser = userFactory();
   let helpers: InMemoryHelpers;
 
   beforeEach(() => {
