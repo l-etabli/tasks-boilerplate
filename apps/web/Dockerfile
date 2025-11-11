@@ -1,5 +1,5 @@
 # Stage 1: Base image with Node.js and pnpm
-FROM node:22.21.1-alpine AS base
+FROM node:24.11.0-alpine AS base
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.21.0 --activate
