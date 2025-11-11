@@ -51,7 +51,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         id: version-before
         run: |
-          echo "version=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")" >> $GITHUB_OUTPUT
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📌 Current version: ${VERSION:-none}"
 
       - name: Run semantic-release
         if: github.ref == 'refs/heads/main'

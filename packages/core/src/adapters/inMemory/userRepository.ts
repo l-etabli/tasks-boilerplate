@@ -1,10 +1,10 @@
+import { clearAndAssign } from "@tasks/test";
 import type {
   Organization,
   UpdateUserPreferencesInput,
   User,
 } from "../../domain/entities/user-and-organization.js";
 import type { UserRepository } from "../../domain/ports/UserRepository.js";
-import { clearAndAssign } from "@tasks/test";
 
 export type UserRepositoryHelpers = {
   userById: Record<string, User>;
@@ -28,7 +28,11 @@ export const createInMemoryUserRepository = (): {
         clearAndAssign(userById, users, (user: User) => user.id);
       },
       setOrganizations: (organizations) => {
-        clearAndAssign(organizationsById, organizations, (organization: Organization) => organization.id);
+        clearAndAssign(
+          organizationsById,
+          organizations,
+          (organization: Organization) => organization.id,
+        );
       },
     },
     userRepository: {

@@ -19,8 +19,5 @@ export const clearAndAssign = <T>(
   Object.keys(target).forEach((key) => {
     delete target[key];
   });
-  Object.assign(
-    target,
-    Object.fromEntries(values.map((value) => [getKey(value), value])),
-  );
+  Object.assign(target, Object.fromEntries(values.map((value) => [getKey(value), value])));
 };

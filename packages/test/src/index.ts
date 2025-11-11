@@ -1,1 +1,1 @@
-export { expectToEqual, clearAndAssign } from "./testUtils.js";
+export { clearAndAssign, expectToEqual } from "./testUtils.js";
