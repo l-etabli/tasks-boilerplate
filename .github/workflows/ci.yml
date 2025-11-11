@@ -60,6 +60,12 @@ jobs:
         run: |
           VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          if [ -n "$VERSION" ]; then
+            echo "✅ New version created: $VERSION"
+            echo "📦 Build and deploy will proceed"
+          else
+            echo "ℹ️  No version bump - skipping build and deploy"
+          fi
 
   build:
     name: Build and Push Docker Image
