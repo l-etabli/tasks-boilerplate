@@ -16,6 +16,7 @@
     "check:fix": "biome check --write .",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
+    "test:ui": "vitest --ui",
     "i18n": "turbo i18n",
     "fullcheck": "turbo check:fix typecheck test",
     "web": "pnpm --dir apps/web",
@@ -31,10 +32,12 @@
     "@commitlint/config-conventional": "^20.0.0",
     "@semantic-release/github": "^12.0.2",
     "@tasks/typescript-config": "workspace:*",
+    "@vitest/ui": "^4.0.8",
     "lefthook": "^1.13.6",
     "semantic-release": "^25.0.2",
     "turbo": "^2.5.8",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "^4.0.8"
   },
   "packageManager": "pnpm@10.9.0",
   "engines": {

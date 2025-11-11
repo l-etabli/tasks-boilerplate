@@ -1,9 +1,7 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  test: {
-    name: "core",
-    globals: false,
-    environment: "node",
-  },
+	test: {
+		projects: ["packages/*", "apps/*"],
+	},
 });
