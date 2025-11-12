@@ -182,7 +182,7 @@ importers:
         specifier: ^11.8.1
         version: 11.8.1
       '@types/pg':
-        specifier: ^8.11.10
+        specifier: ^8.15.6
         version: 8.15.6
       typescript:
         specifier: ^5.9.3
