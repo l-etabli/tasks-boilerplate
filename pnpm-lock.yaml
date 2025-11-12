@@ -210,7 +210,7 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       tsx:
-        specifier: ^4.19.2
+        specifier: ^4.20.6
         version: 4.20.6
       typescript:
         specifier: ^5.9.3
