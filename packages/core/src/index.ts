@@ -2,6 +2,9 @@ import type { Kysely } from "kysely";
 import { Resend } from "resend";
 import { createInMemoryEmailGateway } from "./adapters/email/InMemoryEmailGateway.js";
 import { createResendEmailGateway } from "./adapters/email/ResendEmailGateway.js";
+import { createInMemoryFileGateway } from "./adapters/file/InMemoryFileGateway.js";
+import { createS3FileGateway, type S3Config } from "./adapters/file/S3FileGateway.js";
+
 import { createInMemoryTaskQueries } from "./adapters/inMemory/taskQueries.js";
 import { createInMemoryUserQueries } from "./adapters/inMemory/userQueries.js";
 import { createWithInMemoryUnitOfWork } from "./adapters/inMemory/withInMemoryUow.js";
@@ -17,11 +20,12 @@ import { updateUserPreferencesUseCase } from "./domain/use-cases/updateUserPrefe
 
 export * from "./domain/entities/task.js";
 export * from "./domain/entities/user-and-organization.js";
+export * from "./domain/ports/FileGateway.js";
 export * from "./domain/ports/UserQueries.js";
 
 export type DbAdaptersConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 
-export type GatewaysConfig =
+export type EmailGatewayConfig =
   | {
       kind: "inMemory";
       defaultEmailFrom: string;
@@ -31,6 +35,20 @@ export type GatewaysConfig =
       resendApiKey: string;
       defaultEmailFrom: string;
     };
+
+export type FileGatewayConfig =
+  | {
+      kind: "inMemory";
+    }
+  | {
+      kind: "s3";
+      s3Config: S3Config;
+    };
+
+export type GatewaysConfig = {
+  email: EmailGatewayConfig;
+  file: FileGatewayConfig;
+};
 
 const getDbAdapters = (config: DbAdaptersConfig) => {
   switch (config.kind) {
@@ -62,26 +80,44 @@ const getDbAdapters = (config: DbAdaptersConfig) => {
   }
 };
 
-const getGateways = (config: GatewaysConfig) => {
+const getEmailGateway = (config: EmailGatewayConfig) => {
   switch (config.kind) {
     case "inMemory": {
-      return {
-        email: createInMemoryEmailGateway(config.defaultEmailFrom),
-      };
+      return createInMemoryEmailGateway(config.defaultEmailFrom);
     }
 
     case "resend": {
-      return {
-        email: createResendEmailGateway(new Resend(config.resendApiKey), config.defaultEmailFrom),
-      };
+      return createResendEmailGateway(new Resend(config.resendApiKey), config.defaultEmailFrom);
     }
 
     default: {
       config satisfies never;
-      throw new Error(`Unsupported Gateways config: ${JSON.stringify(config)}`);
+      throw new Error(`Unsupported Email gateway config: ${JSON.stringify(config, null, 2)}`);
     }
   }
 };
+
+const getFileGateway = (config: FileGatewayConfig) => {
+  switch (config.kind) {
+    case "inMemory": {
+      return createInMemoryFileGateway();
+    }
+
+    case "s3": {
+      return createS3FileGateway(config.s3Config);
+    }
+
+    default: {
+      config satisfies never;
+      throw new Error(`Unsupported File gateway config: ${JSON.stringify(config, null, 2)}`);
+    }
+  }
+};
+
+const getGateways = (config: GatewaysConfig) => ({
+  email: getEmailGateway(config.email),
+  file: getFileGateway(config.file),
+});
 
 export const bootstrapUseCases = ({
   dbConfig,
