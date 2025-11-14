@@ -14,8 +14,10 @@ import { Input } from "@tasks/ui/components/input";
 import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useI18nContext } from "@/i18n/i18n-react";
-import { updateOrganization } from "@/server/functions/user";
+import { updateOrganization, uploadOrganizationLogo } from "@/server/functions/user";
+import { fileToSerializable } from "@/utils/fileUtils";
 
 type EditOrganizationDialogProps = {
   organization: Organization;
@@ -35,6 +37,8 @@ export function EditOrganizationDialog({
   const router = useRouter();
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedLogoFile, setSelectedLogoFile] = useState<File | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(organization.logo);
   const { LL } = useI18nContext();
 
   const form = useForm({
@@ -49,12 +53,44 @@ export function EditOrganizationDialog({
       setError(null);
 
       try {
-        await updateOrganization({
-          data: {
+        let newLogoUrl = logoUrl;
+
+        // Upload logo if a new file was selected
+        if (selectedLogoFile) {
+          const serializedFile = await fileToSerializable(selectedLogoFile);
+
+          newLogoUrl = await uploadOrganizationLogo({
+            data: {
+              organizationId: organization.id,
+              file: serializedFile,
+            },
+          });
+          setLogoUrl(newLogoUrl);
+          setSelectedLogoFile(null);
+        }
+
+        // Only update if something changed
+        const hasNameChanged = value.name !== organization.name;
+        const hasLogoChanged = newLogoUrl !== organization.logo;
+
+        if (hasNameChanged || hasLogoChanged) {
+          const updateData: {
+            organizationId: string;
+            name?: string;
+            logo?: string;
+          } = {
             organizationId: organization.id,
-            name: value.name,
-          },
-        });
+          };
+
+          if (hasNameChanged) {
+            updateData.name = value.name;
+          }
+          if (hasLogoChanged) {
+            updateData.logo = newLogoUrl || "";
+          }
+
+          await updateOrganization({ data: updateData });
+        }
 
         onOpenChange(false);
         router.invalidate();
@@ -76,7 +112,7 @@ export function EditOrganizationDialog({
 
         {error && (
           <div className="flex items-start gap-3 rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
             <p>{error}</p>
           </div>
         )}
@@ -109,6 +145,19 @@ export function EditOrganizationDialog({
               </Field>
             )}
           </form.Field>
+
+          <div>
+            <FieldLabel>{LL.organization.logoLabel()}</FieldLabel>
+            <ImageUpload
+              currentImageUrl={logoUrl}
+              onImageSelect={(file) => setSelectedLogoFile(file)}
+              onImageRemove={() => {
+                setSelectedLogoFile(null);
+                setLogoUrl(null);
+              }}
+              fallbackText={organization.name.charAt(0).toUpperCase()}
+            />
+          </div>
 
           <div className="flex gap-2">
             <Button

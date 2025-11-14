@@ -17,6 +17,7 @@ import { deleteOrganizationUseCase } from "./domain/use-cases/deleteOrganization
 import { deleteTaskUseCase } from "./domain/use-cases/deleteTask.js";
 import { updateOrganizationUseCase } from "./domain/use-cases/updateOrganization.js";
 import { updateUserPreferencesUseCase } from "./domain/use-cases/updateUserPreferences.js";
+import { uploadOrganizationLogoUseCase } from "./domain/use-cases/uploadOrganizationLogo.js";
 
 export * from "./domain/entities/task.js";
 export * from "./domain/entities/user-and-organization.js";
@@ -135,8 +136,15 @@ export const bootstrapUseCases = ({
       addTask: addTaskUseCase({ withUow }),
       deleteTask: deleteTaskUseCase({ withUow }),
       updateUserPreferences: updateUserPreferencesUseCase({ withUow }),
-      updateOrganization: updateOrganizationUseCase({ withUow }),
+      updateOrganization: updateOrganizationUseCase({
+        withUow,
+        deps: { fileGateway: gateways.file },
+      }),
       deleteOrganization: deleteOrganizationUseCase({ withUow }),
+      uploadOrganizationLogo: uploadOrganizationLogoUseCase({
+        withUow,
+        deps: { fileGateway: gateways.file },
+      }),
     },
     gateways,
   };

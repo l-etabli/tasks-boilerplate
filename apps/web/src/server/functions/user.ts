@@ -107,3 +107,36 @@ export const deleteOrganization = createServerFn({ method: "POST" })
       input: data,
     });
   });
+
+const uploadOrganizationLogoInputSchema = z.object({
+  organizationId: z.string(),
+  file: z.object({
+    buffer: z.array(z.number()),
+    filename: z.string(),
+    mimeType: z.string(),
+  }),
+});
+
+export const uploadOrganizationLogo = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "uploadOrganizationLogo" })])
+  .inputValidator(uploadOrganizationLogoInputSchema)
+  .handler(async (ctx): Promise<string> => {
+    const {
+      data,
+      context: { currentUser },
+    } = ctx;
+
+    const buffer = Buffer.from(data.file.buffer);
+
+    const logoUrl = await useCases.mutations.uploadOrganizationLogo({
+      currentUser,
+      input: {
+        organizationId: data.organizationId,
+        file: buffer,
+        filename: data.file.filename,
+        mimeType: data.file.mimeType,
+      },
+    });
+
+    return logoUrl;
+  });

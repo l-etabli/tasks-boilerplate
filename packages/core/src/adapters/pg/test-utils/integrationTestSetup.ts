@@ -2,7 +2,7 @@ import type { Db } from "@tasks/db";
 import { Kysely, PostgresDialect, sql } from "kysely";
 import { Pool } from "pg";
 
-let mainDb: Kysely<Db> | null = null;
+let mainDb: Kysely<Db>;
 let currentTransaction: Kysely<Db> | null = null;
 
 async function createDbConnection(connectionUri: string): Promise<Kysely<Db>> {
@@ -27,11 +27,11 @@ export async function setupIntegrationTests() {
   mainDb = await createDbConnection(connectionUri);
 
   return {
-    mainDb: mainDb!,
+    mainDb,
     getTestDb: async (): Promise<Kysely<Db>> => {
-      await sql`BEGIN`.execute(mainDb!);
-      currentTransaction = mainDb!;
-      return mainDb!;
+      await sql`BEGIN`.execute(mainDb);
+      currentTransaction = mainDb;
+      return mainDb;
     },
     rollbackTestDb: async () => {
       if (currentTransaction) {
@@ -47,7 +47,6 @@ export async function setupIntegrationTests() {
 
       if (mainDb) {
         await mainDb.destroy();
-        mainDb = null;
       }
     },
   };

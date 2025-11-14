@@ -15,7 +15,10 @@ import { AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { authClient } from "@/auth-client";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useI18nContext } from "@/i18n/i18n-react";
+import { updateOrganization, uploadOrganizationLogo } from "@/server/functions/user";
+import { fileToSerializable } from "@/utils/fileUtils";
 
 const organizationSchema = z.object({
   name: z.string().trim().min(1).max(100),
@@ -33,6 +36,7 @@ export function CreateOrganizationModal({
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedLogoFile, setSelectedLogoFile] = useState<File | null>(null);
   const { LL } = useI18nContext();
 
   const form = useForm({
@@ -48,10 +52,32 @@ export function CreateOrganizationModal({
 
       try {
         const slug = generateUniqueSlug(value.name);
-        await authClient.organization.create({
+
+        // Create organization first to get the ID
+        const result = await authClient.organization.create({
           name: value.name,
           slug,
         });
+
+        // Upload logo if selected and update organization
+        if (selectedLogoFile && result.data?.id) {
+          const serializedFile = await fileToSerializable(selectedLogoFile);
+
+          const logoUrl = await uploadOrganizationLogo({
+            data: {
+              organizationId: result.data.id,
+              file: serializedFile,
+            },
+          });
+
+          // Update organization with logo
+          await updateOrganization({
+            data: {
+              organizationId: result.data.id,
+              logo: logoUrl,
+            },
+          });
+        }
 
         router.invalidate();
         onOpenChange?.(false);
@@ -67,6 +93,7 @@ export function CreateOrganizationModal({
     if (!open) {
       form.reset();
       setError(null);
+      setSelectedLogoFile(null);
     }
   }, [open, form]);
 
@@ -113,6 +140,16 @@ export function CreateOrganizationModal({
               </Field>
             )}
           </form.Field>
+
+          <div>
+            <FieldLabel>{LL.organization.logoLabelOptional()}</FieldLabel>
+            <ImageUpload
+              currentImageUrl={null}
+              onImageSelect={(file) => setSelectedLogoFile(file)}
+              onImageRemove={() => setSelectedLogoFile(null)}
+              fallbackText="?"
+            />
+          </div>
 
           <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
             {([canSubmit, isSubmitting]) => (
