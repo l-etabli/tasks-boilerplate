@@ -750,6 +750,14 @@ type RootTranslation = {
 		 */
 		namePlaceholder: string
 		/**
+		 * O​r​g​a​n​i​z​a​t​i​o​n​ ​L​o​g​o
+		 */
+		logoLabel: string
+		/**
+		 * O​r​g​a​n​i​z​a​t​i​o​n​ ​L​o​g​o​ ​(​O​p​t​i​o​n​a​l​)
+		 */
+		logoLabelOptional: string
+		/**
 		 * B​a​c​k
 		 */
 		back: string
@@ -941,6 +949,36 @@ type RootTranslation = {
 		 * @param {unknown} email
 		 */
 		errorAlreadyInvited: RequiredParams<'email'>
+	}
+	imageUpload: {
+		/**
+		 * N​o​ ​l​o​g​o​ ​y​e​t
+		 */
+		noImageYet: string
+		/**
+		 * U​p​l​o​a​d
+		 */
+		upload: string
+		/**
+		 * C​h​a​n​g​e
+		 */
+		change: string
+		/**
+		 * P​l​e​a​s​e​ ​u​p​l​o​a​d​ ​a​n​ ​S​V​G​,​ ​P​N​G​,​ ​o​r​ ​J​P​G​ ​i​m​a​g​e
+		 */
+		errorFileType: string
+		/**
+		 * F​i​l​e​ ​s​i​z​e​ ​m​u​s​t​ ​b​e​ ​l​e​s​s​ ​t​h​a​n​ ​0​.​5​ ​M​B
+		 */
+		errorFileSize: string
+		/**
+		 * S​V​G​ ​r​e​c​o​m​m​e​n​d​e​d​.​ ​M​a​x​ ​0​.​5​ ​M​B​.​ ​P​N​G​ ​o​r​ ​J​P​G​ ​a​l​s​o​ ​a​c​c​e​p​t​e​d​.
+		 */
+		helpText: string
+		/**
+		 * R​e​m​o​v​e​ ​l​o​g​o
+		 */
+		removeLabel: string
 	}
 	errors: {
 		/**
@@ -1683,6 +1721,14 @@ export type TranslationFunctions = {
 		 */
 		namePlaceholder: () => LocalizedString
 		/**
+		 * Organization Logo
+		 */
+		logoLabel: () => LocalizedString
+		/**
+		 * Organization Logo (Optional)
+		 */
+		logoLabelOptional: () => LocalizedString
+		/**
 		 * Back
 		 */
 		back: () => LocalizedString
@@ -1864,6 +1910,36 @@ export type TranslationFunctions = {
 		 * {email} already has a pending invitation
 		 */
 		errorAlreadyInvited: (arg: { email: unknown }) => LocalizedString
+	}
+	imageUpload: {
+		/**
+		 * No logo yet
+		 */
+		noImageYet: () => LocalizedString
+		/**
+		 * Upload
+		 */
+		upload: () => LocalizedString
+		/**
+		 * Change
+		 */
+		change: () => LocalizedString
+		/**
+		 * Please upload an SVG, PNG, or JPG image
+		 */
+		errorFileType: () => LocalizedString
+		/**
+		 * File size must be less than 0.5 MB
+		 */
+		errorFileSize: () => LocalizedString
+		/**
+		 * SVG recommended. Max 0.5 MB. PNG or JPG also accepted.
+		 */
+		helpText: () => LocalizedString
+		/**
+		 * Remove logo
+		 */
+		removeLabel: () => LocalizedString
 	}
 	errors: {
 		/**

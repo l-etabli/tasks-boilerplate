@@ -1,6 +1,7 @@
 import { expectToEqual } from "@tasks/test";
 import { beforeEach, describe, it } from "vitest";
 import { expectPromiseToFailWith } from "../../../../test/src/testUtils.js";
+import { createInMemoryFileGateway } from "../../adapters/file/InMemoryFileGateway.js";
 import {
   createWithInMemoryUnitOfWork,
   type InMemoryHelpers,
@@ -13,12 +14,15 @@ describe("updateOrganization", () => {
   let updateOrganization: ReturnType<typeof updateOrganizationUseCase>;
   const currentUser = userFactory();
   let helpers: InMemoryHelpers;
+  let fileGateway: ReturnType<typeof createInMemoryFileGateway>;
 
   beforeEach(() => {
     const uowConfig = createWithInMemoryUnitOfWork();
     helpers = uowConfig.helpers;
+    fileGateway = createInMemoryFileGateway();
     updateOrganization = updateOrganizationUseCase({
       withUow: uowConfig.withUow,
+      deps: { fileGateway },
     });
   });
 
@@ -184,5 +188,89 @@ describe("updateOrganization", () => {
       }),
       "Only organization owners can update the organization",
     );
+  });
+
+  it("should delete old logo when updating to a new logo", async () => {
+    const oldLogoKey = "organizations/org-1/logo-old.png";
+    const org = organizationFactory({
+      id: "org-1",
+      logo: `test://${oldLogoKey}`,
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.setOrganizations([org]);
+
+    // Add old logo to file storage
+    fileGateway.store.publicFiles[oldLogoKey] = Buffer.from("old-logo-data");
+
+    await updateOrganization({
+      input: { organizationId: org.id, logo: "test://organizations/org-1/logo-new.png" },
+      currentUser,
+    });
+
+    // Old logo should be deleted
+    expectToEqual(fileGateway.store.publicFiles[oldLogoKey], undefined);
+    expectToEqual(
+      helpers.user.organizationsById[org.id]?.logo,
+      "test://organizations/org-1/logo-new.png",
+    );
+  });
+
+  it("should not delete logo when updating to the same logo URL", async () => {
+    const logoKey = "organizations/org-1/logo.png";
+    const logoUrl = `test://${logoKey}`;
+    const org = organizationFactory({
+      id: "org-1",
+      logo: logoUrl,
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.setOrganizations([org]);
+
+    fileGateway.store.publicFiles[logoKey] = Buffer.from("logo-data");
+
+    await updateOrganization({
+      input: { organizationId: org.id, logo: logoUrl },
+      currentUser,
+    });
+
+    // Logo should still exist
+    expectToEqual(fileGateway.store.publicFiles[logoKey], Buffer.from("logo-data"));
+  });
+
+  it("should not delete anything when logo is not being updated", async () => {
+    const logoKey = "organizations/org-1/logo.png";
+    const org = organizationFactory({
+      id: "org-1",
+      logo: `test://${logoKey}`,
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.setOrganizations([org]);
+
+    fileGateway.store.publicFiles[logoKey] = Buffer.from("logo-data");
+
+    await updateOrganization({
+      input: { organizationId: org.id, name: "New Name" },
+      currentUser,
+    });
+
+    // Logo should still exist
+    expectToEqual(fileGateway.store.publicFiles[logoKey], Buffer.from("logo-data"));
+    expectToEqual(helpers.user.organizationsById[org.id]?.logo, `test://${logoKey}`);
+  });
+
+  it("should handle deletion failure gracefully", async () => {
+    const org = organizationFactory({
+      id: "org-1",
+      logo: "test://non-existent-key",
+      members: [memberFactory({ user: currentUser, role: "owner" })],
+    });
+    helpers.user.setOrganizations([org]);
+
+    // Should not throw even if old logo doesn't exist
+    await updateOrganization({
+      input: { organizationId: org.id, logo: "test://new-logo.png" },
+      currentUser,
+    });
+
+    expectToEqual(helpers.user.organizationsById[org.id]?.logo, "test://new-logo.png");
   });
 });

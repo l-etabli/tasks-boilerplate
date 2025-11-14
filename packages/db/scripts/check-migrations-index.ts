@@ -53,8 +53,6 @@ async function checkMigrationsIndex() {
 		console.error("\n💡 Run 'pnpm db:generate-index' to fix this");
 		process.exit(1);
 	}
-
-	console.log("✅ All", migrationFiles.length, "migrations are correctly indexed");
 }
 
 checkMigrationsIndex().catch((error) => {
