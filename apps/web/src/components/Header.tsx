@@ -1,4 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
+import { Avatar, AvatarFallback, AvatarImage } from "@tasks/ui/components/avatar";
 import { Button } from "@tasks/ui/components/button";
 import {
   DropdownMenu,
@@ -33,7 +34,7 @@ export default function Header({
   activeOrganizationId,
 }: {
   children?: React.ReactNode;
-  organizations?: Array<{ id: string; name: string }>;
+  organizations?: Array<{ id: string; name: string; logo: string | null }>;
   activeOrganizationId?: string | null;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -97,6 +98,14 @@ export default function Header({
                         className="hidden h-9 gap-2 sm:flex"
                         aria-label={LL.header.organizationSwitcher()}
                       >
+                        <Avatar className="size-5">
+                          {activeOrg.logo && (
+                            <AvatarImage src={activeOrg.logo} alt={activeOrg.name} />
+                          )}
+                          <AvatarFallback className="text-xs">
+                            {activeOrg.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
                         <span className="text-sm">{activeOrg.name}</span>
                         <ChevronDown className="h-4 w-4" />
                       </Button>
@@ -111,7 +120,14 @@ export default function Header({
                             key={org.id}
                             value={org.id}
                             id={`org-option-${org.id}`}
+                            className="gap-2"
                           >
+                            <Avatar className="size-5">
+                              {org.logo && <AvatarImage src={org.logo} alt={org.name} />}
+                              <AvatarFallback className="text-xs">
+                                {org.name.charAt(0).toUpperCase()}
+                              </AvatarFallback>
+                            </Avatar>
                             {org.name}
                           </DropdownMenuRadioItem>
                         ))}

@@ -20,7 +20,11 @@ export const createInMemoryFileGateway = (): FileGateway & {
   return {
     store,
 
-    async uploadPublic(file: Buffer, key: string): Promise<UploadPublicResult> {
+    async uploadPublic(
+      file: Buffer,
+      key: string,
+      _contentType: string,
+    ): Promise<UploadPublicResult> {
       store.publicFiles[key] = file;
       return { url: `test://${key}` };
     },

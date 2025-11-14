@@ -7,7 +7,7 @@ export type UploadPrivateResult = {
 };
 
 export type FileGateway = {
-  uploadPublic(file: Buffer, key: string): Promise<UploadPublicResult>;
+  uploadPublic(file: Buffer, key: string, contentType: string): Promise<UploadPublicResult>;
   uploadPrivate(file: Buffer, key: string): Promise<UploadPrivateResult>;
   getSignedUrl(key: string, expiresInSeconds: number): Promise<string>;
   delete(key: string): Promise<void>;

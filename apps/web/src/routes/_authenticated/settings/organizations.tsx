@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Avatar, AvatarFallback, AvatarImage } from "@tasks/ui/components/avatar";
 import { Button } from "@tasks/ui/components/button";
 import {
   DropdownMenu,
@@ -92,7 +93,13 @@ function OrganizationsSettings() {
               >
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold">{org.name}</h3>
+                    <div className="flex items-center gap-3">
+                      <Avatar>
+                        {org.logo && <AvatarImage src={org.logo} alt={org.name} />}
+                        <AvatarFallback>{org.name.charAt(0).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <h3 className="font-semibold">{org.name}</h3>
+                    </div>
                     <div className="flex items-center gap-1">
                       {["owner", "admin"].includes(currentUserRoleInOrg) && (
                         <Tooltip>

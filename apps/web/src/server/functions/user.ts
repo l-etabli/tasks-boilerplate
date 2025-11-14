@@ -107,3 +107,36 @@ export const deleteOrganization = createServerFn({ method: "POST" })
       input: data,
     });
   });
+
+export const uploadOrganizationLogo = createServerFn({ method: "POST" })
+  .middleware([authenticated({ name: "uploadOrganizationLogo" })])
+  .handler(async (ctx): Promise<string> => {
+    const {
+      data,
+      context: { currentUser },
+    } = ctx;
+
+    // Extract data from FormData
+    const formData = data as unknown as FormData;
+    const organizationId = formData.get("organizationId") as string;
+    const file = formData.get("file") as File;
+
+    if (!organizationId || !file) {
+      throw new Error("Missing organizationId or file");
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    const logoUrl = await useCases.mutations.uploadOrganizationLogo({
+      currentUser,
+      input: {
+        organizationId,
+        file: buffer,
+        filename: file.name,
+        mimeType: file.type,
+      },
+    });
+
+    return logoUrl;
+  });
