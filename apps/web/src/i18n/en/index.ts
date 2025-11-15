@@ -213,6 +213,8 @@ const en = {
       "Choose a name for your workspace - it can be personal, family, or business",
     nameLabel: "Organization name",
     namePlaceholder: "Personal, Smith Family, My Company...",
+    logoLabel: "Organization Logo",
+    logoLabelOptional: "Organization Logo (Optional)",
     back: "Back",
     create: "Create",
     creating: "Creating...",
@@ -263,6 +265,16 @@ const en = {
     errorSelfInvitation: "You cannot invite yourself",
     errorAlreadyMemberInvite: "{email} is already a member of this organization",
     errorAlreadyInvited: "{email} already has a pending invitation",
+  },
+
+  imageUpload: {
+    noImageYet: "No logo yet",
+    upload: "Upload",
+    change: "Change",
+    errorFileType: "Please upload an SVG, PNG, or JPG image",
+    errorFileSize: "File size must be less than 0.5 MB",
+    helpText: "SVG recommended. Max 0.5 MB. PNG or JPG also accepted.",
+    removeLabel: "Remove logo",
   },
 
   errors: {

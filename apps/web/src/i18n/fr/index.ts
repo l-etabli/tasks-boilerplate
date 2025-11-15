@@ -259,6 +259,8 @@ const fr = {
       "Choisissez un nom pour votre espace de travail - il peut être personnel, familial ou professionnel",
     nameLabel: "Nom de l'organisation",
     namePlaceholder: "Personne Physique, Famille Dupont, SCI Martin...",
+    logoLabel: "Logo de l'organisation",
+    logoLabelOptional: "Logo de l'organisation (Optionnel)",
     back: "Retour",
     create: "Créer",
     creating: "Création...",
@@ -269,6 +271,16 @@ const fr = {
     saveChanges: "Enregistrer les modifications",
     updating: "Mise à jour...",
     updateFailed: "Échec de la mise à jour de l'organisation",
+  },
+
+  imageUpload: {
+    noImageYet: "Aucun logo pour le moment",
+    upload: "Télécharger",
+    change: "Modifier",
+    errorFileType: "Veuillez télécharger une image SVG, PNG ou JPG",
+    errorFileSize: "La taille du fichier doit être inférieure à 0,5 Mo",
+    helpText: "SVG recommandé. Maximum 0,5 Mo. PNG ou JPG également acceptés.",
+    removeLabel: "Supprimer le logo",
   },
 
   errors: {

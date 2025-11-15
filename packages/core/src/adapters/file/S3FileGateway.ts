@@ -32,13 +32,18 @@ export const createS3FileGateway = (config: S3Config): FileGateway => {
   });
 
   return {
-    async uploadPublic(file: Buffer, key: string): Promise<UploadPublicResult> {
+    async uploadPublic(
+      file: Buffer,
+      key: string,
+      contentType: string,
+    ): Promise<UploadPublicResult> {
       await client.send(
         new PutObjectCommand({
           Bucket: config.publicBucket,
           Key: key,
           Body: file,
-          ACL: "public-read",
+          ContentType: contentType,
+          // Note: R2 doesn't support ACLs - use bucket-level public access instead
         }),
       );
 
