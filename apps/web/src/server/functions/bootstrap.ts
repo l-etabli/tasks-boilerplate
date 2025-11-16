@@ -4,7 +4,7 @@ import { getKyselyDb } from "@tasks/db";
 import { env } from "@/env";
 
 const getEmailConfig = (): GatewaysConfig["email"] => {
-  const defaultEmailFrom = env.EMAIL_FROM ?? "contact@etabli.dev";
+  const defaultEmailFrom = env.EMAIL_FROM;
 
   if (env.EMAIL_GATEWAY === "resend") {
     if (!env.EMAIL_RESEND_API_KEY)

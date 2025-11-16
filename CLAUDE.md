@@ -6,6 +6,18 @@ Try to avoid type "any" and try to avoid type casting as much as possible.
 
 Run `pnpm fullcheck` when you have done significative changes to make sure me are fine before handing it over to the user.
 
+## Initial Template Setup
+
+**If this is your first time using this template**, please follow the comprehensive setup guide in [SETUP.md](./SETUP.md).
+
+Key steps:
+1. Rename the `@tasks/` namespace to your own (e.g., `@myapp/`)
+2. Configure environment variables (`.env`)
+3. Set up database and run migrations
+4. Install dependencies and verify with `pnpm fullcheck`
+
+The rest of this document provides detailed architecture and development guidelines for working with the codebase.
+
 ## Key Development Commands
 
 - **Development**: `pnpm dev` - Start development server

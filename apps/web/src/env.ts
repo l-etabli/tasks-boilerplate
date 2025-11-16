@@ -15,7 +15,7 @@ export const env = createEnv({
     ENVIRONMENT: environmentSchema,
     EMAIL_GATEWAY: z.enum(["inMemory", "resend"]).default("inMemory"),
     EMAIL_RESEND_API_KEY: z.string().optional(),
-    EMAIL_FROM: z.email().optional(),
+    EMAIL_FROM: z.email().default("noreply@example.com"),
     SENTRY_DSN: z.url().optional(),
     UMAMI_WEBSITE_ID: z.string().optional(),
     UMAMI_SCRIPT_URL: z.url().optional(),

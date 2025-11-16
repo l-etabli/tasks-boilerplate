@@ -47,7 +47,6 @@
     }
   },
   "remoteCache": {
-    "enabled": true,
-    "teamId": "l-etabli"
+    "enabled": true
   }
 }
