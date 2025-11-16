@@ -17,3 +17,11 @@ export type EmailParams<T> = {
   locale: Locales;
   params: T;
 };
+
+export type Email = {
+  to: EmailRecipient[];
+  cc?: EmailRecipient[];
+  bcc?: EmailRecipient[];
+  subject: string;
+  body: string;
+};

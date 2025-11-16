@@ -1,31 +1,39 @@
 import type {
-  Email,
   EmailGateway,
   EmailRecipient,
+  EmailRequest,
 } from "../../domain/shared/ports/EmailGateway.js";
 
 const formatRecipient = (recipient: EmailRecipient): string => {
   return recipient.name ? `${recipient.name} <${recipient.email}>` : recipient.email;
 };
 
-export const createInMemoryEmailGateway = (defaultFrom: string): EmailGateway => {
-  return {
-    async send(email: Email): Promise<void> {
-      const from = email.from ? formatRecipient(email.from) : defaultFrom;
+export type InMemoryEmailGatewayInstance = EmailGateway & {
+  getSentEmails: () => EmailRequest[];
+  clearSentEmails: () => void;
+};
 
-      console.info("\n\n===== EMAIL =====");
-      console.info(`From: ${from}`);
-      console.info(`To: ${email.to.map(formatRecipient).join(", ")}`);
-      if (email.cc?.length) {
-        console.info(`CC: ${email.cc.map(formatRecipient).join(", ")}`);
-      }
-      if (email.bcc?.length) {
-        console.info(`BCC: ${email.bcc.map(formatRecipient).join(", ")}`);
-      }
-      console.info(`Subject: ${email.subject}`);
-      console.info("Body:");
-      console.info(email.body);
-      console.info("=================\n\n");
+export const createInMemoryEmailGateway = (from: string): InMemoryEmailGatewayInstance => {
+  const sentEmails: EmailRequest[] = [];
+
+  return {
+    async send(request: EmailRequest): Promise<void> {
+      sentEmails.push(request);
+
+      console.info("\n \n ------ 📧 Email sent (in-memory) ------ \n", {
+        templateName: request.templateName,
+        from,
+        to: request.to.map(formatRecipient).join(", "),
+        cc: request.cc?.map(formatRecipient).join(", "),
+        bcc: request.bcc?.map(formatRecipient).join(", "),
+        params: request.params,
+      });
+      console.info("---------------\n \n");
+    },
+
+    getSentEmails: () => sentEmails,
+    clearSentEmails: () => {
+      sentEmails.length = 0;
     },
   };
 };

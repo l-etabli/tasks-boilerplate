@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/tanstackstart-react";
-import { emails } from "@tasks/core/emails";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
@@ -50,7 +49,8 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     async sendResetPassword({ user, url }, request) {
-      const email = emails.user.passwordReset({
+      await gateways.email.send({
+        templateName: "resetPassword",
         to: [{ email: user.email, name: user.name }],
         locale: getLocaleFromRequest(request),
         params: {
@@ -58,8 +58,6 @@ export const auth = betterAuth({
           resetUrl: url,
         },
       });
-
-      await gateways.email.send(email);
     },
   },
 
@@ -67,7 +65,8 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }, request) => {
-      const email = emails.user.verification({
+      await gateways.email.send({
+        templateName: "verifyEmail",
         to: [{ email: user.email, name: user.name }],
         locale: getLocaleFromRequest(request),
         params: {
@@ -75,8 +74,6 @@ export const auth = betterAuth({
           verificationUrl: url,
         },
       });
-
-      await gateways.email.send(email);
     },
   },
 
@@ -129,7 +126,8 @@ export const auth = betterAuth({
         });
         const acceptInvitationUrl = `${env.BETTER_AUTH_URL}${pathname}`;
 
-        const email = emails.user.inviteToOrganization({
+        await gateways.email.send({
+          templateName: "inviteToOrganization",
           to: [{ email: data.email }],
           locale: getLocaleFromRequest(request),
           params: {
@@ -138,8 +136,6 @@ export const auth = betterAuth({
             acceptInvitationUrl,
           },
         });
-
-        await gateways.email.send(email);
       },
 
       // Server-side validation for role changes
