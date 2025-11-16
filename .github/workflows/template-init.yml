@@ -1,0 +1,102 @@
+name: Initialize Template
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check if template needs initialization
+        id: check
+        run: |
+          # Don't run on the template repository itself
+          if [[ "${{ github.repository }}" == "l-etabli/tasks-boilerplate" ]] || [[ "${{ github.repository }}" == *"tasks-boilerplate"* ]]; then
+            echo "needs_init=false" >> $GITHUB_OUTPUT
+            echo "⚠️  Skipping initialization - this is the template repository itself"
+            exit 0
+          fi
+
+          # Check if @tasks namespace is still present in package.json
+          if grep -q "@tasks/" package.json; then
+            echo "needs_init=true" >> $GITHUB_OUTPUT
+            echo "🔄 Template needs initialization (found @tasks/ namespace)"
+          else
+            echo "needs_init=false" >> $GITHUB_OUTPUT
+            echo "✅ Template already initialized (no @tasks/ namespace found)"
+          fi
+
+      - name: Setup Node.js
+        if: steps.check.outputs.needs_init == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        if: steps.check.outputs.needs_init == 'true'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.22.0
+
+      - name: Generate namespace from repository name
+        if: steps.check.outputs.needs_init == 'true'
+        id: namespace
+        run: |
+          # Extract repository name (e.g., "my-app" from "owner/my-app")
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          # Convert to valid npm scope (lowercase, replace underscores/spaces with hyphens)
+          NAMESPACE=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]' | tr '_' '-' | sed 's/[^a-z0-9-]/-/g')
+          echo "namespace=@${NAMESPACE}" >> $GITHUB_OUTPUT
+          echo "Generated namespace: @${NAMESPACE}"
+
+      - name: Replace namespace
+        if: steps.check.outputs.needs_init == 'true'
+        run: |
+          NAMESPACE="${{ steps.namespace.outputs.namespace }}"
+          echo "Replacing @tasks/ with ${NAMESPACE}/"
+
+          # Replace in all relevant files
+          find . -type f \( \
+            -name "*.json" -o \
+            -name "*.ts" -o \
+            -name "*.tsx" -o \
+            -name "Dockerfile" -o \
+            -name "*.md" \
+          \) \
+            -not -path "*/node_modules/*" \
+            -not -path "*/.next/*" \
+            -not -path "*/.output/*" \
+            -not -path "*/.git/*" \
+            -not -path "*/dist/*" \
+            -exec sed -i "s|@tasks/|${NAMESPACE}/|g" {} +
+
+          echo "✅ Namespace replacement complete"
+
+      - name: Remove template initialization files
+        if: steps.check.outputs.needs_init == 'true'
+        run: |
+          # Remove the workflow file itself
+          rm -f .github/workflows/template-init.yml
+          # Remove the manual init script
+          rm -f scripts/init-template.ts
+          echo "✅ Cleaned up template initialization files"
+
+      - name: Commit changes
+        if: steps.check.outputs.needs_init == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git commit -m "chore: initialize template with namespace ${{ steps.namespace.outputs.namespace }}"
+          git push

@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "init-template": "tsx scripts/init-template.ts",
     "build": "turbo build",
     "build:prod": "turbo build:prod",
     "dev": "turbo dev",
@@ -37,6 +38,7 @@
     "@vitest/ui": "^4.0.9",
     "lefthook": "^2.0.4",
     "semantic-release": "^25.0.2",
+    "tsx": "^4.20.6",
     "turbo": "^2.6.1",
     "typescript": "5.9.3",
     "vitest": "^4.0.9"

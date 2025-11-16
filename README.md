@@ -39,27 +39,44 @@ Production-ready TypeScript monorepo template built with **Clean Architecture** 
 
 ### Initial Setup
 
-1. **Clone or use this template**
+1. **Use as GitHub template** (Recommended)
+
+   Click "Use this template" on GitHub and create your repository. The namespace will be **automatically** renamed on any push!
+
    ```bash
-   # Use as GitHub template or clone
-   git clone <your-repo-url>
-   cd <your-project>
-   ```
+   # Clone your new repository
+   git clone https://github.com/your-username/your-project.git
+   cd your-project
 
-2. **Rename project namespace** (IMPORTANT - manual step until init script exists)
-
-   Find and replace `@tasks/` with your own namespace (e.g., `@myapp/`) in:
-   - All `package.json` files (8 files in root, apps/*, packages/*)
-   - All import statements across the codebase
-   - `Dockerfile` (filter `@tasks/web`)
-   - This README
-
-3. **Install dependencies**
-   ```bash
+   # Install dependencies
    pnpm install
+
+   # Continue with setup (the workflow will run on next push)
+   # Or trigger it now with any commit:
+   git commit --allow-empty -m "trigger init"
+   git push
    ```
 
-4. **Configure environment**
+   GitHub Actions will automatically:
+   - Detect the `@tasks/` namespace on any push
+   - Generate namespace from your repo name (e.g., `my-app` → `@my-app`)
+   - Replace `@tasks/` everywhere
+   - Commit the changes
+
+   **Alternative:** Manual initialization if not using GitHub template:
+   ```bash
+   # Clone directly
+   git clone <template-url> your-project
+   cd your-project
+
+   # Install dependencies
+   pnpm install
+
+   # Run interactive script
+   pnpm init-template
+   ```
+
+2. **Configure environment**
    ```bash
    cp .env.sample .env
    # Edit .env and configure required variables (see .env.sample for details)

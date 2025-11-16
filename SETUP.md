@@ -22,16 +22,34 @@ docker --version  # Any recent version
 
 ### 1. Create Your Project from Template
 
-#### Option A: Use GitHub Template
+#### Option A: Use GitHub Template (Recommended - Auto-initialization)
+
 1. Click "Use this template" on the GitHub repository
-2. Create a new repository with your project name
+2. Create a new repository with your project name (e.g., `my-awesome-app`)
 3. Clone your new repository:
    ```bash
    git clone https://github.com/your-username/your-project-name.git
    cd your-project-name
    ```
 
-#### Option B: Clone Directly
+4. **The template will auto-initialize!** On **any push** to main/master, GitHub Actions will:
+   - Check if `@tasks/` namespace is still present
+   - If found, generate a new namespace from your repo name (e.g., `my-awesome-app` → `@my-awesome-app`)
+   - Replace all occurrences across the codebase
+   - Clean up initialization files (workflow + script)
+   - Commit the changes automatically
+
+   No manual find/replace needed! The initialization happens automatically when you make your first change and push, or you can trigger it immediately with an empty commit.
+
+   **To trigger initialization now:**
+   ```bash
+   git commit --allow-empty -m "trigger template init"
+   git push
+   ```
+
+   Then proceed to step 2.
+
+#### Option B: Clone Directly (Manual initialization required)
 ```bash
 git clone <template-repo-url> your-project-name
 cd your-project-name
@@ -41,61 +59,87 @@ git add .
 git commit -m "Initial commit from template"
 ```
 
-### 2. Rename Project Namespace
+If you clone directly, you'll need to manually rename the namespace in step 3.
 
-**IMPORTANT:** This template uses `@tasks/` as the package namespace. You must replace this with your own namespace.
-
-#### Find and Replace
-
-Replace `@tasks/` with your namespace (e.g., `@myapp/`, `@company/`, etc.) in:
-
-1. **All package.json files** (8 files):
-   - `/package.json`
-   - `/apps/web/package.json`
-   - `/packages/core/package.json`
-   - `/packages/db/package.json`
-   - `/packages/ui/package.json`
-   - `/packages/trousse/package.json`
-   - `/packages/test/package.json`
-   - `/packages/typescript-config/package.json`
-
-2. **All import statements** across the codebase (TypeScript/TSX files)
-
-3. **Dockerfile** (line with `--filter=@tasks/web`)
-
-4. **README.md** (example imports)
-
-#### Using VS Code
-1. Open the project in VS Code
-2. Press `Cmd+Shift+F` (Mac) or `Ctrl+Shift+F` (Windows/Linux)
-3. Search: `@tasks/`
-4. Replace: `@myapp/` (your chosen namespace)
-5. Click "Replace All"
-
-#### Using Command Line (macOS/Linux)
-```bash
-# Replace @tasks/ with @myapp/ in all files
-find . -type f \( -name "*.json" -o -name "*.ts" -o -name "*.tsx" -o -name "Dockerfile" -o -name "*.md" \) \
-  -not -path "*/node_modules/*" \
-  -not -path "*/.next/*" \
-  -not -path "*/.output/*" \
-  -exec sed -i '' 's/@tasks\//@myapp\//g' {} +
-```
-
-#### Using Command Line (Linux)
-```bash
-# Replace @tasks/ with @myapp/ in all files
-find . -type f \( -name "*.json" -o -name "*.ts" -o -name "*.tsx" -o -name "Dockerfile" -o -name "*.md" \) \
-  -not -path "*/node_modules/*" \
-  -not -path "*/.next/*" \
-  -not -path "*/.output/*" \
-  -exec sed -i 's/@tasks\//@myapp\//g' {} +
-```
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 pnpm install
+```
+
+### 3. Rename Project Namespace
+
+**IMPORTANT:** This template uses `@tasks/` as the package namespace. You must replace this with your own namespace.
+
+#### Option A: Automated Script (Recommended)
+
+Run the interactive initialization script:
+
+```bash
+pnpm init-template
+```
+
+This will:
+1. Prompt you for your new namespace (e.g., `@myapp`)
+2. Validate the namespace format
+3. Show a preview of changes
+4. Ask for confirmation
+5. Replace `@tasks/` across all files:
+   - All 8 package.json files
+   - All TypeScript/TSX imports
+   - Dockerfile build filter
+   - Documentation files
+6. Clean up initialization files (removes itself and GitHub workflow)
+
+**Example output:**
+```
+Current namespace: @tasks
+Enter new package namespace (e.g., @myapp, @company): @myapp
+
+Preview of changes:
+  @tasks → @myapp
+
+Proceed with namespace replacement? (yes/no): yes
+
+✓ package.json
+✓ apps/web/package.json
+...
+✓ Processed 150 TypeScript files
+
+✅ Complete! Updated 158 files.
+
+🧹 Cleaning up template initialization files...
+  ✓ Removed .github/workflows/template-init.yml
+  ✓ Removed scripts/init-template.ts
+```
+
+#### Option B: Manual Find and Replace
+
+If you prefer manual control, replace `@tasks/` with your namespace in:
+
+1. **All package.json files** (8 files)
+2. **All import statements** across the codebase (TypeScript/TSX files)
+3. **Dockerfile** (line with `--filter=@tasks/web`)
+4. **README.md** (example imports)
+
+**Using VS Code:**
+1. Press `Cmd+Shift+F` (Mac) or `Ctrl+Shift+F` (Windows/Linux)
+2. Search: `@tasks/`
+3. Replace: `@myapp/` (your chosen namespace)
+4. Click "Replace All"
+
+**Using Command Line (macOS):**
+```bash
+find . -type f \( -name "*.json" -o -name "*.ts" -o -name "*.tsx" -o -name "Dockerfile" -o -name "*.md" \) \
+  -not -path "*/node_modules/*" -not -path "*/.next/*" -not -path "*/.output/*" \
+  -exec sed -i '' 's/@tasks\//@myapp\//g' {} +
+```
+
+**Using Command Line (Linux):**
+```bash
+find . -type f \( -name "*.json" -o -name "*.ts" -o -name "*.tsx" -o -name "Dockerfile" -o -name "*.md" \) \
+  -not -path "*/node_modules/*" -not -path "*/.next/*" -not -path "*/.output/*" \
+  -exec sed -i 's/@tasks\//@myapp\//g' {} +
 ```
 
 This will:
