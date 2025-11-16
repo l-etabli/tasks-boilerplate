@@ -1,5 +1,5 @@
 import type { Kysely } from "kysely";
-import type { UserQueries } from "../../domain/ports/UserQueries.js";
+import type { UserQueries } from "../../domain/user/ports/UserQueries.js";
 import type { Db } from "./database.js";
 import { makeGetUserOrganizations } from "./userSql.js";
 

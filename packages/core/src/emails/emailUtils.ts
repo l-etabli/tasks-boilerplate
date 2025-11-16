@@ -1,4 +1,4 @@
-import type { EmailRecipient } from "../domain/ports/EmailGateway.js";
+import type { EmailRecipient } from "../domain/shared/ports/EmailGateway.js";
 
 /**
  * Supported locales for emails

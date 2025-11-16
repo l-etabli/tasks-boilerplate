@@ -1,5 +1,5 @@
-import type { Task } from "../../domain/entities/task.js";
-import type { TaskRepository } from "../../domain/ports/TaskRepository.js";
+import type { Task } from "../../domain/task/entities/task.js";
+import type { TaskRepository } from "../../domain/task/ports/TaskRepository.js";
 
 export type TaskRepositoryHelpers = {
   taskById: Record<string, Task>;

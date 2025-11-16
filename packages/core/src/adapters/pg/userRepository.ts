@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { sql } from "kysely";
-import type { UserRepository } from "../../domain/ports/UserRepository.js";
+import type { UserRepository } from "../../domain/user/ports/UserRepository.js";
 import type { Db } from "./database.js";
 import { makeGetUserOrganizations } from "./userSql.js";
 

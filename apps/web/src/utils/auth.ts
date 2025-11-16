@@ -1,9 +1,5 @@
 import * as Sentry from "@sentry/tanstackstart-react";
-import {
-  buildInvitationEmail,
-  buildPasswordResetEmail,
-  buildVerificationEmail,
-} from "@tasks/core/emails";
+import { emails } from "@tasks/core/emails";
 import { getKyselyDb } from "@tasks/db";
 import { betterAuth } from "better-auth";
 import { createAuthMiddleware } from "better-auth/api";
@@ -54,7 +50,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     async sendResetPassword({ user, url }, request) {
-      const email = buildPasswordResetEmail({
+      const email = emails.user.passwordReset({
         to: [{ email: user.email, name: user.name }],
         locale: getLocaleFromRequest(request),
         params: {
@@ -71,7 +67,7 @@ export const auth = betterAuth({
     autoSignInAfterVerification: true,
     sendOnSignUp: true,
     sendVerificationEmail: async ({ user, url }, request) => {
-      const email = buildVerificationEmail({
+      const email = emails.user.verification({
         to: [{ email: user.email, name: user.name }],
         locale: getLocaleFromRequest(request),
         params: {
@@ -133,7 +129,7 @@ export const auth = betterAuth({
         });
         const acceptInvitationUrl = `${env.BETTER_AUTH_URL}${pathname}`;
 
-        const email = buildInvitationEmail({
+        const email = emails.user.inviteToOrganization({
           to: [{ email: data.email }],
           locale: getLocaleFromRequest(request),
           params: {

@@ -1,5 +1,5 @@
-import type { TaskRepository } from "./TaskRepository.js";
-import type { UserRepository } from "./UserRepository.js";
+import type { TaskRepository } from "../../task/ports/TaskRepository.js";
+import type { UserRepository } from "../../user/ports/UserRepository.js";
 
 export type Uow = {
   taskRepository: TaskRepository;

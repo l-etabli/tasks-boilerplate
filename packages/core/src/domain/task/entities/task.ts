@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { User } from "./user-and-organization.js";
+import type { User } from "../../user/entities/user-and-organization.js";
 
 export type Task = {
   id: string;

@@ -3,8 +3,8 @@ import type {
   Organization,
   UpdateUserPreferencesInput,
   User,
-} from "../../domain/entities/user-and-organization.js";
-import type { UserRepository } from "../../domain/ports/UserRepository.js";
+} from "../../domain/user/entities/user-and-organization.js";
+import type { UserRepository } from "../../domain/user/ports/UserRepository.js";
 
 export type UserRepositoryHelpers = {
   userById: Record<string, User>;

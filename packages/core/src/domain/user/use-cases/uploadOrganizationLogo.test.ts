@@ -1,11 +1,10 @@
-import { expectToEqual } from "@tasks/test";
+import { expectPromiseToFailWith, expectToEqual } from "@tasks/test";
 import { beforeEach, describe, it } from "vitest";
-import { expectPromiseToFailWith } from "../../../../test/src/testUtils.js";
-import { createInMemoryFileGateway } from "../../adapters/file/InMemoryFileGateway.js";
+import { createInMemoryFileGateway } from "../../../adapters/file/InMemoryFileGateway.js";
 import {
   createWithInMemoryUnitOfWork,
   type InMemoryHelpers,
-} from "../../adapters/inMemory/withInMemoryUow.js";
+} from "../../../adapters/inMemory/withInMemoryUow.js";
 import { memberFactory, organizationFactory } from "../entities/organizationFactory.js";
 import { userFactory } from "../entities/userFactory.js";
 import { uploadOrganizationLogoUseCase } from "./uploadOrganizationLogo.js";

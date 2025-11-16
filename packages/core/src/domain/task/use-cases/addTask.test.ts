@@ -3,8 +3,8 @@ import { beforeEach, describe, it } from "vitest";
 import {
   createWithInMemoryUnitOfWork,
   type InMemoryHelpers,
-} from "../../adapters/inMemory/withInMemoryUow.js";
-import { userFactory } from "../entities/userFactory.js";
+} from "../../../adapters/inMemory/withInMemoryUow.js";
+import { userFactory } from "../../user/entities/userFactory.js";
 import { addTaskUseCase } from "./addTask.js";
 
 describe("addTask", () => {

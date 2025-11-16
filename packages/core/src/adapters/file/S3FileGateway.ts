@@ -9,7 +9,7 @@ import type {
   FileGateway,
   UploadPrivateResult,
   UploadPublicResult,
-} from "../../domain/ports/FileGateway.js";
+} from "../../domain/shared/ports/FileGateway.js";
 
 export type S3Config = {
   endpoint: string;

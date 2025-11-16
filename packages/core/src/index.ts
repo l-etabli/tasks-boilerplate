@@ -12,17 +12,17 @@ import type { Db } from "./adapters/pg/database.js";
 import { createPgTaskQueries } from "./adapters/pg/taskQueries.js";
 import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
-import { addTaskUseCase } from "./domain/use-cases/addTask.js";
-import { deleteOrganizationUseCase } from "./domain/use-cases/deleteOrganization.js";
-import { deleteTaskUseCase } from "./domain/use-cases/deleteTask.js";
-import { updateOrganizationUseCase } from "./domain/use-cases/updateOrganization.js";
-import { updateUserPreferencesUseCase } from "./domain/use-cases/updateUserPreferences.js";
-import { uploadOrganizationLogoUseCase } from "./domain/use-cases/uploadOrganizationLogo.js";
+import { addTaskUseCase } from "./domain/task/use-cases/addTask.js";
+import { deleteTaskUseCase } from "./domain/task/use-cases/deleteTask.js";
+import { deleteOrganizationUseCase } from "./domain/user/use-cases/deleteOrganization.js";
+import { updateOrganizationUseCase } from "./domain/user/use-cases/updateOrganization.js";
+import { updateUserPreferencesUseCase } from "./domain/user/use-cases/updateUserPreferences.js";
+import { uploadOrganizationLogoUseCase } from "./domain/user/use-cases/uploadOrganizationLogo.js";
 
-export * from "./domain/entities/task.js";
-export * from "./domain/entities/user-and-organization.js";
-export * from "./domain/ports/FileGateway.js";
-export * from "./domain/ports/UserQueries.js";
+export * from "./domain/shared/ports/FileGateway.js";
+export * from "./domain/task/entities/task.js";
+export * from "./domain/user/entities/user-and-organization.js";
+export * from "./domain/user/ports/UserQueries.js";
 
 export type DbAdaptersConfig = { kind: "inMemory" } | { kind: "pg"; db: Kysely<Db> };
 

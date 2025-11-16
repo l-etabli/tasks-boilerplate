@@ -1,4 +1,4 @@
-import type { Email } from "../domain/ports/EmailGateway.js";
+import type { Email } from "../domain/shared/ports/EmailGateway.js";
 import type { EmailParams } from "./emailUtils.js";
 import { type EmailTranslations, getTranslation } from "./translations.js";
 

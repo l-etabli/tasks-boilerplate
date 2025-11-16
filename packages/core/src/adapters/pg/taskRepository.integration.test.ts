@@ -2,9 +2,9 @@ import type { Db } from "@tasks/db";
 import { expectToEqual } from "@tasks/test";
 import type { Kysely } from "kysely";
 import { beforeEach, describe, it } from "vitest";
-import { taskFactory } from "../../domain/entities/taskFactory.js";
-import type { User } from "../../domain/entities/user-and-organization.js";
-import type { TaskRepository } from "../../domain/ports/TaskRepository.js";
+import { taskFactory } from "../../domain/task/entities/taskFactory.js";
+import type { TaskRepository } from "../../domain/task/ports/TaskRepository.js";
+import type { User } from "../../domain/user/entities/user-and-organization.js";
 import { createPgTaskRepository } from "./taskRepository.js";
 import { setupPgIntegrationTest } from "./test-utils/integrationTestHelpers.js";
 

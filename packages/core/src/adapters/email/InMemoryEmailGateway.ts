@@ -1,4 +1,8 @@
-import type { Email, EmailGateway, EmailRecipient } from "../../domain/ports/EmailGateway.js";
+import type {
+  Email,
+  EmailGateway,
+  EmailRecipient,
+} from "../../domain/shared/ports/EmailGateway.js";
 
 const formatRecipient = (recipient: EmailRecipient): string => {
   return recipient.name ? `${recipient.name} <${recipient.email}>` : recipient.email;

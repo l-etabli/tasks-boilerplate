@@ -1,6 +1,6 @@
 import type { Kysely } from "kysely";
 import { jsonBuildObject } from "kysely/helpers/postgres";
-import type { TaskRepository } from "../../domain/ports/TaskRepository.js";
+import type { TaskRepository } from "../../domain/task/ports/TaskRepository.js";
 import type { Db } from "./database.js";
 
 export const createPgTaskRepository = (trx: Kysely<Db>) =>

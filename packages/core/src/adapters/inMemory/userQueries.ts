@@ -1,4 +1,4 @@
-import type { UserQueries } from "../../domain/ports/UserQueries.js";
+import type { UserQueries } from "../../domain/user/ports/UserQueries.js";
 import type { UserRepositoryHelpers } from "./userRepository.js";
 
 export const createInMemoryUserQueries = (helpers: UserRepositoryHelpers): UserQueries => {

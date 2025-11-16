@@ -1,4 +1,4 @@
-import type { Uow, WithUow } from "../../domain/ports/Uow.js";
+import type { Uow, WithUow } from "../../domain/shared/ports/Uow.js";
 import { createInMemoryTaskRepository, type TaskRepositoryHelpers } from "./taskRepository.js";
 import { createInMemoryUserRepository, type UserRepositoryHelpers } from "./userRepository.js";
 

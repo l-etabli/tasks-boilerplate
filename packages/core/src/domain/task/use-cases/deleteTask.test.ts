@@ -1,12 +1,11 @@
-import { expectToEqual } from "@tasks/test";
+import { expectPromiseToFailWith, expectToEqual } from "@tasks/test";
 import { beforeEach, describe, it } from "vitest";
-import { expectPromiseToFailWith } from "../../../../test/src/testUtils.js";
 import {
   createWithInMemoryUnitOfWork,
   type InMemoryHelpers,
-} from "../../adapters/inMemory/withInMemoryUow.js";
+} from "../../../adapters/inMemory/withInMemoryUow.js";
+import { userFactory } from "../../user/entities/userFactory.js";
 import { taskFactory } from "../entities/taskFactory.js";
-import { userFactory } from "../entities/userFactory.js";
 import { deleteTaskUseCase } from "./deleteTask.js";
 
 describe("deleteTask", () => {

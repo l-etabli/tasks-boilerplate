@@ -1,5 +1,5 @@
 import type { Kysely } from "kysely";
-import type { User } from "../../../domain/entities/user-and-organization.js";
+import type { User } from "../../../domain/user/entities/user-and-organization.js";
 import type { Db } from "../database.js";
 import { setupIntegrationTests } from "./integrationTestSetup.js";
 

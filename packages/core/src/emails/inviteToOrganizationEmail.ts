@@ -1,15 +1,15 @@
-import type { Email } from "../domain/ports/EmailGateway.js";
+import type { Email } from "../domain/shared/ports/EmailGateway.js";
 import type { EmailParams } from "./emailUtils.js";
 import { type EmailTranslations, getTranslation } from "./translations.js";
 
-type InvitationEmailParams = {
+type InviteToOrganizationEmailParams = {
   inviterName: string;
   organizationName: string;
   acceptInvitationUrl: string;
 };
 
 const translations: EmailTranslations<
-  (params: InvitationEmailParams) => Pick<Email, "subject" | "body">
+  (params: InviteToOrganizationEmailParams) => Pick<Email, "subject" | "body">
 > = {
   en: ({ inviterName, organizationName, acceptInvitationUrl }) => ({
     subject: `You've been invited to join ${organizationName}`,
@@ -31,13 +31,13 @@ const translations: EmailTranslations<
   }),
 };
 
-export const buildInvitationEmail = ({
+export const buildInviteToOrganizationEmail = ({
   to,
   cc,
   bcc,
   locale,
   params,
-}: EmailParams<InvitationEmailParams>): Email => {
+}: EmailParams<InviteToOrganizationEmailParams>): Email => {
   const buildEmail = getTranslation(translations, locale);
   const { subject, body } = buildEmail(params);
 

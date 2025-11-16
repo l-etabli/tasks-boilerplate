@@ -1,7 +1,7 @@
 import { useCaseBuilder } from "@tasks/trousse";
+import type { FileGateway } from "../../shared/ports/FileGateway.js";
+import type { Uow } from "../../shared/ports/Uow.js";
 import { type User, updateOrganizationSchema } from "../entities/user-and-organization.js";
-import type { FileGateway } from "../ports/FileGateway.js";
-import type { Uow } from "../ports/Uow.js";
 
 type Deps = {
   fileGateway: FileGateway;

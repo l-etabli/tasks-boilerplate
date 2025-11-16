@@ -1,4 +1,4 @@
-import type { TaskQueries } from "../../domain/ports/TaskQueries.js";
+import type { TaskQueries } from "../../domain/task/ports/TaskQueries.js";
 import type { TaskRepositoryHelpers } from "./taskRepository.js";
 
 export const createInMemoryTaskQueries = (helpers: TaskRepositoryHelpers): TaskQueries => {

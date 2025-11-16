@@ -1,8 +1,8 @@
 import { useCaseBuilder } from "@tasks/trousse";
 import { z } from "zod";
+import type { FileGateway } from "../../shared/ports/FileGateway.js";
+import type { Uow } from "../../shared/ports/Uow.js";
 import type { User } from "../entities/user-and-organization.js";
-import type { FileGateway } from "../ports/FileGateway.js";
-import type { Uow } from "../ports/Uow.js";
 
 const MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 0.5 MB
 const ACCEPTED_IMAGE_TYPES = ["image/svg+xml", "image/png", "image/jpeg", "image/jpg"];

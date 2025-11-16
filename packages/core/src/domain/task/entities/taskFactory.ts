@@ -1,5 +1,5 @@
+import { userFactory } from "../../user/entities/userFactory.js";
 import type { Task } from "./task.js";
-import { userFactory } from "./userFactory.js";
 
 let taskIdCounter = 1;
 
