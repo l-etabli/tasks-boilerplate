@@ -94,7 +94,7 @@ jobs:
       packages: write
 
   deploy:
-    name: Deploy to Coolify
+    name: Deploy v${{ needs.fullcheck.outputs.version }} to Coolify
     needs: [fullcheck, build]
     if: github.ref == 'refs/heads/main' && needs.fullcheck.outputs.version != ''
     runs-on: ubuntu-latest

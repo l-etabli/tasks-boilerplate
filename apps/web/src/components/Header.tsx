@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/auth-client";
+import { AppFooter } from "@/components/AppFooter";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useI18nContext } from "@/i18n/i18n-react";
@@ -220,14 +221,14 @@ export default function Header({
         </div>
       </header>
 
-      <div className="flex min-h-[calc(100vh-64px)]">
+      <div className="flex min-h-[calc(100vh-64px)] flex-col md:flex-row">
         {/* Sidebar */}
         <aside
-          className={`fixed inset-y-16 left-0 z-30 w-64 border-r border-gray-200 bg-white dark:border-slate-800 dark:bg-slate-950 shadow-lg transition-transform duration-300 md:relative md:inset-auto md:translate-x-0 md:shadow-none ${
+          className={`fixed inset-y-16 left-0 z-30 w-64 border-r border-gray-200 bg-white dark:border-slate-800 dark:bg-slate-950 shadow-lg transition-transform duration-300 md:shadow-none ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          } md:translate-x-0`}
         >
-          <nav className="flex flex-col gap-2 p-4">
+          <nav className="flex h-full flex-col gap-2 overflow-y-auto p-4">
             <NavLink
               id="nav-link-todos"
               to="/todos"
@@ -274,7 +275,10 @@ export default function Header({
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto bg-white dark:bg-slate-950">{children}</main>
+        <div className="flex flex-1 flex-col md:ml-64">
+          <main className="flex-1 overflow-auto bg-white dark:bg-slate-950">{children}</main>
+          <AppFooter />
+        </div>
       </div>
     </>
   );

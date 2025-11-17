@@ -18,6 +18,9 @@ const config = defineConfig({
   ],
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(
+      process.env.VITE_APP_VERSION || 'Dev',
+    ),
   },
   build: {
     sourcemap: true,

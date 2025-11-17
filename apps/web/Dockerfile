@@ -10,6 +10,11 @@ WORKDIR /app
 # Stage 2: Builder - Install dependencies and build
 FROM base AS builder
 
+# Accept build arguments
+ARG NODE_ENV=production
+ARG VITE_APP_VERSION=dev
+ENV VITE_APP_VERSION=$VITE_APP_VERSION
+
 # Copy package.json files for layer caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY turbo.json ./
@@ -27,7 +32,6 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build the web app and its dependencies
-ENV NODE_ENV=production
 RUN pnpm build --filter=@tasks/web
 
 # Stage 3: Production - Minimal runtime image
