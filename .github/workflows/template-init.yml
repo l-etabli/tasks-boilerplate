@@ -83,6 +83,27 @@ jobs:
 
           echo "✅ Namespace replacement complete"
 
+      - name: Delete all existing git tags
+        if: steps.check.outputs.needs_init == 'true'
+        run: |
+          # Fetch all tags
+          git fetch --tags
+
+          # Delete all remote tags
+          TAGS=$(git tag)
+          if [ -n "$TAGS" ]; then
+            echo "Deleting remote tags..."
+            echo "$TAGS" | xargs -n 1 git push --delete origin || true
+
+            # Delete all local tags
+            echo "Deleting local tags..."
+            echo "$TAGS" | xargs -n 1 git tag -d
+
+            echo "✅ Deleted all git tags"
+          else
+            echo "No tags to delete"
+          fi
+
       - name: Remove template initialization files
         if: steps.check.outputs.needs_init == 'true'
         run: |
@@ -99,4 +120,12 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add -A
           git commit -m "chore: initialize template with namespace ${{ steps.namespace.outputs.namespace }}"
+
+          # Create 0.0.1 and latest tags
+          git tag -a 0.0.1 -m "chore: initial version"
+          git tag -fa latest -m "chore: initial version"
+
+          # Push commit and tags
           git push
+          git push origin 0.0.1
+          git push origin latest --force

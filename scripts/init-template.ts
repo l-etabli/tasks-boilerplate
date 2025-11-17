@@ -215,7 +215,7 @@ async function main() {
 		"scripts/init-template.ts",
 	];
 
-	log("🧹 Cleaning up template initialization files...\n", colors.blue);
+	log("\n🧹 Cleaning up template initialization files...\n", colors.blue);
 	const { unlinkSync } = await import("node:fs");
 	for (const file of cleanupFiles) {
 		const fullPath = join(process.cwd(), file);
@@ -228,10 +228,14 @@ async function main() {
 	// Suggest next steps
 	log(`\n${colors.bold}Next steps:${colors.reset}`);
 	log("  1. Review the changes: git diff");
-	log("  2. Reinstall dependencies: pnpm install");
-	log("  3. Verify everything works: pnpm fullcheck");
-	log("  4. Update .env with your configuration");
-	log("  5. Start development: pnpm dev\n");
+	log("  2. Delete all existing tags: git tag | xargs -n 1 git push --delete origin; git tag | xargs -n 1 git tag -d");
+	log("  3. Commit the changes: git add -A && git commit -m 'chore: initialize template'");
+	log("  4. Create initial tags: git tag -a 0.0.1 -m 'chore: initial version' && git tag -fa latest -m 'chore: initial version'");
+	log("  5. Push changes: git push && git push origin 0.0.1 && git push origin latest --force");
+	log("  6. Reinstall dependencies: pnpm install");
+	log("  7. Verify everything works: pnpm fullcheck");
+	log("  8. Update .env with your configuration");
+	log("  9. Start development: pnpm dev\n");
 
 	rl.close();
 }
