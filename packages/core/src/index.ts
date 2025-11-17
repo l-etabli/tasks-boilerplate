@@ -9,6 +9,7 @@ import { createInMemoryTaskQueries } from "./adapters/inMemory/taskQueries.js";
 import { createInMemoryUserQueries } from "./adapters/inMemory/userQueries.js";
 import { createWithInMemoryUnitOfWork } from "./adapters/inMemory/withInMemoryUow.js";
 import type { Db } from "./adapters/pg/database.js";
+import { createPgHealthQueries } from "./adapters/pg/healthQueries.js";
 import { createPgTaskQueries } from "./adapters/pg/taskQueries.js";
 import { createPgUserQueries } from "./adapters/pg/userQueries.js";
 import { createWithPgUnitOfWork } from "./adapters/pg/withPgUow.js";
@@ -70,6 +71,7 @@ const getDbAdapters = (config: DbAdaptersConfig) => {
         queries: {
           task: createPgTaskQueries(config.db),
           user: createPgUserQueries(config.db),
+          health: createPgHealthQueries(config.db),
         },
       };
     }
