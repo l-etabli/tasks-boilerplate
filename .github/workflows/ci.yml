@@ -102,7 +102,7 @@ jobs:
     steps:
       - name: Trigger Coolify deployment
         run: |
-          curl -X GET "${{ vars.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}" \
+          curl -X GET "${{ vars.COOLIFY_API_URL }}/deploy?uuid=${{ secrets.COOLIFY_RESOURCE_UUID }}&tag=${{ needs.fullcheck.outputs.version }}" \
             -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             --fail-with-body \
