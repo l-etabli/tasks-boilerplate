@@ -3,6 +3,7 @@
   "extends": ["config:recommended"],
   "baseBranches": ["main"],
   "prCreation": "immediate",
+  "minimumReleaseAge": "10 days",
   "rangeStrategy": "bump",
   "dependencyDashboard": false,
   "dependencyDashboardApproval": false,
