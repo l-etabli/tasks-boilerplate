@@ -69,7 +69,7 @@ importers:
         specifier: ^1.139.14
         version: 1.139.14(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@tanstack/react-router-devtools':
-        specifier: ^1.139.14
+        specifier: ^1.139.15
         version: 1.139.15(@tanstack/react-router@1.139.14(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(@tanstack/router-core@1.139.14)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(solid-js@1.9.9)
       '@tanstack/react-router-ssr-query':
         specifier: ^1.139.14
