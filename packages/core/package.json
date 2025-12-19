@@ -21,7 +21,7 @@
         "@tasks/trousse": "workspace:*",
         "kysely": "^0.28.8",
         "pg": "^8.16.3",
-        "resend": "^6.5.2",
+        "resend": "^6.6.0",
         "zod": "4.1.13"
     },
     "devDependencies": {
