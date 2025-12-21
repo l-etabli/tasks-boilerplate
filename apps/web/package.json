@@ -20,7 +20,7 @@
   "dependencies": {
     "@sentry/tanstackstart-react": "^10.30.0",
     "@t3-oss/env-core": "^0.13.8",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.8.1",
     "@tanstack/react-form": "^1.27.2",
     "@tanstack/react-router": "^1.140.5",
@@ -37,7 +37,7 @@
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "sonner": "^2.0.7",
-    "tailwindcss": "^4.1.17",
+    "tailwindcss": "^4.1.18",
     "typesafe-i18n": "^5.26.2",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^4.1.13"
