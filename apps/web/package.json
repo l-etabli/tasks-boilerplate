@@ -18,7 +18,7 @@
     "i18n": "pnpm typesafe-i18n --no-watch"
   },
   "dependencies": {
-    "@sentry/tanstackstart-react": "^10.29.0",
+    "@sentry/tanstackstart-react": "^10.30.0",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-devtools": "^0.8.1",
