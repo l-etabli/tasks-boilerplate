@@ -51,7 +51,7 @@ importers:
   apps/web:
     dependencies:
       '@sentry/tanstackstart-react':
-        specifier: ^10.31.0
+        specifier: ^10.32.0
         version: 10.32.1(react@19.2.3)
       '@t3-oss/env-core':
         specifier: ^0.13.8
@@ -7148,6 +7148,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
