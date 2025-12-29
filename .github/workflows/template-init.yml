@@ -47,7 +47,7 @@ jobs:
         if: steps.check.outputs.needs_init == 'true'
         uses: pnpm/action-setup@v4
         with:
-          version: 10.26.0
+          version: 10.26.1
 
       - name: Generate namespace from repository name
         if: steps.check.outputs.needs_init == 'true'
