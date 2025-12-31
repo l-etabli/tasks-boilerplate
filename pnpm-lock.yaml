@@ -175,8 +175,8 @@ importers:
         specifier: workspace:*
         version: link:../trousse
       kysely:
-        specifier: ^0.28.8
-        version: 0.28.8
+        specifier: ^0.28.9
+        version: 0.28.9
       pg:
         specifier: ^8.16.3
         version: 8.16.3
@@ -206,11 +206,11 @@ importers:
   packages/db:
     dependencies:
       kysely:
-        specifier: ^0.28.8
-        version: 0.28.8
+        specifier: ^0.28.9
+        version: 0.28.9
       kysely-ctl:
         specifier: ^0.19.0
-        version: 0.19.0(kysely@0.28.8)(magicast@0.3.5)(typescript@5.9.3)
+        version: 0.19.0(kysely@0.28.9)(magicast@0.3.5)(typescript@5.9.3)
       pg:
         specifier: ^8.16.3
         version: 8.16.3
@@ -4934,6 +4934,10 @@ packages:
 
   kysely@0.28.8:
     resolution: {integrity: sha512-QUOgl5ZrS9IRuhq5FvOKFSsD/3+IA6MLE81/bOOTRA/YQpKDza2sFdN5g6JCB9BOpqMJDGefLCQ9F12hRS13TA==}
+    engines: {node: '>=20.0.0'}
+
+  kysely@0.28.9:
+    resolution: {integrity: sha512-3BeXMoiOhpOwu62CiVpO6lxfq4eS6KMYfQdMsN/2kUCRNuF2YiEr7u0HLHaQU+O4Xu8YXE3bHVkwaQ85i72EuA==}
     engines: {node: '>=20.0.0'}
 
   lazystream@1.0.1:
@@ -12698,14 +12702,14 @@ snapshots:
 
   knitwork@1.2.0: {}
 
-  kysely-ctl@0.19.0(kysely@0.28.8)(magicast@0.3.5)(typescript@5.9.3):
+  kysely-ctl@0.19.0(kysely@0.28.9)(magicast@0.3.5)(typescript@5.9.3):
     dependencies:
       c12: 3.3.0(magicast@0.3.5)
       citty: 0.1.6
       confbox: 0.2.2
       consola: 3.4.2
       jiti: 2.6.1
-      kysely: 0.28.8
+      kysely: 0.28.9
       nypm: 0.6.2
       ofetch: 1.4.1
       pathe: 2.0.3
@@ -12717,6 +12721,8 @@ snapshots:
       - typescript
 
   kysely@0.28.8: {}
+
+  kysely@0.28.9: {}
 
   lazystream@1.0.1:
     dependencies:
