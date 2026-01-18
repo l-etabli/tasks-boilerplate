@@ -15,10 +15,10 @@ importers:
         specifier: 2.3.11
         version: 2.3.11
       '@commitlint/cli':
-        specifier: ^20.3.0
+        specifier: ^20.3.1
         version: 20.3.1(@types/node@24.10.0)(typescript@5.9.3)
       '@commitlint/config-conventional':
-        specifier: ^20.3.0
+        specifier: ^20.3.1
         version: 20.3.1
       '@semantic-release/github':
         specifier: ^12.0.2
