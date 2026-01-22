@@ -29,6 +29,6 @@
         "@testcontainers/postgresql": "^11.11.0",
         "@types/pg": "^8.16.0",
         "typescript": "^5.9.3",
-        "vitest": "^4.0.16"
+        "vitest": "^4.0.17"
     }
 }
