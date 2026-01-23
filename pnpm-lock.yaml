@@ -30,7 +30,7 @@ importers:
         specifier: ^4.0.17
         version: 4.0.17(vitest@4.0.17)
       lefthook:
-        specifier: ^2.0.14
+        specifier: ^2.0.15
         version: 2.0.15
       semantic-release:
         specifier: ^25.0.2
