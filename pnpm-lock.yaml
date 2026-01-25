@@ -163,10 +163,10 @@ importers:
   packages/core:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: ^3.969.0
+        specifier: ^3.970.0
         version: 3.974.0
       '@aws-sdk/s3-request-presigner':
-        specifier: ^3.969.0
+        specifier: ^3.970.0
         version: 3.974.0
       '@tasks/db':
         specifier: workspace:*
