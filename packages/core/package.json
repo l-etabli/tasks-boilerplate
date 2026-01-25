@@ -20,7 +20,7 @@
         "@tasks/db": "workspace:*",
         "@tasks/trousse": "workspace:*",
         "kysely": "^0.28.8",
-        "pg": "^8.16.3",
+        "pg": "^8.17.1",
         "resend": "^6.7.0",
         "zod": "4.3.5"
     },
