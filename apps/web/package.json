@@ -45,7 +45,7 @@
   "devDependencies": {
     "@tanstack/nitro-v2-vite-plugin": "^1.141.0",
     "@testing-library/dom": "^10.4.1",
-    "@testing-library/react": "^16.3.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
