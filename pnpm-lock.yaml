@@ -51,7 +51,7 @@ importers:
   apps/web:
     dependencies:
       '@sentry/tanstackstart-react':
-        specifier: ^10.34.0
+        specifier: ^10.35.0
         version: 10.36.0(react@19.2.3)
       '@t3-oss/env-core':
         specifier: ^0.13.8
@@ -11012,7 +11012,7 @@ snapshots:
   '@types/pg@8.15.6':
     dependencies:
       '@types/node': 24.10.0
-      pg-protocol: 1.10.3
+      pg-protocol: 1.11.0
       pg-types: 2.2.0
 
   '@types/pg@8.16.0':
