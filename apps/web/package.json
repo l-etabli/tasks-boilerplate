@@ -26,7 +26,7 @@
     "@tanstack/react-router": "^1.151.6",
     "@tanstack/react-router-devtools": "^1.151.6",
     "@tanstack/react-router-ssr-query": "^1.151.6",
-    "@tanstack/react-start": "^1.152.0",
+    "@tanstack/react-start": "^1.153.0",
     "@tanstack/router-plugin": "^1.151.6",
     "@tanstack/zod-form-adapter": "^0.42.1",
     "@tasks/core": "workspace:*",
