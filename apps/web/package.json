@@ -39,7 +39,7 @@
     "sonner": "^2.0.7",
     "tailwindcss": "^4.1.18",
     "typesafe-i18n": "^5.26.2",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.0.5",
     "zod": "^4.3.6"
   },
   "devDependencies": {
