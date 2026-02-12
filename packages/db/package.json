@@ -15,7 +15,7 @@
     "migrate": "tsx scripts/migrate-cli.ts"
   },
   "dependencies": {
-    "kysely": "^0.28.8",
+    "kysely": "^0.28.11",
     "kysely-ctl": "^0.19.0",
     "pg": "^8.18.0"
   },
