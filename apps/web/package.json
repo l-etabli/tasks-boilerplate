@@ -38,7 +38,7 @@
     "react-dom": "^19.2.4",
     "sonner": "^2.0.7",
     "tailwindcss": "^4.1.18",
-    "typesafe-i18n": "^5.26.2",
+    "typesafe-i18n": "^5.27.1",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^4.3.6"
   },
