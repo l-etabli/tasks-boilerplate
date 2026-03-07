@@ -111,8 +111,8 @@ importers:
         specifier: ^4.1.18
         version: 4.1.18
       typesafe-i18n:
-        specifier: ^5.26.2
-        version: 5.26.2(typescript@5.9.3)
+        specifier: ^5.27.1
+        version: 5.27.1(typescript@5.9.3)
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.1))
@@ -7104,8 +7104,8 @@ packages:
     resolution: {integrity: sha512-xxCJm+Bckc6kQBknN7i9fnP/xobQRsRQxR01CztFkp/h++yfVxUUcmMgfR2HttJx/dpWjS9ubVuyspJv24Q9DA==}
     engines: {node: '>=20'}
 
-  typesafe-i18n@5.26.2:
-    resolution: {integrity: sha512-2QAriFmiY5JwUAJtG7yufoE/XZ1aFBY++wj7YFS2yo89a3jLBfKoWSdq5JfQYk1V2BS7V2c/u+KEcaCQoE65hw==}
+  typesafe-i18n@5.27.1:
+    resolution: {integrity: sha512-749uWo2ZXETT//kWjVYPm8QPYR8xLh8G0wLfoAyCAtAmysX67uCaAyLjAjAWojL6fuJpE5B6yIjwvO9orXzUPg==}
     hasBin: true
     peerDependencies:
       typescript: '>=3.5.1'
@@ -15176,7 +15176,7 @@ snapshots:
     dependencies:
       tagged-tag: 1.0.0
 
-  typesafe-i18n@5.26.2(typescript@5.9.3):
+  typesafe-i18n@5.27.1(typescript@5.9.3):
     dependencies:
       typescript: 5.9.3
 
