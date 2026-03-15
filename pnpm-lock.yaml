@@ -51,7 +51,7 @@ importers:
   apps/web:
     dependencies:
       '@sentry/tanstackstart-react':
-        specifier: ^10.40.0
+        specifier: ^10.42.0
         version: 10.42.0(react@19.2.4)(rollup@4.57.1)
       '@t3-oss/env-core':
         specifier: ^0.13.8
@@ -6139,9 +6139,6 @@ packages:
   pg-protocol@1.10.3:
     resolution: {integrity: sha512-6DIBgBQaTKDJyxnXaLiLR8wBpQQcGWuAESkRBX/t6OwA8YsqP+iVSiond2EDy6Y/dsGk8rh/jtax3js5NeV7JQ==}
 
-  pg-protocol@1.11.0:
-    resolution: {integrity: sha512-pfsxk2M9M3BuGgDOfuy37VNRRX3jmKgMjcvAcWqNDpZSf4cUmv8HSOl5ViRQFsfARFn0KuUQTgLxVMbNq5NW3g==}
-
   pg-protocol@1.13.0:
     resolution: {integrity: sha512-zzdvXfS6v89r6v7OcFCHfHlyG/wvry1ALxZo4LqgUoy7W9xhBDMaqOuMiF3qEV45VqsN6rdlcehHrfDtlCPc8w==}
 
@@ -11297,7 +11294,7 @@ snapshots:
   '@types/pg@8.15.6':
     dependencies:
       '@types/node': 24.10.0
-      pg-protocol: 1.11.0
+      pg-protocol: 1.13.0
       pg-types: 2.2.0
 
   '@types/pg@8.16.0':
@@ -14007,8 +14004,6 @@ snapshots:
       pg: 8.20.0
 
   pg-protocol@1.10.3: {}
-
-  pg-protocol@1.11.0: {}
 
   pg-protocol@1.13.0: {}
 
