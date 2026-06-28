@@ -39,7 +39,7 @@
     "lefthook": "^2.1.9",
     "semantic-release": "^25.0.5",
     "tsx": "^4.21.0",
-    "turbo": "^2.9.6",
+    "turbo": "^2.9.18",
     "typescript": "5.9.3",
     "vitest": "^4.1.4"
   },
