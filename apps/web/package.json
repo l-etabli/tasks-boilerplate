@@ -40,7 +40,7 @@
     "tailwindcss": "^4.2.2",
     "typesafe-i18n": "^5.27.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tanstack/nitro-v2-vite-plugin": "^1.154.9",
