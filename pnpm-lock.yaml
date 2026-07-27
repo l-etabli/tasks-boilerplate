@@ -181,8 +181,8 @@ importers:
         specifier: ^8.22.0
         version: 8.22.0
       resend:
-        specifier: ^6.14.0
-        version: 6.16.0(@react-email/render@1.1.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
+        specifier: ^6.17.2
+        version: 6.18.0(@react-email/render@1.1.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       zod:
         specifier: 4.4.3
         version: 4.4.3
@@ -5374,8 +5374,8 @@ packages:
   pkg-types@2.3.0:
     resolution: {integrity: sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==}
 
-  postal-mime@2.7.4:
-    resolution: {integrity: sha512-0WdnFQYUrPGGTFu1uOqD2s7omwua8xaeYGdO6rb88oD5yJ/4pPHDA4sdWqfD8wQVfCny563n/HQS7zTFft+f/g==}
+  postal-mime@2.7.5:
+    resolution: {integrity: sha512-GNEXKvWFQnbgO5NlrGzVa0FmWzBZ24PersAWErttSg1Hjpf0ATxTwS5DOMGaOpTG6bUh5cTr7xi0jAD942wCJA==}
 
   postcss@8.5.15:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
@@ -5616,8 +5616,8 @@ packages:
     resolution: {integrity: sha512-QT7FVMXfWOYFbeRBF6nu+I6tr2Tf3u0q8RIEjNob/heKY/nh7drD/k7eeMFmSQgnTtCzLDcCu/XEnpW2wk4xCQ==}
     engines: {node: '>=9.3.0 || >=8.10.0 <9.0.0'}
 
-  resend@6.16.0:
-    resolution: {integrity: sha512-SaKISwHtxvAxneF84Njgnzg+zdngUu1vOT/paRU1De9QF+zXQR3GnwJHSh+mpJPjUhsGD4WxYi5CfKkXMkDqwg==}
+  resend@6.18.0:
+    resolution: {integrity: sha512-EjxZ9AVzywJgOlUoIJe9ytBWVrfbUtJbjeoLnRSvpU1sv97Hh9DSwhw+k8kiujrG4Rg4bzTBsjlmwWWuoOxSug==}
     engines: {node: '>=20'}
     peerDependencies:
       '@react-email/render': '*'
@@ -11982,7 +11982,7 @@ snapshots:
       exsolve: 1.0.7
       pathe: 2.0.3
 
-  postal-mime@2.7.4: {}
+  postal-mime@2.7.5: {}
 
   postcss@8.5.15:
     dependencies:
@@ -12244,9 +12244,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  resend@6.16.0(@react-email/render@1.1.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
+  resend@6.18.0(@react-email/render@1.1.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
     dependencies:
-      postal-mime: 2.7.4
+      postal-mime: 2.7.5
       standardwebhooks: 1.0.0
     optionalDependencies:
       '@react-email/render': 1.1.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
