@@ -30,7 +30,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "@tasks/typescript-config": "workspace:*",
-    "@turbo/gen": "^2.10.11",
+    "@turbo/gen": "^2.10.12",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
