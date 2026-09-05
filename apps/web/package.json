@@ -21,7 +21,7 @@
     "@sentry/tanstackstart-react": "^10.66.0",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.3.3",
-    "@tanstack/react-devtools": "^0.8.1",
+    "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-form": "^1.33.5",
     "@tanstack/react-router": "^1.170.18",
     "@tanstack/react-router-devtools": "^1.167.0",
