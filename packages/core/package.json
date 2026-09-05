@@ -20,14 +20,14 @@
         "@tasks/db": "workspace:*",
         "@tasks/trousse": "workspace:*",
         "kysely": "^0.28.8",
-        "pg": "^8.22.0",
+        "pg": "^8.23.0",
         "resend": "^6.17.2",
         "zod": "4.4.3"
     },
     "devDependencies": {
         "@tasks/test": "workspace:*",
         "@testcontainers/postgresql": "^11.14.0",
-        "@types/pg": "^8.20.0",
+        "@types/pg": "^8.23.1",
         "typescript": "^5.9.3",
         "vitest": "^4.1.11"
     }
